@@ -29,4 +29,3 @@ coverage
 
 firebase
 .firebaseerc
-/src/components/js/env.js
