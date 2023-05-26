@@ -8,6 +8,14 @@ import { collection, addDoc } from "firebase/firestore";
 import emailjs from "@emailjs/browser";
 import emailAccount from "../components/js/env.js";
 
+const emailResContent = ref("");
+const emailResColor = ref("#ffffff");
+const btnDisable = ref(false);
+const alertShow = ref(false);
+const btnContent = ref("送 出");
+const iconTag = ref("thumbs-up");
+const alertBtnBgc = ref("rgb(63, 156, 63)");
+
 const formData = ref({
   name: "",
   email: "",
@@ -30,7 +38,10 @@ const PUBLIC_KEY = emailAccount.PUBLIC_KEY;
 const submit = async () => {
   const result = await v$.value.$validate();
   if (result) {
-    await addDoc(collection(db, "email-message"), {
+    btnContent.value = "";
+    btnDisable.value = true;
+
+    addDoc(collection(db, "email-message"), {
       name: formData.value.name,
       email: formData.value.email,
       message: formData.value.message,
@@ -51,21 +62,41 @@ const submit = async () => {
       )
       .then(
         (result) => {
-          // console.log("SUCCESS!", result.text);
+          formData.value.name = "";
+          formData.value.email = "";
+          formData.value.message = "";
+          v$.value.$reset();
+
+          emailResContent.value = "發送成功 !";
+          emailResColor.value = "rgb(63, 156, 63)";
+          alertShow.value = true;
+          iconTag.value = "thumbs-up";
+          alertBtnBgc.value = "rgb(63, 156, 63)";
+          resetEmailRes();
         },
         (error) => {
-          // console.log("FAILED...", error.text);
+          emailResContent.value = "發送失敗 請稍後再試 !";
+          emailResColor.value = "rgb(215, 80, 42)";
+          alertShow.value = true;
+          iconTag.value = "triangle-exclamation";
+          alertBtnBgc.value = "rgb(215, 80, 42)";
+          resetEmailRes();
         }
       );
-    formData.value.name = "";
-    formData.value.email = "";
-    formData.value.message = "";
-    v$.value.$reset();
   }
 };
 
+const resetEmailRes = () => {
+  setTimeout(() => {
+    emailResContent.value = "";
+    emailResColor.value = "#ffffff";
+    btnContent.value = "送 出";
+    btnDisable.value = false;
+    alertShow.value = false;
+  }, 3000);
+};
+
 const errorHandler = (errId) => {
-  console.log(errId);
   if (
     errId === "name-required" ||
     errId === "name-minLength" ||
@@ -169,7 +200,31 @@ const errorHandler = (errId) => {
             >
           </div>
           <div class="button-block">
-            <button>送 出</button>
+            <div class="alert-btn-outter">
+              <div
+                class="alert-btn"
+                :class="{ 'btn-move': alertShow }"
+                :style="{ backgroundColor: alertBtnBgc }"
+              >
+                <font-awesome-icon
+                  :icon="['fas', iconTag]"
+                  class="btn-icon"
+                  :class="{ 'btn-icon-move': alertShow }"
+                />
+              </div>
+            </div>
+            <button :disabled="btnDisable">
+              {{ btnContent }}
+              <img
+                v-show="btnDisable"
+                class="loading"
+                src="/loading.gif"
+                alt=""
+              />
+            </button>
+            <div class="email-alert" :style="{ color: emailResColor }">
+              {{ emailResContent }}
+            </div>
           </div>
         </form>
       </div>
@@ -192,7 +247,6 @@ const errorHandler = (errId) => {
   width: 800px;
   height: 800px;
   position: relative;
-  /* border: 1px solid #000; */
 }
 h1 {
   position: absolute;
@@ -279,12 +333,17 @@ button {
   margin-top: 10px;
   cursor: pointer;
   border: none;
-  border-radius: 7px;
-  /* background-color: #ececec; */
-  background-color: green;
-  color: #444;
+  border-radius: 8px;
+  background-color: #ececec;
   transition: 0.3s;
   outline: none;
+  position: relative;
+  width: 50px;
+  height: 30px;
+  color: #444;
+}
+.button-block {
+  position: relative;
 }
 button:hover {
   background-color: #e1e1e1;
@@ -295,5 +354,58 @@ button:hover {
 .text-red {
   margin-left: 10px;
   color: rgb(187, 64, 64);
+}
+.email-alert {
+  position: absolute;
+  top: 13px;
+  margin-left: 20px;
+  opacity: 1;
+  display: inline-block;
+  font-size: 16px;
+}
+.loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 23px;
+  pointer-events: none;
+  user-select: none;
+}
+.alert-btn-outter {
+  position: absolute;
+  margin-left: 35px;
+  margin-top: 10px;
+  width: 50px;
+  height: 30px;
+  overflow: hidden;
+  user-select: none;
+  pointer-events: none;
+}
+.alert-btn {
+  width: 50px;
+  height: 30px;
+  border-radius: 8px;
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  top: 30px;
+  transition: 0.3s;
+}
+.btn-icon {
+  color: #ffffff;
+  font-size: 21px;
+  position: relative;
+  top: -31px;
+  transition: 0.3s;
+}
+.btn-move {
+  top: 0px;
+}
+.btn-icon-move {
+  top: -1px;
 }
 </style>
