@@ -280,7 +280,8 @@ button {
   cursor: pointer;
   border: none;
   border-radius: 7px;
-  background-color: #ececec;
+  /* background-color: #ececec; */
+  background-color: green;
   color: #444;
   transition: 0.3s;
   outline: none;
