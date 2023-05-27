@@ -6,7 +6,6 @@ import { ref, computed } from "vue";
 import { db } from "@/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import emailjs from "@emailjs/browser";
-import emailAccount from "../components/js/env.js";
 
 const emailResContent = ref("");
 const emailResColor = ref("#ffffff");
@@ -31,9 +30,9 @@ const rules = computed(() => {
 });
 
 const v$ = useVuelidate(rules, formData);
-const SERVICE_ID = emailAccount.SERVICE_ID;
-const TEMPLATE_ID = emailAccount.TEMPLATE_ID;
-const PUBLIC_KEY = emailAccount.PUBLIC_KEY;
+const SERVICEID = import.meta.env.VITE_SERVICEID;
+const TEMPLATEID = import.meta.env.VITE_TEMPLATEID;
+const PUBLICKEY = import.meta.env.VITE_PUBLICKEY;
 
 const submit = async () => {
   const result = await v$.value.$validate();
@@ -51,14 +50,14 @@ const submit = async () => {
 
     emailjs
       .send(
-        SERVICE_ID,
-        TEMPLATE_ID,
+        SERVICEID,
+        TEMPLATEID,
         {
           from_name: formData.value.name,
           from_email: formData.value.email,
           message: formData.value.message,
         },
-        PUBLIC_KEY
+        PUBLICKEY
       )
       .then(
         (result) => {

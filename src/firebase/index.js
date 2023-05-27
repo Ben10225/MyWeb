@@ -2,14 +2,19 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const APIKEY = import.meta.env.VITE_APIKEY;
+const AUTHDOMAIN = import.meta.env.VITE_AUTHDOMAIN;
+const PROJECTID = import.meta.env.VITE_PROJECTID;
+const STORAGEBUCKET = import.meta.env.VITE_STORAGEBUCKET;
+const MESSAGINGSENDERID = import.meta.env.VITE_MESSAGINGSENDERID;
+const APPID = import.meta.env.VITE_APPID;
 
 const firebaseConfig = {
   apiKey: APIKEY,
-  authDomain: "pengweb-fb304.firebaseapp.com",
-  projectId: "pengweb-fb304",
-  storageBucket: "pengweb-fb304.appspot.com",
-  messagingSenderId: "447949337208",
-  appId: "1:447949337208:web:980a1586d8f2874e2fb38d",
+  authDomain: AUTHDOMAIN,
+  projectId: PROJECTID,
+  storageBucket: STORAGEBUCKET,
+  messagingSenderId: MESSAGINGSENDERID,
+  appId: APPID,
 };
 
 const app = initializeApp(firebaseConfig);
