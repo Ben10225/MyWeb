@@ -1,6 +1,6 @@
 <script setup>
 import LogoAniComp from "./LogoAniComp.vue";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 
 const canClick = ref(true);
 const aniStart = ref(0);
@@ -12,10 +12,6 @@ const showAni = () => {
     canClick.value = true;
   }, 6000);
 };
-
-const test = computed(() => {
-  return !canClick;
-});
 </script>
 
 <template>

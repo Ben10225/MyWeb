@@ -111,6 +111,8 @@ const errorHandler = (errId) => {
     errId === "message-maxLength"
   ) {
     return "長度需介於 5 - 200 個字元";
+  } else {
+    return "";
   }
 };
 </script>
