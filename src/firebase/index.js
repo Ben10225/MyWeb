@@ -1,8 +1,10 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
+const APIKEY = import.meta.env.VITE_APIKEY;
+
 const firebaseConfig = {
-  apiKey: "AIzaSyDpw8LIRDcal9MiHN_Th0JhxShyU5Ng3YI",
+  apiKey: APIKEY,
   authDomain: "pengweb-fb304.firebaseapp.com",
   projectId: "pengweb-fb304",
   storageBucket: "pengweb-fb304.appspot.com",
