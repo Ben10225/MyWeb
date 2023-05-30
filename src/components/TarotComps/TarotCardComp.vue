@@ -90,7 +90,7 @@ watchEffect(() => {
   position: absolute;
   width: 150px;
   height: 250px;
-  outline: 1px solid #adadad;
+  outline: 1px solid #a8a8a8;
   border-radius: 10px;
   background-image: url("./back-new.jpg");
   background-repeat: no-repeat;

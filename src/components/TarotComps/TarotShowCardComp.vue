@@ -16,6 +16,7 @@ const para = ref([]);
 const upright = ref([]);
 const reverse = ref([]);
 
+const wrapperZindex = ref(false);
 const open = ref(false);
 const textOpacity1 = ref(false);
 const textOpacity2 = ref(false);
@@ -43,11 +44,19 @@ const rotateCardHandler = () => {
 
 const backCardHandler = () => {
   emit("back", false);
+  setTimeout(() => {
+    wrapperZindex.value = false;
+    mode.value = "beforSelecting";
+  }, 500);
 };
 
 const clickBgHandler = () => {
   if (mode.value === "selecting") {
     emit("back", false);
+    setTimeout(() => {
+      wrapperZindex.value = false;
+      mode.value = "beforSelecting";
+    }, 500);
   }
 };
 
@@ -66,6 +75,7 @@ const endHandler = () => {
   }, 700);
   setTimeout(() => {
     mode.value = "beforSelecting";
+    wrapperZindex.value = false;
   }, 1400);
 };
 
@@ -121,6 +131,7 @@ watchEffect(() => {
   cardUpright.value = props.data.upright;
   if (props.show) {
     mode.value = "selecting";
+    wrapperZindex.value = true;
   }
 });
 </script>
@@ -128,7 +139,7 @@ watchEffect(() => {
 <template>
   <div
     class="show-card-wrapper"
-    :class="{ 'show-card-wrapper-in': props.show }"
+    :class="{ 'show-card-wrapper-in': wrapperZindex }"
   >
     <div
       class="background"
@@ -251,11 +262,22 @@ watchEffect(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: 0.4s;
 }
 .show-card-wrapper-in {
   z-index: 100;
-  /* animation: zAni 0.1s 0.6s both; */
 }
+/* .show-card-wrapper-in {
+  animation: zUp 0.1s 1s both;
+}
+@keyframes zUp {
+  0% {
+    z-index: 1;
+  }
+  100% {
+    z-index: 100;
+  }
+} */
 .center-block {
   opacity: 1;
   visibility: visible;
@@ -264,14 +286,6 @@ watchEffect(() => {
 .center-block-hide {
   opacity: 0;
   visibility: hidden;
-}
-@keyframes zAni {
-  0% {
-    z-index: -1;
-  }
-  100% {
-    z-index: 100;
-  }
 }
 .background {
   width: 100%;
@@ -283,7 +297,7 @@ watchEffect(() => {
 }
 .background-in {
   background-color: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(2px);
 }
 .center-block {
   position: relative;
@@ -390,7 +404,7 @@ watchEffect(() => {
   z-index: 500;
 }
 .info-title {
-  transition: 0.3s;
+  transition: 0.5s;
   opacity: 0;
 }
 .info {
@@ -413,7 +427,7 @@ watchEffect(() => {
   opacity: 0.6;
 }
 .para-info {
-  transition: 0.3s;
+  transition: 0.5s;
   opacity: 0;
 }
 .para {
@@ -424,11 +438,11 @@ p {
   font-size: 16px;
 }
 .upright-info {
-  transition: 0.3s;
+  transition: 0.5s;
   opacity: 0;
 }
 .reverse-info {
-  transition: 0.4s;
+  transition: 0.5s;
   opacity: 0;
 }
 .text-show {
@@ -479,7 +493,6 @@ p {
   opacity: 1;
 }
 .end-btn {
-  /* background-color: #fff; */
   text-align: left;
   bottom: -110px;
   opacity: 0;
@@ -488,7 +501,7 @@ p {
   padding: 5px 7px 5px 10px;
 }
 .end-btn-show {
-  opacity: 0.5;
+  opacity: 0.8;
 }
 .buttons-block {
   position: relative;

@@ -115,6 +115,11 @@ const restartResHandler = (res) => {
 
 <template>
   <div class="tarot-wrapper">
+    <div class="bg-block">
+      <img class="bg bg-top" src="/tarot-top.svg" alt="" />
+      <img class="bg bg-bot" src="/tarot-bot.svg" alt="" />
+      <img class="bg bg-center" src="/tarot-center.svg" alt="" />
+    </div>
     <TarotDecorate />
     <TarotShowCard
       :show="cardSoloShow"
@@ -124,6 +129,10 @@ const restartResHandler = (res) => {
     />
     <div class="outter">
       <h1 class="title">Tarot</h1>
+      <h3 class="instruction text-hide">
+        {{ getInstruction }}
+        <div class="white-box"></div>
+      </h3>
       <h3 class="instruction">{{ getInstruction }}</h3>
       <div class="cards-wrapper" v-show="mode !== 'reset'">
         <TarotCard
@@ -188,27 +197,46 @@ h1 {
   top: 55px; /** -3 */
   left: -19px;
 }
+.white-box {
+  width: 100%;
+  height: 13px;
+  background-color: #fff;
+  position: relative;
+  top: -13px;
+}
 .instruction {
   position: absolute;
-  color: #777;
+  color: #555;
   left: 30px;
-  top: 145px;
+  top: 140px;
+  font-weight: 400;
+  font-size: 17px;
+  letter-spacing: 0.01em;
+  text-shadow: 1px 1px 0px #ffffff;
+}
+.text-hide {
+  color: #f5eddf;
 }
 button {
   position: absolute;
-  padding: 6px 10px;
+  padding: 6px 10px 6px 12px;
   top: 630px;
   cursor: pointer;
   border: none;
-  font-size: 17px;
-  background-color: #b9b9b9;
+  font-size: 18px;
+  background-color: transparent;
+  border: 1px solid #873f25;
   border-radius: 10px;
-  color: #ffffff;
+  color: #873f25;
   font-weight: 500;
   transition: 0.3s;
+  letter-spacing: 0.05em;
+  margin-top: 10px;
+  transform: scale(0.95);
 }
 button:hover {
-  background-color: #d2d2d2;
+  /* background-color: #ffffff; */
+  transform: scale(1);
 }
 .cards-wrapper {
   width: 100%;
@@ -238,5 +266,31 @@ button:hover {
   z-index: 500;
   transform-origin: 50% -2645%;
   cursor: pointer;
+}
+.bg-block {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  /* border: 1px solid #000; */
+  /* background-color: red; */
+}
+.bg {
+  position: absolute;
+  width: 100%;
+  opacity: 0.5;
+}
+.bg-top {
+  top: 120px;
+  opacity: 0.3;
+}
+.bg-bot {
+  bottom: 0px;
+}
+.bg-center {
+  width: 65%;
+  top: 57%;
+  left: 51%;
+  transform: translate(-50%, -50%) scaleX(1.1);
+  opacity: 0.1;
 }
 </style>
