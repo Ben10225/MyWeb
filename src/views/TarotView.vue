@@ -1,48 +1,242 @@
 <script setup>
-import { onMounted, onBeforeUnmount, ref } from "vue";
+import TarotDecorate from "../components/TarotComps/TarotDecorateComp.vue";
+import TarotCard from "../components/TarotComps/TarotCardComp.vue";
+import TarotShowCard from "../components/TarotComps/TarotShowCardComp.vue";
+import { ref, computed } from "vue";
+import { useTarot } from "../stores/tarotStore";
 
-const handleClickOutSide = (elRef, onClickOutside) => {
-  if (!elRef) return;
-  const handler = (e) => {
-    // 注意一下，如果是在 setup 中使用 vue.ref 取得 dom，那麼必須使用 el.value 提取 dom
-    const el = elRef.value;
-    console.log("el", el);
-    if (!el) return;
-    if (!el.contains(e.target)) {
-      if (typeof onClickOutside === "function") {
-        onClickOutside();
-      }
-    }
-  };
-  onMounted(() => {
-    window.addEventListener("click", handler);
-  });
-  onBeforeUnmount(() => {
-    window.removeEventListener("click", handler);
-  });
+const store = useTarot();
+const mode = ref("waiting");
+const extraClick = ref(0);
+const nowHoverIndex = ref(-1);
+const nowClickIndex = ref(-1);
+const ani = ref(false);
+const extraHover = ref(false);
+const cardSoloShow = ref(false);
+const selectCardData = ref({
+  id: null,
+  upright: null,
+});
+
+const getNewShuffle = () => {
+  store.getNewShuffle();
 };
 
-const data = ref("el");
-const el = ref(null);
+const oneCardDeck = () => {
+  store.oneCardDeck();
+};
 
-handleClickOutSide(el, () => {
-  console.log("it works");
+const getShow = (i) => {
+  if (mode.value === "waiting" || mode.value === "beforeAni") return i === 0;
+  return true;
+};
+
+const getRotate = (i) => {
+  if (mode.value === "waiting") return 0;
+  if (mode.value === "beforeAni" || !ani.value) return -11.55;
+  let min = -0.15 - (store.tarots.length / 2) * 0.3;
+  return min + 0.3 * i;
+};
+
+const startGame = () => {
+  mode.value = "beforeAni";
+  getNewShuffle();
+  setTimeout(() => {
+    mode.value = "nowAni";
+  }, 800);
+  setTimeout(() => {
+    ani.value = !ani.value;
+  }, 870);
+  setTimeout(() => {
+    mode.value = "select";
+  }, 2070);
+};
+
+const getInstruction = computed(() => {
+  switch (mode.value) {
+    case "waiting":
+      return "點擊按鈕即可開始占卜囉！";
+    case "beforeAni":
+      return "洗牌中 請稍候";
+    case "nowAni":
+      return "洗牌中 請稍候";
+    case "select":
+      return "現在，請選擇一張屬於你的塔羅牌";
+  }
 });
 
-onMounted(() => {
-  console.log(el.value);
-});
+const cardResHandler = (res) => {
+  nowHoverIndex.value = res[1];
+  selectCardData.value = res[0];
+};
+
+const extraMouseEnterHandler = () => {
+  extraHover.value = true;
+};
+
+const extraMouseLeaveHandler = () => {
+  extraHover.value = false;
+  nowHoverIndex.value = -1;
+};
+
+const cardClickHandler = (card, index) => {
+  cardSoloShow.value = true;
+  nowClickIndex.value = index;
+  selectCardData.value = card;
+  console.log(selectCardData.value);
+};
+
+const extraClickHandler = () => {
+  cardSoloShow.value = true;
+  extraClick.value++;
+  nowClickIndex.value = nowHoverIndex.value;
+  console.log(selectCardData.value);
+};
+
+const backResHandler = (res) => {
+  cardSoloShow.value = false;
+  selectCardData.value = {
+    id: null,
+    upright: null,
+  };
+};
+
+const restartResHandler = (res) => {
+  mode.value = "reset";
+  ani.value = false;
+  nowHoverIndex.value = -1;
+  nowClickIndex.value = -1;
+  oneCardDeck();
+  setTimeout(() => {
+    mode.value = "waiting";
+  }, 600);
+};
 </script>
 
 <template>
-  <h1 :ref="data">bla bla...</h1>
+  <div class="tarot-wrapper">
+    <TarotDecorate />
+    <TarotShowCard
+      :show="cardSoloShow"
+      :data="selectCardData"
+      @back="backResHandler"
+      @restart="restartResHandler"
+    />
+    <div class="outter">
+      <h1 class="title">Tarot</h1>
+      <h3 class="instruction">{{ getInstruction }}</h3>
+      <div class="cards-wrapper" v-show="mode !== 'reset'">
+        <TarotCard
+          v-for="(card, index) of store.tarots"
+          v-show="getShow(index)"
+          class="cards"
+          :class="{
+            'stop-hover': mode !== 'select',
+            'one-card-ani': mode === 'beforeAni',
+          }"
+          :key="index"
+          :card="[card, index]"
+          :hover-stay="[extraHover, nowHoverIndex]"
+          :extra-click="[extraClick, nowHoverIndex]"
+          :clicked="[cardSoloShow, nowClickIndex]"
+          :style="{ transform: `rotate(${getRotate(index + 1)}deg)` }"
+          @card="cardResHandler"
+          @click="cardClickHandler(card, index)"
+        />
+      </div>
+      <div
+        class="extra-hover-block"
+        :style="{ transform: `rotate(${getRotate(nowHoverIndex + 1)}deg)` }"
+        v-show="nowHoverIndex !== -1"
+        @mouseenter="extraMouseEnterHandler"
+        @mouseleave="extraMouseLeaveHandler"
+        @click="extraClickHandler"
+      ></div>
+      <button v-if="mode === 'waiting'" @click="startGame">開始占卜</button>
+    </div>
+  </div>
 </template>
 
 <style scoped>
+.tarot-wrapper {
+  width: 100%;
+  height: 100%;
+  /* background-color: #ffffff;*/
+  background-color: #f5ede0;
+
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  position: relative;
+  /* overflow: hidden; */
+}
+.outter {
+  width: 800px;
+  width: 800px;
+  height: 800px;
+  position: relative;
+  /* border: 1px solid #000; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 h1 {
-  font-size: 50px;
-  color: black;
-  background-color: aqua;
-  padding: 30px;
+  position: absolute;
+  font-size: 60px;
+  color: #333;
+  font-weight: 600;
+  top: 55px; /** -3 */
+  left: -19px;
+}
+.instruction {
+  position: absolute;
+  color: #777;
+  left: 30px;
+  top: 145px;
+}
+button {
+  position: absolute;
+  padding: 6px 10px;
+  top: 630px;
+  cursor: pointer;
+  border: none;
+  font-size: 17px;
+  background-color: #b9b9b9;
+  border-radius: 10px;
+  color: #ffffff;
+  font-weight: 500;
+  transition: 0.3s;
+}
+button:hover {
+  background-color: #d2d2d2;
+}
+.cards-wrapper {
+  width: 100%;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid red; */
+  margin-top: 170px;
+}
+.cards {
+  transition: 1.2s;
+}
+.one-card-ani {
+  transition: 0.8s;
+}
+.stop-hover {
+  pointer-events: none;
+  user-select: none;
+}
+.extra-hover-block {
+  width: 150px;
+  height: 70px;
+  /* background-color: rgba(0, 0, 0, 1); */
+  position: absolute;
+  top: 575px;
+  z-index: 500;
+  transform-origin: 50% -2645%;
+  cursor: pointer;
 }
 </style>
