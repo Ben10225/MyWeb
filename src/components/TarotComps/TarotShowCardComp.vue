@@ -16,22 +16,27 @@ const para = ref([]);
 const upright = ref([]);
 const reverse = ref([]);
 
-const wrapperZindex = ref(false);
-const open = ref(false);
-const textOpacity1 = ref(false);
-const textOpacity2 = ref(false);
-const textOpacity3 = ref(false);
-const textOpacity4 = ref(false);
-const textOpacity5 = ref(false);
-const textOpacity6 = ref(false);
+// false
+const wrapperZindex = ref(true);
+const open = ref(true);
+const textOpacity1 = ref(true);
+const textOpacity2 = ref(true);
+const textOpacity3 = ref(true);
+const textOpacity4 = ref(true);
+const textOpacity5 = ref(true);
+const textOpacity6 = ref(true);
+
+// before here
 const degree = ref(0);
 
-const mode = ref("beforSelecting");
+// const mode = ref("beforSelecting");
+const mode = ref("secondInfo");
+
 const cardUpright = ref(false);
 
 const openCardHandler = () => {
-  open.value = true;
   mode.value = "blank";
+  open.value = true;
   setTimeout(() => {
     mode.value = "firstInfo";
   }, 1700);
@@ -141,23 +146,26 @@ watchEffect(() => {
     class="show-card-wrapper"
     :class="{ 'show-card-wrapper-in': wrapperZindex }"
   >
+    <!-- props.show -->
     <div
       class="background"
-      :class="{ 'background-in': props.show }"
+      :class="{ 'background-in': true }"
       @click="clickBgHandler"
     ></div>
     <div class="center-block" :class="{ 'center-block-hide': mode === 'end' }">
       <div class="make-sure-block">
+        <!-- props.show -->
+        <!-- !props.show -->
         <div
           class="flip-card make_sure"
           :class="{
-            'card-in': props.show,
-            'card-out': !props.show,
+            'card-in': true,
+            'card-out': false,
             'card-left': mode === 'secondInfo' || mode === 'end',
           }"
         >
           <div class="flip-card-inner" :class="{ open }">
-            <div
+            <!-- <div
               class="card-block back-block"
               :style="{ transform: `rotate(${degree}deg)` }"
             >
@@ -170,9 +178,11 @@ watchEffect(() => {
                 alt=""
                 :style="{ transform: `scale(${cardIsUpright})` }"
               />
-            </div>
+            </div> -->
+
+            <!-- !cardUpright -->
             <div
-              v-show="!cardUpright"
+              v-show="true"
               class="card-block front-block for-reverse"
               :class="{ 'for-reverse-show': textOpacity6 }"
             >
@@ -210,8 +220,10 @@ watchEffect(() => {
           />
         </div>
       </div>
+
+      <!-- mode === 'secondInfo' || mode === 'end' -->
       <div
-        v-show="mode === 'secondInfo' || mode === 'end'"
+        v-show="true"
         class="text-block"
         :class="{ 'text-block-show': mode === 'secondInfo' }"
       >
