@@ -2,6 +2,7 @@
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import { ref, computed, onMounted, watchEffect } from "vue";
+import TarotCardEditMode from "./TarotCardEditMode.vue";
 
 const props = defineProps({
   show: Boolean,
@@ -16,21 +17,17 @@ const para = ref([]);
 const upright = ref([]);
 const reverse = ref([]);
 
-// false
-const wrapperZindex = ref(true);
-const open = ref(true);
-const textOpacity1 = ref(true);
-const textOpacity2 = ref(true);
-const textOpacity3 = ref(true);
-const textOpacity4 = ref(true);
-const textOpacity5 = ref(true);
-const textOpacity6 = ref(true);
+const wrapperZindex = ref(false);
+const open = ref(false);
+const textOpacity1 = ref(false);
+const textOpacity2 = ref(false);
+const textOpacity3 = ref(false);
+const textOpacity4 = ref(false);
+const textOpacity5 = ref(false);
+const textOpacity6 = ref(false);
 
-// before here
 const degree = ref(0);
-
-// const mode = ref("beforSelecting");
-const mode = ref("secondInfo");
+const mode = ref("beforSelecting");
 
 const cardUpright = ref(false);
 
@@ -118,17 +115,22 @@ const upRightText = computed(() => {
   return cardUpright.value ? "正" : "逆";
 });
 
-onMounted(async () => {
-  const docRef = doc(db, "tarots", "0");
-  const docSnap = await getDoc(docRef);
+const getCardData = onMounted(async (data) => {
+  if (data === undefined) return;
+  try {
+    const docRef = doc(db, "tarots", data.id);
+    const docSnap = await getDoc(docRef);
 
-  if (docSnap.exists()) {
-    name.value = docSnap.data().name;
-    url.value = docSnap.data().url;
-    key.value = docSnap.data().key;
-    para.value = docSnap.data().para;
-    upright.value = docSnap.data().upright;
-    reverse.value = docSnap.data().reverse;
+    if (docSnap.exists()) {
+      name.value = docSnap.data().name;
+      url.value = docSnap.data().url;
+      key.value = docSnap.data().key;
+      para.value = docSnap.data().para;
+      upright.value = docSnap.data().upright;
+      reverse.value = docSnap.data().reverse;
+    }
+  } catch (err) {
+    console.log(err);
   }
 });
 
@@ -137,35 +139,34 @@ watchEffect(() => {
   if (props.show) {
     mode.value = "selecting";
     wrapperZindex.value = true;
+    getCardData(props.data);
   }
 });
 </script>
 
 <template>
+  <!-- <TarotCardEditMode v-if="false" /> -->
   <div
     class="show-card-wrapper"
     :class="{ 'show-card-wrapper-in': wrapperZindex }"
   >
-    <!-- props.show -->
     <div
       class="background"
-      :class="{ 'background-in': true }"
+      :class="{ 'background-in': props.show }"
       @click="clickBgHandler"
     ></div>
     <div class="center-block" :class="{ 'center-block-hide': mode === 'end' }">
       <div class="make-sure-block">
-        <!-- props.show -->
-        <!-- !props.show -->
         <div
           class="flip-card make_sure"
           :class="{
-            'card-in': true,
-            'card-out': false,
+            'card-in': props.show,
+            'card-out': !props.show,
             'card-left': mode === 'secondInfo' || mode === 'end',
           }"
         >
           <div class="flip-card-inner" :class="{ open }">
-            <!-- <div
+            <div
               class="card-block back-block"
               :style="{ transform: `rotate(${degree}deg)` }"
             >
@@ -178,11 +179,9 @@ watchEffect(() => {
                 alt=""
                 :style="{ transform: `scale(${cardIsUpright})` }"
               />
-            </div> -->
-
-            <!-- !cardUpright -->
+            </div>
             <div
-              v-show="true"
+              v-show="!cardUpright"
               class="card-block front-block for-reverse"
               :class="{ 'for-reverse-show': textOpacity6 }"
             >
@@ -211,7 +210,7 @@ watchEffect(() => {
           </div>
         </div>
         <div v-show="mode === 'firstInfo'" class="first-info">
-          <h4>愚者</h4>
+          <h4>{{ name[0] }}</h4>
           <h5>{{ upRightText }}位</h5>
           <font-awesome-icon
             :icon="['fas', 'circle-arrow-right']"
@@ -220,10 +219,8 @@ watchEffect(() => {
           />
         </div>
       </div>
-
-      <!-- mode === 'secondInfo' || mode === 'end' -->
       <div
-        v-show="true"
+        v-show="mode === 'secondInfo' || mode === 'end'"
         class="text-block"
         :class="{ 'text-block-show': mode === 'secondInfo' }"
       >
@@ -270,7 +267,6 @@ watchEffect(() => {
   position: absolute;
   width: 100%;
   height: 100%;
-  /* z-index: -1; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -279,17 +275,6 @@ watchEffect(() => {
 .show-card-wrapper-in {
   z-index: 100;
 }
-/* .show-card-wrapper-in {
-  animation: zUp 0.1s 1s both;
-}
-@keyframes zUp {
-  0% {
-    z-index: 1;
-  }
-  100% {
-    z-index: 100;
-  }
-} */
 .center-block {
   opacity: 1;
   visibility: visible;
@@ -318,7 +303,6 @@ watchEffect(() => {
   position: relative;
   width: 300px;
   height: 530px;
-  /* left: -120px; */
   perspective: 1000px;
   opacity: 0;
   visibility: hidden;
@@ -406,7 +390,6 @@ watchEffect(() => {
 }
 .card {
   width: 280px;
-  /* position: absolute; */
 }
 .text-block {
   width: 500px;
@@ -421,7 +404,7 @@ watchEffect(() => {
 }
 .info {
   font-size: 33px;
-  letter-spacing: 0.5em;
+  letter-spacing: 0.15em;
   color: #e8e8e8;
   z-index: 300;
   display: inline-block;
@@ -429,9 +412,12 @@ watchEffect(() => {
 }
 
 .english {
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
   margin-left: 10px;
-  font-size: 30px;
+  font-size: 31px;
+  font-family: serif;
+  position: relative;
+  top: 4px;
 }
 .key {
   margin-top: -5px;
@@ -462,8 +448,6 @@ p {
 }
 .bottom-block {
   width: 100%;
-  /* display: flex;
-  flex-direction: row; */
 }
 .bottom-block h3 {
   margin-top: 20px;
@@ -488,7 +472,6 @@ p {
 }
 .buttons button {
   border: 0.5px solid #ffffff;
-  /* padding: 5px 7px; */
   padding: 5px 7px 5px 8px;
   font-size: 17px;
   margin: 0 15px;

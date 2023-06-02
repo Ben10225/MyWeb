@@ -21,25 +21,25 @@ export const useTarot = defineStore("tarotCt", () => {
         switch (i) {
           case 0:
             tarots.value.push({
-              id: "rod-" + j,
+              id: "r" + j,
               upright: getUpright(),
             });
             break;
           case 1:
             tarots.value.push({
-              id: "pentacle-" + j,
+              id: "p" + j,
               upright: getUpright(),
             });
             break;
           case 2:
             tarots.value.push({
-              id: "sword-" + j,
+              id: "s" + j,
               upright: getUpright(),
             });
             break;
           case 3:
             tarots.value.push({
-              id: "cauldron-" + j,
+              id: "c" + j,
               upright: getUpright(),
             });
             break;
