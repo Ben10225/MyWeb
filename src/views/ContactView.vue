@@ -30,9 +30,9 @@ const rules = computed(() => {
 });
 
 const v$ = useVuelidate(rules, formData);
-const SERVICEID = import.meta.env.VITE_SERVICEID;
-const TEMPLATEID = import.meta.env.VITE_TEMPLATEID;
-const PUBLICKEY = import.meta.env.VITE_PUBLICKEY;
+const SERVICEID = "service_1k6n04x";
+const TEMPLATEID = "template_6at1uj7";
+const PUBLICKEY = "sbkxdSm9ZjUBrgerk";
 
 const submit = async () => {
   const result = await v$.value.$validate();
