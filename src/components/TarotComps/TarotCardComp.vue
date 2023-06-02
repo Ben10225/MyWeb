@@ -92,7 +92,7 @@ watchEffect(() => {
   height: 250px;
   outline: 1px solid #a8a8a8;
   border-radius: 10px;
-  background-image: url("./back-new.jpg");
+  background-image: url("/back-new.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
