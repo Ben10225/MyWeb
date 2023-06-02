@@ -35,6 +35,7 @@ const endBtnOpacity = ref(false);
 const forReverseImageOpacity = ref(false);
 const cardUpright = ref(false);
 const stopThreeBtns = ref(true);
+const stopEndBtn = ref(true);
 
 const openCardHandler = (res) => {
   stopThreeBtns.value = true;
@@ -72,6 +73,7 @@ const clickBgHandler = () => {
 
 const endHandler = () => {
   mode.value = "end";
+  stopEndBtn.value = true;
   emit("restart", true);
   setTimeout(() => {
     emit("back", false);
@@ -109,6 +111,7 @@ const secondInfoHandler = () => {
         content.value.reverseOpacity = true;
         break;
       case 23:
+        stopEndBtn.value = false;
         endBtnOpacity.value = true;
         break;
     }
@@ -203,10 +206,7 @@ watchEffect(() => {
       >
         <TarotCardContent :content="content" />
         <div class="buttons end-btn" :class="{ 'end-btn-show': endBtnOpacity }">
-          <button
-            :class="{ 'btn-prevent': mode !== 'secondInfo' }"
-            @click="endHandler"
-          >
+          <button :class="{ 'btn-prevent': stopEndBtn }" @click="endHandler">
             結束占卜
           </button>
         </div>
