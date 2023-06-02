@@ -2,7 +2,9 @@
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import { ref, computed, onMounted, watchEffect } from "vue";
-import TarotCardEditMode from "./TarotCardEditMode.vue";
+import TarotThreeBtns from "./TarotThreeBtnsComp.vue";
+import TarotCardContent from "./TarotCardContentComp.vue";
+import TarotFlipCard from "./TarotFlipCardComp.vue";
 
 const props = defineProps({
   show: Boolean,
@@ -10,29 +12,31 @@ const props = defineProps({
 });
 const emit = defineEmits(["back", "restart"]);
 
-const name = ref([]);
-const url = ref("");
-const key = ref("");
-const para = ref([]);
-const upright = ref([]);
-const reverse = ref([]);
+const content = ref({
+  titleTw: "",
+  titleEg: "",
+  key: "",
+  para: [],
+  upright: [],
+  reverse: [],
+  titleOpacity: false,
+  paraOpacity: false,
+  uprightOpacity: false,
+  reverseOpacity: false,
+  cardUpright: false,
+});
 
+const mode = ref("beforSelecting");
+const url = ref("");
+const degree = ref(0);
 const wrapperZindex = ref(false);
 const open = ref(false);
-const textOpacity1 = ref(false);
-const textOpacity2 = ref(false);
-const textOpacity3 = ref(false);
-const textOpacity4 = ref(false);
-const textOpacity5 = ref(false);
-const textOpacity6 = ref(false);
-
-const degree = ref(0);
-const mode = ref("beforSelecting");
-
+const endBtnOpacity = ref(false);
+const forReverseImageOpacity = ref(false);
 const cardUpright = ref(false);
 const stopThreeBtns = ref(true);
 
-const openCardHandler = () => {
+const openCardHandler = (res) => {
   stopThreeBtns.value = true;
   mode.value = "blank";
   open.value = true;
@@ -41,12 +45,12 @@ const openCardHandler = () => {
   }, 1700);
 };
 
-const rotateCardHandler = () => {
-  cardUpright.value = !cardUpright.value;
+const rotateCardHandler = (res) => {
+  content.value.cardUpright = !content.value.cardUpright;
   degree.value += 180;
 };
 
-const backCardHandler = () => {
+const backCardHandler = (res) => {
   stopThreeBtns.value = true;
   emit("back", false);
   setTimeout(() => {
@@ -72,12 +76,12 @@ const endHandler = () => {
   setTimeout(() => {
     emit("back", false);
     open.value = false;
-    textOpacity1.value = false;
-    textOpacity2.value = false;
-    textOpacity3.value = false;
-    textOpacity4.value = false;
-    textOpacity5.value = false;
-    textOpacity6.value = false;
+    content.value.titleOpacity = false;
+    content.value.paraOpacity = false;
+    content.value.uprightOpacity = false;
+    content.value.reverseOpacity = false;
+    endBtnOpacity.value = false;
+    forReverseImageOpacity.value = false;
   }, 700);
   setTimeout(() => {
     mode.value = "beforSelecting";
@@ -92,31 +96,31 @@ const secondInfoHandler = () => {
     ct++;
     switch (ct) {
       case 7:
-        textOpacity1.value = true;
+        content.value.titleOpacity = true;
         break;
       case 11:
-        textOpacity2.value = true;
-        textOpacity6.value = true;
+        content.value.paraOpacity = true;
+        forReverseImageOpacity.value = true;
         break;
       case 15:
-        textOpacity3.value = true;
+        content.value.uprightOpacity = true;
         break;
       case 19:
-        textOpacity4.value = true;
+        content.value.reverseOpacity = true;
         break;
       case 23:
-        textOpacity5.value = true;
+        endBtnOpacity.value = true;
         break;
     }
   }, 100);
 };
 
 const cardIsUpright = computed(() => {
-  return cardUpright.value ? 1 : -1;
+  return content.value.cardUpright ? 1 : -1;
 });
 
 const upRightText = computed(() => {
-  return cardUpright.value ? "正" : "逆";
+  return content.value.cardUpright ? "正" : "逆";
 });
 
 const getCardData = onMounted(async (data) => {
@@ -126,12 +130,14 @@ const getCardData = onMounted(async (data) => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      name.value = docSnap.data().name;
+      content.value.titleTw = docSnap.data().name[0];
+      content.value.titleEg = docSnap.data().name[1];
+      content.value.key = docSnap.data().key;
+      content.value.para = docSnap.data().para;
+      content.value.upright = docSnap.data().upright;
+      content.value.reverse = docSnap.data().reverse;
+
       url.value = docSnap.data().url;
-      key.value = docSnap.data().key;
-      para.value = docSnap.data().para;
-      upright.value = docSnap.data().upright;
-      reverse.value = docSnap.data().reverse;
     }
   } catch (err) {
     console.log(err);
@@ -139,7 +145,7 @@ const getCardData = onMounted(async (data) => {
 });
 
 watchEffect(() => {
-  cardUpright.value = props.data.upright;
+  content.value.cardUpright = props.data.upright;
   if (props.show) {
     mode.value = "selecting";
     stopThreeBtns.value = false;
@@ -162,75 +168,26 @@ watchEffect(() => {
     ></div>
     <div class="center-block" :class="{ 'center-block-hide': mode === 'end' }">
       <div class="make-sure-block">
-        <div
-          class="flip-card make_sure"
-          :class="{
-            'card-in': props.show,
-            'card-out': !props.show,
-            'card-left': mode === 'secondInfo' || mode === 'end',
-          }"
-        >
-          <div class="flip-card-inner" :class="{ open }">
-            <div
-              class="card-block back-block"
-              :style="{ transform: `rotate(${degree}deg)` }"
-            >
-              <div class="card card-back"></div>
-            </div>
-            <div class="card-block front-block">
-              <img
-                class="card card-front"
-                :src="url"
-                alt=""
-                :style="{ transform: `scale(${cardIsUpright})` }"
-              />
-            </div>
-            <div
-              v-show="!cardUpright"
-              class="card-block front-block for-reverse"
-              :class="{ 'for-reverse-show': textOpacity6 }"
-            >
-              <img class="card card-front" :src="url" alt="" />
-            </div>
-          </div>
-        </div>
+        <TarotFlipCard
+          :mode-text="mode"
+          :card-show="props.show"
+          :card-open-ani="open"
+          :degree="degree"
+          :card-upright="cardUpright"
+          :card-is-upright="cardIsUpright"
+          :url="url"
+          :for-reverse-image-opacity="forReverseImageOpacity"
+        />
         <div v-show="mode === 'selecting'" class="buttons">
-          <div class="buttons-block back">
-            <button
-              @click="backCardHandler"
-              :class="{ 'btn-prevent': stopThreeBtns }"
-            >
-              返 回
-            </button>
-            <font-awesome-icon
-              :icon="['fas', 'arrow-left-long']"
-              class="icon-btn"
-            />
-          </div>
-          <div class="buttons-block rotate">
-            <button
-              @click="rotateCardHandler"
-              :class="{ 'btn-prevent': stopThreeBtns }"
-            >
-              旋 轉
-            </button>
-            <font-awesome-icon :icon="['fas', 'rotate']" class="icon-btn" />
-          </div>
-          <div class="buttons-block select">
-            <button
-              @click="openCardHandler"
-              :class="{ 'btn-prevent': stopThreeBtns }"
-            >
-              翻 開
-            </button>
-            <font-awesome-icon
-              :icon="['fas', 'hand-pointer']"
-              class="icon-btn"
-            />
-          </div>
+          <TarotThreeBtns
+            :stop-three-btns="stopThreeBtns"
+            @back-btn-click="backCardHandler"
+            @rotate-btn-click="rotateCardHandler"
+            @open-card-btn-click="openCardHandler"
+          />
         </div>
         <div v-show="mode === 'firstInfo'" class="first-info">
-          <h4>{{ name[0] }}</h4>
+          <h4>{{ content.titleTw }}</h4>
           <h5>{{ upRightText }}位</h5>
           <font-awesome-icon
             :icon="['fas', 'circle-arrow-right']"
@@ -244,42 +201,14 @@ watchEffect(() => {
         class="text-block"
         :class="{ 'text-block-show': mode === 'secondInfo' }"
       >
-        <div class="info-title" :class="{ 'text-show': textOpacity1 }">
-          <h2 class="info">{{ name[0] }}</h2>
-          <h2 class="info english">{{ name[1] }}</h2>
-          <p class="key">
-            <i
-              ><span>{{ key }}</span></i
-            >
-          </p>
-        </div>
-        <div class="para-info" :class="{ 'text-show': textOpacity2 }">
-          <p class="para color-gray" v-for="(context, i) of para" :key="i">
-            {{ context }}
-          </p>
-        </div>
-        <div class="bottom-block">
-          <div
-            class="upright-info"
-            :class="{ 'text-show': textOpacity3, lighten: cardUpright }"
+        <TarotCardContent :content="content" />
+        <div class="buttons end-btn" :class="{ 'end-btn-show': endBtnOpacity }">
+          <button
+            :class="{ 'btn-prevent': mode !== 'secondInfo' }"
+            @click="endHandler"
           >
-            <h3 class="color-gray"><span>正</span>位：</h3>
-            <p class="color-gray" v-for="(context, i) of upright" :key="i">
-              {{ context }}
-            </p>
-          </div>
-          <div
-            class="reverse-info"
-            :class="{ 'text-show': textOpacity4, lighten: !cardUpright }"
-          >
-            <h3 class="color-gray"><span>逆</span>位：</h3>
-            <p class="color-gray" v-for="(context, i) of reverse" :key="i">
-              {{ context }}
-            </p>
-          </div>
-        </div>
-        <div class="buttons end-btn" :class="{ 'end-btn-show': textOpacity5 }">
-          <button @click="endHandler">結束占卜</button>
+            結束占卜
+          </button>
         </div>
       </div>
     </div>
@@ -323,98 +252,6 @@ watchEffect(() => {
 .center-block {
   position: relative;
 }
-.flip-card {
-  position: relative;
-  width: 300px;
-  height: 530px;
-  perspective: 1000px;
-  opacity: 0;
-  visibility: hidden;
-  z-index: 100;
-  transition: 0.8s;
-  left: 0;
-}
-.make_sure {
-  top: -60px;
-}
-.card-left {
-  left: -270px;
-}
-.for-reverse {
-  opacity: 0;
-  visibility: hidden;
-}
-.for-reverse-show {
-  opacity: 1;
-  visibility: visible;
-}
-.card-in {
-  animation: cardIn 1s both;
-}
-@keyframes cardIn {
-  0% {
-    opacity: 0;
-    top: -240px;
-  }
-  100% {
-    opacity: 1;
-    visibility: visible;
-    top: -60px;
-  }
-}
-.card-out {
-  animation: cardOut 1s both;
-}
-@keyframes cardOut {
-  0% {
-    top: -60px;
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    top: -240px;
-    visibility: hidden;
-  }
-}
-.flip-card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  /* text-align: center; */
-  transition: transform 2s ease;
-  transform-style: preserve-3d;
-}
-.open {
-  transform: rotateY(-540deg);
-}
-.card-block {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f4f4f4;
-  border-radius: 15px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  -webkit-backface-visibility: hidden; /* Safari */
-  backface-visibility: hidden;
-  transition: 1s;
-}
-.back-block {
-  background-color: #fff;
-  background-image: url("/back-new.jpg");
-  background-position: 0 17px;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-.front-block {
-  transform: rotateY(180deg);
-}
-.card {
-  width: 280px;
-}
 .text-block {
   width: 500px;
   position: absolute;
@@ -422,132 +259,39 @@ watchEffect(() => {
   left: 100px;
   z-index: 500;
 }
-.info-title {
-  transition: 0.5s;
-  opacity: 0;
-}
-.info {
-  font-size: 33px;
-  letter-spacing: 0.15em;
-  color: #e8e8e8;
-  z-index: 300;
-  display: inline-block;
-  vertical-align: bottom;
-}
-
-.english {
-  letter-spacing: 0.02em;
-  margin-left: 10px;
-  font-size: 31px;
-  font-family: serif;
-  position: relative;
-  top: 4px;
-}
-.key {
-  margin-top: -5px;
-  font-size: 18px;
-  color: #6f6f6f;
-}
-.para-info {
-  transition: 0.5s;
-  opacity: 0;
-}
-.para {
-  width: 100%;
-}
-p {
-  margin: 20px 0;
-  font-size: 16px;
-}
-.upright-info {
-  transition: 0.5s;
-  opacity: 0;
-}
-.reverse-info {
-  transition: 0.5s;
-  opacity: 0;
-}
-.text-show {
-  opacity: 1;
-}
-.bottom-block {
-  width: 100%;
-}
-.bottom-block h3 {
-  margin-top: 20px;
-  margin-bottom: 5px;
-  font-size: 17px;
-  color: #b6b6b6;
-}
-.bottom-block p {
-  margin: 1px 0;
-  letter-spacing: 0.01em;
-}
-.bottom-block span {
-  margin-right: 14px;
-}
-.btn-prevent {
-  pointer-events: none;
-}
-.lighten p,
-.lighten h3 {
-  color: rgb(255, 220, 137);
-}
-.color-gray {
-  color: #aaaaaa;
-}
 .buttons {
   width: 100%;
   text-align: center;
   position: absolute;
   bottom: -70px;
 }
-.buttons button {
-  border: 0.5px solid #ffffff;
-  padding: 5px 7px 5px 8px;
+button {
+  padding: 5px 7px 5px 10px;
   font-size: 17px;
   margin: 0 15px;
   background-color: transparent;
-  color: #ffffff;
+  color: #c6c6c6;
+  border: 0.5px solid #c6c6c6;
   letter-spacing: 0.05em;
   border-radius: 10px;
   cursor: pointer;
   font-weight: 400;
-  opacity: 0.5;
+  opacity: 0.4;
   transition: 0.4s;
 }
-.buttons button:hover {
-  opacity: 1;
+button:hover {
+  color: #ffffff;
+  border: 0.5px solid #f0f0f0;
+  opacity: 0.7;
 }
 .end-btn {
   text-align: left;
   bottom: -110px;
   opacity: 0;
-}
-.end-btn button {
-  padding: 5px 7px 5px 10px;
-  color: #c6c6c6;
-  border: 0.5px solid #c6c6c6;
-}
-.end-btn button:hover {
-  color: #e3e3e3;
-  border: 0.5px solid #e3e3e3;
+  user-select: none;
 }
 .end-btn-show {
-  opacity: 0.8;
-}
-.buttons-block {
-  position: relative;
-  display: inline-block;
-}
-.icon-btn {
-  position: absolute;
-  left: 33px;
-  font-size: 20px;
-  top: -50px;
-  color: #fff;
-  opacity: 0;
-  transform: translateX(0px);
+  opacity: 1;
 }
 .first-info {
   position: absolute;
@@ -578,66 +322,7 @@ p {
   transform: scale(1.2);
   color: #d8d8d8;
 }
-.back button:hover + .icon-btn {
-  opacity: 1;
-  animation: btnBack 1.5s infinite both;
-}
-@keyframes btnBack {
-  10% {
-    transform: translateX(0px);
-  }
-  50% {
-    transform: translateX(-15px);
-  }
-}
-.rotate button:hover + .icon-btn {
-  opacity: 1;
-  animation: btnRotate 1.5s infinite both;
-}
-@keyframes btnRotate {
-  10% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(180deg);
-  }
-  99% {
-    transform: rotate(180deg);
-  }
-  100% {
-    transform: rotate(00deg);
-  }
-}
-.select button:hover + .icon-btn {
-  opacity: 1;
-  animation: btnSelect 1.5s infinite both;
-}
-@keyframes btnSelect {
-  0% {
-    top: -35px;
-  }
-  10% {
-    top: -35px;
-  }
-  50% {
-    top: -65px;
-  }
-  55% {
-    transform: scale(1);
-  }
-  60% {
-    transform: scale(0.7);
-    top: -65px;
-  }
-  65% {
-    transform: scale(1);
-  }
-  80% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    top: -65px;
-  }
+.btn-prevent {
+  pointer-events: none;
 }
 </style>

@@ -46,9 +46,9 @@ watchEffect(() => {
   } else if (!props.clicked[0] && props.clicked[1] === props.card[1]) {
     isclicked.value = false;
   }
-  // if (props.card[1] === props.extraClick[1]) {
-  //   console.log(props.card[0]);
-  // }
+  if (props.clicked[1] === -1 && isclicked.value) {
+    isclicked.value = false;
+  }
 });
 </script>
 
