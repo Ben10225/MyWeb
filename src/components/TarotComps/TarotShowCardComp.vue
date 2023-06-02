@@ -30,8 +30,10 @@ const degree = ref(0);
 const mode = ref("beforSelecting");
 
 const cardUpright = ref(false);
+const stopThreeBtns = ref(true);
 
 const openCardHandler = () => {
+  stopThreeBtns.value = true;
   mode.value = "blank";
   open.value = true;
   setTimeout(() => {
@@ -45,6 +47,7 @@ const rotateCardHandler = () => {
 };
 
 const backCardHandler = () => {
+  stopThreeBtns.value = true;
   emit("back", false);
   setTimeout(() => {
     wrapperZindex.value = false;
@@ -53,6 +56,7 @@ const backCardHandler = () => {
 };
 
 const clickBgHandler = () => {
+  stopThreeBtns.value = true;
   if (mode.value === "selecting") {
     emit("back", false);
     setTimeout(() => {
@@ -138,6 +142,7 @@ watchEffect(() => {
   cardUpright.value = props.data.upright;
   if (props.show) {
     mode.value = "selecting";
+    stopThreeBtns.value = false;
     wrapperZindex.value = true;
     getCardData(props.data);
   }
@@ -191,18 +196,33 @@ watchEffect(() => {
         </div>
         <div v-show="mode === 'selecting'" class="buttons">
           <div class="buttons-block back">
-            <button @click="backCardHandler">返 回</button>
+            <button
+              @click="backCardHandler"
+              :class="{ 'btn-prevent': stopThreeBtns }"
+            >
+              返 回
+            </button>
             <font-awesome-icon
               :icon="['fas', 'arrow-left-long']"
               class="icon-btn"
             />
           </div>
           <div class="buttons-block rotate">
-            <button @click="rotateCardHandler">旋 轉</button>
+            <button
+              @click="rotateCardHandler"
+              :class="{ 'btn-prevent': stopThreeBtns }"
+            >
+              旋 轉
+            </button>
             <font-awesome-icon :icon="['fas', 'rotate']" class="icon-btn" />
           </div>
           <div class="buttons-block select">
-            <button @click="openCardHandler">翻 開</button>
+            <button
+              @click="openCardHandler"
+              :class="{ 'btn-prevent': stopThreeBtns }"
+            >
+              翻 開
+            </button>
             <font-awesome-icon
               :icon="['fas', 'hand-pointer']"
               class="icon-btn"
@@ -426,7 +446,7 @@ watchEffect(() => {
 .key {
   margin-top: -5px;
   font-size: 18px;
-  color: #666666;
+  color: #6f6f6f;
 }
 .para-info {
   transition: 0.5s;
@@ -465,6 +485,9 @@ p {
 }
 .bottom-block span {
   margin-right: 14px;
+}
+.btn-prevent {
+  pointer-events: none;
 }
 .lighten p,
 .lighten h3 {
