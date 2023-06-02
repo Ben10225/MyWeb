@@ -83,14 +83,12 @@ const cardClickHandler = (card, index) => {
   cardSoloShow.value = true;
   nowClickIndex.value = index;
   selectCardData.value = card;
-  console.log(selectCardData.value);
 };
 
 const extraClickHandler = () => {
   cardSoloShow.value = true;
   extraClick.value++;
   nowClickIndex.value = nowHoverIndex.value;
-  console.log(selectCardData.value);
 };
 
 const backResHandler = (res) => {
