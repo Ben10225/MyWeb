@@ -380,7 +380,7 @@ watchEffect(() => {
 }
 .back-block {
   background-color: #fff;
-  background-image: url("./back-new.jpg");
+  background-image: url("/back-new.jpg");
   background-position: 0 17px;
   background-repeat: no-repeat;
   background-size: contain;
