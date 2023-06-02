@@ -234,7 +234,7 @@ watchEffect(() => {
           </p>
         </div>
         <div class="para-info" :class="{ 'text-show': textOpacity2 }">
-          <p class="para" v-for="(context, i) of para" :key="i">
+          <p class="para color-gray" v-for="(context, i) of para" :key="i">
             {{ context }}
           </p>
         </div>
@@ -243,15 +243,19 @@ watchEffect(() => {
             class="upright-info"
             :class="{ 'text-show': textOpacity3, lighten: cardUpright }"
           >
-            <h3><span>正</span>位：</h3>
-            <p v-for="(context, i) of upright" :key="i">{{ context }}</p>
+            <h3 class="color-gray"><span>正</span>位：</h3>
+            <p class="color-gray" v-for="(context, i) of upright" :key="i">
+              {{ context }}
+            </p>
           </div>
           <div
             class="reverse-info"
             :class="{ 'text-show': textOpacity4, lighten: !cardUpright }"
           >
-            <h3><span>逆</span>位：</h3>
-            <p v-for="(context, i) of reverse" :key="i">{{ context }}</p>
+            <h3 class="color-gray"><span>逆</span>位：</h3>
+            <p class="color-gray" v-for="(context, i) of reverse" :key="i">
+              {{ context }}
+            </p>
           </div>
         </div>
         <div class="buttons end-btn" :class="{ 'end-btn-show': textOpacity5 }">
@@ -422,7 +426,7 @@ watchEffect(() => {
 .key {
   margin-top: -5px;
   font-size: 18px;
-  opacity: 0.6;
+  color: #666666;
 }
 .para-info {
   transition: 0.5s;
@@ -453,6 +457,7 @@ p {
   margin-top: 20px;
   margin-bottom: 5px;
   font-size: 17px;
+  color: #b6b6b6;
 }
 .bottom-block p {
   margin: 1px 0;
@@ -461,8 +466,12 @@ p {
 .bottom-block span {
   margin-right: 14px;
 }
-.lighten {
+.lighten p,
+.lighten h3 {
   color: rgb(255, 220, 137);
+}
+.color-gray {
+  color: #aaaaaa;
 }
 .buttons {
   width: 100%;
@@ -494,6 +503,12 @@ p {
 }
 .end-btn button {
   padding: 5px 7px 5px 10px;
+  color: #c6c6c6;
+  border: 0.5px solid #c6c6c6;
+}
+.end-btn button:hover {
+  color: #e3e3e3;
+  border: 0.5px solid #e3e3e3;
 }
 .end-btn-show {
   opacity: 0.8;
@@ -533,10 +548,12 @@ p {
   opacity: 0.5;
   cursor: pointer;
   transition: 0.3s;
+  color: #a3a3a3;
 }
 .icon-next:hover {
   opacity: 1;
   transform: scale(1.2);
+  color: #d8d8d8;
 }
 .back button:hover + .icon-btn {
   opacity: 1;

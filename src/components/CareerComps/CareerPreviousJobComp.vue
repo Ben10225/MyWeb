@@ -53,7 +53,7 @@ watch(props, () => {
 <template>
   <div class="taipeiPostProduction-wrapper">
     <div class="taipeiPostProduction">
-      <h3>台北影業</h3>
+      <h3>{{ store.jobs[props.job].firm }}</h3>
       <h4>工作內容 :</h4>
       <ul class="content-info">
         <li v-for="(content, i) of store.jobs[props.job].content" :key="i">
