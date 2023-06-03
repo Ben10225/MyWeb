@@ -97,6 +97,7 @@ button:hover {
   color: #fff;
   opacity: 0;
   transform: translateX(0px);
+  transition: opacity 0.3s;
 }
 .back button:hover + .icon-btn {
   opacity: 1;
@@ -135,9 +136,11 @@ button:hover {
 @keyframes btnSelect {
   0% {
     top: -35px;
+    opacity: 0;
   }
   10% {
     top: -35px;
+    opacity: 1;
   }
   50% {
     top: -65px;

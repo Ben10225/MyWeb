@@ -1,12 +1,9 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref } from "vue";
 import { useCheckInProjPage } from "../../stores/projStore";
 
 const store = useCheckInProjPage();
 const ct = ref(0);
-const elBeeline = ref(null);
-const elTaipei = ref(null);
-const clickNow = ref(null);
 
 const emit = defineEmits(["changeProj"]);
 
@@ -18,12 +15,6 @@ const webs = ref([
     class: "beeline",
     ref: "elBeeline",
     image: "logo",
-    mouseHandler: {
-      hover: false,
-      click: false,
-    },
-    element: elBeeline,
-    stillInside: true,
   },
   {
     id: ct.value++,
@@ -32,12 +23,6 @@ const webs = ref([
     class: "taipei",
     ref: "elTaipei",
     image: "taipei",
-    mouseHandler: {
-      hover: false,
-      click: false,
-    },
-    element: elTaipei,
-    stillInside: true,
   },
 ]);
 
@@ -45,86 +30,20 @@ const changeProj = (id) => {
   emit("changeProj", id);
 };
 
-const dragOutsideHandler = () => {
-  const mouseOverHandler = (e) => {
-    webs.value.forEach((elRef) => {
-      if (!elRef) return;
-      const id = elRef.id;
-      const el = elRef.element[0];
-      if (!el) return;
-
-      if (id === clickNow.value) {
-        if (!el.contains(e.target)) {
-          webs.value[id].stillInside = false;
-        } else {
-          webs.value[id].stillInside = true;
-        }
-      }
-    });
-  };
-
-  const mouseUpHandler = () => {
-    webs.value.forEach((web, i) => {
-      if (webs.value[i].mouseHandler.click) {
-        webs.value[i].mouseHandler.click = false;
-      }
-    });
-  };
-
-  onMounted(() => {
-    window.addEventListener("mouseover", mouseOverHandler);
-    window.addEventListener("mouseup", mouseUpHandler);
-  });
-  onBeforeUnmount(() => {
-    window.removeEventListener("mouseover", mouseOverHandler);
-    window.removeEventListener("mouseup", mouseUpHandler);
-  });
+const clickHandler = (web) => {
+  changeProj(web.id);
+  store.inProjPage = true;
 };
-
-const projMouseHoverHandler = (bool, id) => {
-  const index = webs.value.findIndex((web) => web.id === id);
-  webs.value[index].mouseHandler.hover = bool;
-};
-
-const projMouseClickHandler = (bool, id) => {
-  const index = webs.value.findIndex((web) => web.id === id);
-  webs.value[index].mouseHandler.click = bool;
-  if (webs.value[index].mouseHandler.click) {
-    clickNow.value = index;
-    webs.value[index].stillInside = true;
-    let ct = 0;
-    let timer = setInterval(() => {
-      ct++;
-      if (!webs.value[index].mouseHandler.click) {
-        clearInterval(timer);
-        let result = webs.value[index].stillInside;
-        if (result) {
-          changeProj(webs.value[index].id);
-          store.inProjPage = true;
-        }
-      }
-    }, 50);
-  }
-};
-
-dragOutsideHandler();
 </script>
 
 <template>
   <div class="wehelp-proj-wrapper">
-    <div
+    <button
       v-for="web of webs"
       class="proj"
       :ref="web.ref"
       :key="web.id"
-      :class="{
-        'proj-clicked': web.mouseHandler.click,
-        'proj-hover': web.mouseHandler.hover,
-      }"
-      @mousedown.left="projMouseClickHandler(true, web.id)"
-      @mouseup.left="projMouseClickHandler(false, web.id)"
-      @mouseenter.left="projMouseHoverHandler(true, web.id)"
-      @mouseleave.left="projMouseHoverHandler(false, web.id)"
+      @click="clickHandler(web)"
     >
       <div
         class="logo"
@@ -140,7 +59,7 @@ dragOutsideHandler();
           </li>
         </ul>
       </div>
-    </div>
+    </button>
   </div>
 </template>
 
@@ -196,12 +115,12 @@ dragOutsideHandler();
   font-size: 18px;
   margin-bottom: 7px;
 }
-.proj-hover {
+button:active {
+  background-color: rgba(209, 209, 209, 0.7) !important;
+  border: 1px solid rgba(228, 189, 71, 0.7) !important;
+}
+button:hover {
   background-color: rgba(209, 209, 209, 0.2);
   border: 1px solid rgba(228, 189, 71, 0.2);
-}
-.proj-clicked {
-  background-color: rgba(209, 209, 209, 0.7);
-  border: 1px solid rgba(228, 189, 71, 0.7);
 }
 </style>
