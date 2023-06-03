@@ -9,8 +9,8 @@
   background-color: #f5ede0;
   width: 100vw;
   height: 150px;
-  left: 0;
   bottom: 0px;
-  position: fixed;
+  position: relative;
+  /* position: fixed; */
 }
 </style>

@@ -136,4 +136,20 @@ p {
 .color-gray {
   color: #aaaaaa;
 }
+@media (max-height: 700px) {
+  .info {
+    font-size: 25px;
+  }
+  .key {
+    font-size: 13px;
+  }
+  p {
+    font-size: 15px;
+    margin: 7px 0;
+  }
+  .bottom-block h3 {
+    font-size: 16px;
+    margin-top: 10px;
+  }
+}
 </style>

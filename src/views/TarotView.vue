@@ -150,15 +150,16 @@ const restartResHandler = (res) => {
           @card="cardResHandler"
           @click="cardClickHandler(card, index)"
         />
+        <div
+          class="extra-hover-block"
+          :style="{ transform: `rotate(${getRotate(nowHoverIndex + 1)}deg)` }"
+          v-show="nowHoverIndex !== -1"
+          @mouseenter="extraMouseEnterHandler"
+          @mouseleave="extraMouseLeaveHandler"
+          @click="extraClickHandler"
+        ></div>
       </div>
-      <div
-        class="extra-hover-block"
-        :style="{ transform: `rotate(${getRotate(nowHoverIndex + 1)}deg)` }"
-        v-show="nowHoverIndex !== -1"
-        @mouseenter="extraMouseEnterHandler"
-        @mouseleave="extraMouseLeaveHandler"
-        @click="extraClickHandler"
-      ></div>
+
       <button v-if="mode === 'waiting'" @click="startGame">開始占卜</button>
     </div>
   </div>
@@ -168,21 +169,16 @@ const restartResHandler = (res) => {
 .tarot-wrapper {
   width: 100%;
   height: 100%;
-  /* background-color: #ffffff;*/
   background-color: #f5ede0;
-
   display: flex;
   justify-content: center;
-  /* align-items: center; */
   position: relative;
-  /* overflow: hidden; */
 }
 .outter {
   width: 800px;
-  width: 800px;
-  height: 800px;
-  position: relative;
+  /* height: 10px; */
   /* border: 1px solid #000; */
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -217,8 +213,8 @@ h1 {
 }
 button {
   position: absolute;
+  /* top: 500px; */
   padding: 6px 10px 6px 12px;
-  top: 630px;
   cursor: pointer;
   border: none;
   font-size: 18px;
@@ -229,8 +225,9 @@ button {
   font-weight: 500;
   transition: 0.3s;
   letter-spacing: 0.05em;
-  margin-top: 10px;
   transform: scale(0.95);
+  margin-top: 500px;
+  background-color: rgba(245, 237, 224, 0.8);
 }
 button:hover {
   /* background-color: #ffffff; */
@@ -238,12 +235,13 @@ button:hover {
 }
 .cards-wrapper {
   width: 100%;
-  height: 500px;
+  height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
   /* border: 1px solid red; */
   margin-top: 170px;
+  position: relative;
 }
 .cards {
   transition: 1.2s;
@@ -258,9 +256,8 @@ button:hover {
 .extra-hover-block {
   width: 150px;
   height: 70px;
-  /* background-color: rgba(0, 0, 0, 1); */
   position: absolute;
-  top: 575px;
+  top: 240px;
   z-index: 500;
   transform-origin: 50% -2645%;
   cursor: pointer;

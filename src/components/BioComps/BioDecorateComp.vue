@@ -151,21 +151,23 @@ setInterval(() => {
 </script>
 
 <template>
-  <div class="decorate big-one"></div>
-  <div v-for="deco of decos" :key="deco.id">
-    <div
-      class="decorate"
-      :style="{
-        backgroundColor: `${deco.backgroundColor}`,
-        width: `${deco.width}px`,
-        height: `${deco.height}px`,
-        left: `${deco.left}px`,
-        top: `${deco.top}px`,
-        border: `${deco.border}`,
-        borderRadius: `${deco.borderRadius}`,
-        transform: `${deco.transform}`,
-      }"
-    ></div>
+  <div class="decorate-wrapper">
+    <div class="decorate big-one"></div>
+    <div v-for="deco of decos" :key="deco.id">
+      <div
+        class="decorate"
+        :style="{
+          backgroundColor: `${deco.backgroundColor}`,
+          width: `${deco.width}px`,
+          height: `${deco.height}px`,
+          left: `${deco.left}px`,
+          top: `${deco.top}px`,
+          border: `${deco.border}`,
+          borderRadius: `${deco.borderRadius}`,
+          transform: `${deco.transform}`,
+        }"
+      ></div>
+    </div>
   </div>
 </template>
 

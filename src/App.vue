@@ -8,7 +8,7 @@ const store = useData();
 <template>
   <div class="wrapper">
     <div class="left-wrapper">
-      <LogoName />
+      <LogoName class="logo" />
       <ul class="links-wrapper">
         <RouterLink
           v-for="l of store.links"
@@ -21,6 +21,7 @@ const store = useData();
     </div>
     <div class="right-wrapper">
       <RouterView />
+      <!-- <footer></footer> -->
     </div>
   </div>
 </template>
@@ -29,6 +30,7 @@ const store = useData();
 .wrapper {
   display: flex;
   flex-direction: row;
+  /* background-color: red; */
 }
 .left-wrapper {
   background-color: #ffc800;
@@ -71,5 +73,27 @@ const store = useData();
   margin-left: 345px;
   width: 100%;
   height: 100vh;
+}
+.logo {
+  /* position: relative; */
+  margin-top: 0;
+}
+@media (max-height: 800px) {
+  .logo {
+    margin-top: -50px;
+    /* transform: scale(0.9); */
+  }
+}
+@media (max-width: 1400px) {
+  .left-wrapper {
+    width: 220px;
+  }
+  .right-wrapper {
+    margin-left: 220px;
+  }
+  .logo {
+    /* transform: scale(0.6); */
+    margin-left: 100px;
+  }
 }
 </style>

@@ -18,6 +18,7 @@
     "@vue/test-utils": "^2.4.0-alpha.1",
     "@vuelidate/core": "^2.0.2",
     "@vuelidate/validators": "^2.0.2",
+    "@vueuse/core": "^10.1.2",
     "firebase": "^9.22.0",
     "happy-dom": "^9.20.3",
     "pinia": "^2.0.36",

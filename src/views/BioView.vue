@@ -55,15 +55,15 @@ import BioDecorate from "../components/BioComps/BioDecorateComp.vue";
 <style scoped>
 .bio-wrapper {
   width: 100%;
-  height: 100%;
-  background-color: #ffffff;
+  /* height: 100vh; */
+  /* background-color: #ffffff; */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .outter {
   width: 800px;
-  height: 800px;
+  /* height: 700px; */
   position: relative;
   margin-top: 70px;
 }
@@ -85,6 +85,8 @@ import BioDecorate from "../components/BioComps/BioDecorateComp.vue";
 }
 .contact-infos {
   margin-top: 45px;
+
+  margin-bottom: 70px;
 }
 .ic {
   font-size: 19px;

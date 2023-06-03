@@ -56,16 +56,19 @@ const openCardBtnHandler = () => {
 
 <style scoped>
 .three-btns-wrapper {
-  width: 100%;
   position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 .buttons {
-  width: 100%;
+  /* width: 300px; */
   text-align: center;
   position: absolute;
   bottom: -70px;
 }
 .buttons button {
+  width: 60px;
   border: 0.5px solid #ffffff;
   padding: 5px 7px 5px 8px;
   font-size: 17px;

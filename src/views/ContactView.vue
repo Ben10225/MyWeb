@@ -236,7 +236,7 @@ const errorHandler = (errId) => {
 <style scoped>
 .contact-wrapper {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   background-color: #ffffff;
   display: flex;
   justify-content: center;
@@ -329,7 +329,7 @@ textarea:focus {
 }
 button {
   margin-left: 35px;
-  padding: 5px 7px;
+  padding: auto 7px;
   font-size: 15px;
   margin-top: 10px;
   cursor: pointer;
@@ -342,6 +342,7 @@ button {
   width: 50px;
   height: 30px;
   color: #444;
+  border: rgba(0, 0, 0, 0.2) solid 0.5px;
 }
 .button-block {
   position: relative;

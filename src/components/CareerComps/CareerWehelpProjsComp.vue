@@ -43,6 +43,7 @@ const clickHandler = (web) => {
       class="proj"
       :ref="web.ref"
       :key="web.id"
+      :class="web.class"
       @click="clickHandler(web)"
     >
       <div
@@ -72,15 +73,16 @@ const clickHandler = (web) => {
   position: relative;
 }
 .proj .info-block {
-  margin-left: 10px;
+  position: relative;
+  left: 10px;
+  top: 7px;
 }
 .proj h6 {
-  font-size: 20px;
-  color: #000;
-  margin-bottom: 5px;
-}
-.proj p {
-  font-size: 12px;
+  font-size: 21px;
+  color: #222;
+  margin-bottom: 3px;
+  height: 30px;
+  text-align: center;
 }
 .proj {
   width: 300px;
@@ -107,13 +109,15 @@ const clickHandler = (web) => {
   margin-top: -1px;
 }
 .info-block li {
-  margin-left: 14px;
+  margin-left: 10px;
+  margin-bottom: 1px;
   color: #000;
   font-weight: 300;
+  text-align: left;
+  font-size: 14px;
 }
 .taipei h6 {
   font-size: 18px;
-  margin-bottom: 7px;
 }
 button:active {
   background-color: rgba(209, 209, 209, 0.7) !important;

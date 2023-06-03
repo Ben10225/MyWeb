@@ -59,8 +59,8 @@ watch(props, (nV) => {
 </script>
 
 <template>
-  <h1 class="title" :class="{ 'fade-out': wehelpOff }">Career</h1>
   <div class="info-wrapper">
+    <h1 class="title" :class="{ 'fade-out': wehelpOff }">Career</h1>
     <font-awesome-icon
       :icon="['fas', 'left-long']"
       class="back"
@@ -93,19 +93,24 @@ watch(props, (nV) => {
 <style scoped>
 .info-wrapper {
   width: 100%;
-  margin-left: 45px;
+  /* margin-left: 85px; */
   margin-top: 160px;
   position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  left: 45px;
 }
 .part {
   position: absolute;
 }
 .back {
   position: absolute;
-  font-size: 55px;
+  font-size: 45px;
   color: rgb(175, 175, 175);
-  top: -75px;
-  left: -95px;
+  top: -70px;
+  left: 70px;
   opacity: 0;
   transition: 0.3s;
   cursor: pointer;
@@ -119,12 +124,12 @@ watch(props, (nV) => {
   pointer-events: auto;
 }
 h1 {
-  position: absolute;
+  position: relative;
   font-size: 60px;
   color: #333;
   font-weight: 600;
-  top: 55px;
-  left: -60px;
+  top: -105px;
+  left: -380px;
   transition: 0.3s;
   opacity: 1;
   user-select: auto;

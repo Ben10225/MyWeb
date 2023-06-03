@@ -102,6 +102,10 @@ watch(props, () => {
 </template>
 
 <style scoped>
+.taipeiPostProduction {
+  position: relative;
+  left: -77px;
+}
 .content-info {
   margin-bottom: 30px;
   margin-left: 10px;

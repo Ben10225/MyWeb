@@ -105,4 +105,27 @@ h5 {
 .text-blue {
   color: rgb(26, 59, 158);
 }
+@media (max-width: 1400px) {
+  .last-name {
+    font-size: 30px;
+    bottom: 0px;
+  }
+  h1 {
+    pointer-events: none;
+  }
+  .white-square {
+    border: none;
+  }
+  .img-block {
+    display: none;
+  }
+  h5 {
+    display: none;
+  }
+}
+@media (max-height: 800px) {
+  h5 {
+    bottom: -32px;
+  }
+}
 </style>

@@ -33,7 +33,6 @@ const wrapperZindex = ref(false);
 const open = ref(false);
 const endBtnOpacity = ref(false);
 const forReverseImageOpacity = ref(false);
-const cardUpright = ref(false);
 const stopThreeBtns = ref(true);
 const stopEndBtn = ref(true);
 
@@ -102,7 +101,9 @@ const secondInfoHandler = () => {
         break;
       case 11:
         content.value.paraOpacity = true;
-        forReverseImageOpacity.value = true;
+        if (!content.value.cardUpright) {
+          forReverseImageOpacity.value = true;
+        }
         break;
       case 15:
         content.value.uprightOpacity = true;
@@ -176,7 +177,7 @@ watchEffect(() => {
           :card-show="props.show"
           :card-open-ani="open"
           :degree="degree"
-          :card-upright="cardUpright"
+          :card-upright="content.cardUpright"
           :card-is-upright="cardIsUpright"
           :url="url"
           :for-reverse-image-opacity="forReverseImageOpacity"
@@ -257,7 +258,6 @@ watchEffect(() => {
   position: absolute;
   top: -45px;
   left: 100px;
-  z-index: 500;
 }
 .buttons {
   width: 100%;
@@ -324,5 +324,14 @@ button:hover {
 }
 .btn-prevent {
   pointer-events: none;
+}
+@media (max-height: 700px) {
+  .text-block {
+    top: -105px;
+    left: -40px;
+  }
+  .end-btn {
+    bottom: -80px;
+  }
 }
 </style>

@@ -42,17 +42,17 @@ const responseHandler = () => {
 <style scoped>
 .skills-wrapper {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   background-color: #ffffff;
   display: flex;
   justify-content: center;
+  /* align-items: center; */
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 .outter {
   width: 800px;
-  width: 800px;
-  height: 800px;
+  /* height: 800px; */
   position: relative;
 }
 h1 {

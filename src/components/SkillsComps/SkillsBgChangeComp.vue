@@ -121,7 +121,7 @@ watch(props, (nV, oV) => {
 <style>
 .color-block {
   width: 600px;
-  height: 100vh;
+  height: 100%;
   position: absolute;
   left: -520px;
   transition: 1s;

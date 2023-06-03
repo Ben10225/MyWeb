@@ -126,7 +126,7 @@ setTimeout(() => {
 
 <style scoped>
 .line-wrapper {
-  width: 100%;
+  width: 800px;
   position: absolute;
   bottom: 110px;
 }
@@ -166,6 +166,7 @@ p {
   opacity: 0;
   transition: 0.5s;
   letter-spacing: 0.05em;
+  cursor: default;
 }
 .position {
   font-size: 16px;
