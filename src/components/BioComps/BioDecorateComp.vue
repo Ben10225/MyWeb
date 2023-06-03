@@ -8,24 +8,6 @@ const borderDeg = ref(0);
 const decos = ref([
   {
     id: counter.value++,
-    backgroundColor: "#666",
-    width: 150,
-    height: 160,
-    left: 50,
-    top: 20,
-    border: "none",
-  },
-  {
-    id: counter.value++,
-    backgroundColor: "#ffc800",
-    width: 100,
-    height: 40,
-    left: 226,
-    top: 310,
-    border: "none",
-  },
-  {
-    id: counter.value++,
     backgroundColor: "transparent",
     width: 30,
     height: 30,
@@ -43,42 +25,9 @@ const decos = ref([
     border: "none",
     // transform: "rotate(0deg)",
   },
-  {
-    id: counter.value++,
-    backgroundColor: "transparent",
-    width: 15,
-    height: 15,
-    left: 375,
-    top: 180,
-    border: "1px solid #cbcbcb",
-    transform: "rotate(45deg)",
-  },
-  {
-    id: counter.value++,
-    backgroundColor: "#cbcbcb",
-    width: 1,
-    height: 70,
-    left: 382,
-    top: 196,
-  },
-  {
-    id: counter.value++,
-    backgroundColor: "#999",
-    width: 130,
-    height: 3,
-    left: -116,
-    top: 610,
-    border: "none",
-  },
-  {
-    id: counter.value++,
-    backgroundColor: "rgb(26, 59, 158)",
-    width: 2,
-    height: 100,
-    left: -86,
-    top: 540,
-    border: "none",
-  },
+]);
+
+const fiveDots = ref([
   {
     id: counter.value++,
     backgroundColor: "#3d3d3d",
@@ -131,20 +80,83 @@ const decos = ref([
   },
 ]);
 
+const pictBlockDeco = ref([
+  {
+    id: counter.value++,
+    backgroundColor: "#666",
+    width: 150,
+    height: 160,
+    left: 50,
+    top: 20,
+    border: "none",
+  },
+  {
+    id: counter.value++,
+    backgroundColor: "#ffc800",
+    width: 100,
+    height: 40,
+    left: 226,
+    top: 310,
+    border: "none",
+  },
+]);
+
+const crossDeco = ref([
+  {
+    id: counter.value++,
+    backgroundColor: "#999",
+    width: 130,
+    height: 3,
+    left: -116,
+    top: 610,
+    border: "none",
+  },
+  {
+    id: counter.value++,
+    backgroundColor: "rgb(26, 59, 158)",
+    width: 2,
+    height: 100,
+    left: -86,
+    top: 540,
+    border: "none",
+  },
+]);
+
+const squareLineDeco = ref([
+  {
+    id: counter.value++,
+    backgroundColor: "transparent",
+    width: 15,
+    height: 15,
+    left: 375,
+    top: 180,
+    border: "1px solid #cbcbcb",
+    transform: "rotate(45deg)",
+  },
+  {
+    id: counter.value++,
+    backgroundColor: "#cbcbcb",
+    width: 1,
+    height: 70,
+    left: 382,
+    top: 196,
+  },
+]);
+
 setInterval(() => {
-  let tmp = decos.value[12].backgroundColor;
-  decos.value[12].backgroundColor = decos.value[11].backgroundColor;
-  decos.value[11].backgroundColor = decos.value[10].backgroundColor;
-  decos.value[10].backgroundColor = decos.value[9].backgroundColor;
-  decos.value[9].backgroundColor = decos.value[8].backgroundColor;
-  decos.value[8].backgroundColor = tmp;
+  let tmp = fiveDots.value[4].backgroundColor;
+  fiveDots.value[4].backgroundColor = fiveDots.value[3].backgroundColor;
+  fiveDots.value[3].backgroundColor = fiveDots.value[2].backgroundColor;
+  fiveDots.value[2].backgroundColor = fiveDots.value[1].backgroundColor;
+  fiveDots.value[1].backgroundColor = fiveDots.value[0].backgroundColor;
+  fiveDots.value[0].backgroundColor = tmp;
 
   setTimeout(() => {
-    decos.value[3].transform = `rotate(${(solidDeg.value += 90)}deg)`;
+    decos.value[1].transform = `rotate(${(solidDeg.value += 90)}deg)`;
     borderCt.value++;
   }, 500);
   if (borderCt.value === 5) {
-    decos.value[2].transform = `rotate(${(borderDeg.value -= 90)}deg)`;
+    decos.value[0].transform = `rotate(${(borderDeg.value -= 90)}deg)`;
     borderCt.value = 0;
   }
 }, 1000);
@@ -168,6 +180,70 @@ setInterval(() => {
         }"
       ></div>
     </div>
+    <div class="five-block" v-for="deco of fiveDots" :key="deco.id">
+      <div
+        class="decorate"
+        :style="{
+          backgroundColor: `${deco.backgroundColor}`,
+          width: `${deco.width}px`,
+          height: `${deco.height}px`,
+          left: `${deco.left}px`,
+          top: `${deco.top}px`,
+          border: `${deco.border}`,
+          borderRadius: `${deco.borderRadius}`,
+          transform: `${deco.transform}`,
+        }"
+      ></div>
+    </div>
+    <div class="pict-block" v-for="deco of pictBlockDeco" :key="deco.id">
+      <div
+        class="decorate"
+        :style="{
+          backgroundColor: `${deco.backgroundColor}`,
+          width: `${deco.width}px`,
+          height: `${deco.height}px`,
+          left: `${deco.left}px`,
+          top: `${deco.top}px`,
+          border: `${deco.border}`,
+          borderRadius: `${deco.borderRadius}`,
+          transform: `${deco.transform}`,
+        }"
+      ></div>
+    </div>
+    <div class="cross-block" v-for="deco of crossDeco" :key="deco.id">
+      <div
+        class="decorate"
+        :style="{
+          backgroundColor: `${deco.backgroundColor}`,
+          width: `${deco.width}px`,
+          height: `${deco.height}px`,
+          left: `${deco.left}px`,
+          top: `${deco.top}px`,
+          border: `${deco.border}`,
+          borderRadius: `${deco.borderRadius}`,
+          transform: `${deco.transform}`,
+        }"
+      ></div>
+    </div>
+    <div
+      class="square-line-block"
+      v-for="deco of squareLineDeco"
+      :key="deco.id"
+    >
+      <div
+        class="decorate"
+        :style="{
+          backgroundColor: `${deco.backgroundColor}`,
+          width: `${deco.width}px`,
+          height: `${deco.height}px`,
+          left: `${deco.left}px`,
+          top: `${deco.top}px`,
+          border: `${deco.border}`,
+          borderRadius: `${deco.borderRadius}`,
+          transform: `${deco.transform}`,
+        }"
+      ></div>
+    </div>
   </div>
 </template>
 
@@ -176,12 +252,45 @@ setInterval(() => {
   position: absolute;
   transition: 0.3s;
 }
-
+.five-block {
+  position: relative;
+}
+.pict-block {
+  position: relative;
+}
+.cross-block {
+  position: relative;
+}
+.square-line-block {
+  position: relative;
+}
 .big-one {
   background-color: #f5ede0;
   width: 240px;
   height: 690px;
   left: -50px;
   top: -110px;
+  transition: 0s;
+}
+@media (max-width: 850px) {
+  .big-one {
+    width: 220px;
+    height: 520px;
+  }
+  .five-block {
+    left: -240px;
+    top: -80px;
+  }
+  .pict-block {
+    left: 33px;
+  }
+  .cross-block {
+    top: 310px;
+    left: 30px;
+  }
+  .square-line-block {
+    left: -360px;
+    top: 250px;
+  }
 }
 </style>

@@ -65,7 +65,7 @@ h1 {
   user-select: none;
   cursor: pointer;
   opacity: 1;
-  transition: 0.3s;
+  transition: opacity 0.3s;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 h1:hover {

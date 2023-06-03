@@ -55,14 +55,13 @@ import BioDecorate from "../components/BioComps/BioDecorateComp.vue";
 <style scoped>
 .bio-wrapper {
   width: 100%;
-  /* height: 100vh; */
-  /* background-color: #ffffff; */
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-x: hidden;
 }
 .outter {
-  width: 800px;
+  /* width: 800px; */
   /* height: 700px; */
   position: relative;
   margin-top: 70px;
@@ -77,6 +76,7 @@ import BioDecorate from "../components/BioComps/BioDecorateComp.vue";
 .info-block {
   margin-left: 25px;
   margin-top: 221px;
+  z-index: 10;
 }
 .info {
   width: 400px;
@@ -85,7 +85,6 @@ import BioDecorate from "../components/BioComps/BioDecorateComp.vue";
 }
 .contact-infos {
   margin-top: 45px;
-
   margin-bottom: 70px;
 }
 .ic {
@@ -106,5 +105,14 @@ import BioDecorate from "../components/BioComps/BioDecorateComp.vue";
 }
 .linkedin-ic {
   font-size: 21px;
+}
+@media (max-width: 850px) {
+  .upper-block {
+    flex-direction: column;
+    align-items: center;
+  }
+  .info-block {
+    margin-top: 0px;
+  }
 }
 </style>

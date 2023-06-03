@@ -142,4 +142,10 @@ onMounted(() => {
 .dot-clicked {
   opacity: 1;
 }
+@media (max-width: 850px) {
+  .picture-dots {
+    right: -80px;
+    margin-top: 30px;
+  }
+}
 </style>
