@@ -74,6 +74,9 @@ import BioDecorate from "../components/BioComps/BioDecorateComp.vue";
 }
 
 .info-block {
+  /* width: 85vw; */
+  /* border: 1px solid #000; */
+
   margin-left: 25px;
   margin-top: 221px;
   z-index: 10;
@@ -113,6 +116,15 @@ import BioDecorate from "../components/BioComps/BioDecorateComp.vue";
   }
   .info-block {
     margin-top: 0px;
+  }
+}
+@media (max-width: 600px) {
+  .info-block {
+    width: 85vw;
+    margin-left: 0;
+  }
+  .info {
+    width: 100%;
   }
 }
 </style>

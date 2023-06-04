@@ -195,7 +195,7 @@ setInterval(() => {
         }"
       ></div>
     </div>
-    <div class="pict-block" v-for="deco of pictBlockDeco" :key="deco.id">
+    <!-- <div class="pict-block" v-for="deco of pictBlockDeco" :key="deco.id">
       <div
         class="decorate"
         :style="{
@@ -209,7 +209,7 @@ setInterval(() => {
           transform: `${deco.transform}`,
         }"
       ></div>
-    </div>
+    </div> -->
     <div class="cross-block" v-for="deco of crossDeco" :key="deco.id">
       <div
         class="decorate"
@@ -290,6 +290,20 @@ setInterval(() => {
   }
   .square-line-block {
     left: -360px;
+    top: 250px;
+  }
+}
+@media (max-width: 600px) {
+  .big-one {
+    left: -30px;
+  }
+
+  .cross-block {
+    top: 300px;
+    left: -130px;
+  }
+  .square-line-block {
+    left: -380px;
     top: 250px;
   }
 }

@@ -156,7 +156,9 @@ const store = useData();
 @media (max-width: 600px) {
   .left-wrapper {
     width: 100%;
-    height: 40px;
+    height: 30px;
+    padding-left: 10px;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
   }
   .left-wrapper:hover {
     width: 100%;
@@ -166,10 +168,11 @@ const store = useData();
   }
   .links-wrapper {
     flex-direction: row;
+    justify-content: space-between;
   }
   .link-text {
     display: inline;
-    padding-left: 15px;
+    padding-left: 0px;
     color: #ffffff;
   }
   .link-text:hover .title {
@@ -177,11 +180,15 @@ const store = useData();
     color: #000;
     text-shadow: none;
   }
+  .link-text:hover {
+    background-color: #ffc800;
+  }
   .title {
     opacity: 1;
     visibility: visible;
-    margin-top: -3px;
+    margin-top: -6px;
     font-weight: 600;
+    font-size: 13px;
   }
   .solo {
     display: none;

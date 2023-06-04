@@ -31,6 +31,27 @@ const photos = ref([
   },
 ]);
 
+const pictBlockDeco = ref([
+  {
+    id: 1,
+    backgroundColor: "#666",
+    width: 150,
+    height: 160,
+    left: -20,
+    top: -315,
+    border: "none",
+  },
+  {
+    id: 2,
+    backgroundColor: "#ffc800",
+    width: 100,
+    height: 40,
+    left: 148,
+    top: -33,
+    border: "none",
+  },
+]);
+
 const clickDotHandler = (id) => {
   if (id === dotNumber.value) return;
   let gap = id - dotNumber.value;
@@ -67,6 +88,21 @@ onMounted(() => {
         </div>
       </div>
     </div>
+    <div class="pict-block" v-for="deco of pictBlockDeco" :key="deco.id">
+      <div
+        class="decorate"
+        :style="{
+          backgroundColor: `${deco.backgroundColor}`,
+          width: `${deco.width}px`,
+          height: `${deco.height}px`,
+          left: `${deco.left}px`,
+          top: `${deco.top}px`,
+          border: `${deco.border}`,
+          borderRadius: `${deco.borderRadius}`,
+          transform: `${deco.transform}`,
+        }"
+      ></div>
+    </div>
     <div class="picture-dots">
       <div
         class="dot-outter"
@@ -95,6 +131,7 @@ onMounted(() => {
   grid-template-columns: 1fr 1fr 1fr;
   position: relative;
   transition: all 0.6s;
+  z-index: 10;
 }
 .picture-block {
   width: 240px;
@@ -142,10 +179,20 @@ onMounted(() => {
 .dot-clicked {
   opacity: 1;
 }
+.pict-block {
+  /* position: absolute; */
+  position: relative;
+}
+.decorate {
+  position: absolute;
+}
 @media (max-width: 850px) {
   .picture-dots {
     right: -80px;
     margin-top: 30px;
+  }
+  .decorate {
+    left: 0px;
   }
 }
 </style>
