@@ -99,8 +99,9 @@ watch(props, () => {
   color: black;
   overflow: hidden;
   width: 720px;
-  position: relative;
-  left: -3px;
+  position: absolute;
+  /* position: relative; */
+  left: -375px;
   top: -80px;
 }
 .beeline-block {
@@ -181,7 +182,7 @@ li {
   border-radius: 10px;
   position: absolute;
   width: 260px;
-  right: 30px;
+  right: 20px;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
 }
 .png {
@@ -189,5 +190,10 @@ li {
 }
 .gif {
   bottom: 15px;
+}
+@media (max-width: 1000px) {
+  .beeline-wrapper {
+    left: -340px;
+  }
 }
 </style>

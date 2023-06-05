@@ -106,7 +106,8 @@ setTimeout(() => {
         }"
         @click="clickHandler(data.id)"
       >
-        {{ data.firm }}
+        <span class="firm">{{ data.firm }}</span>
+
         <p :class="{ show: now === data.id }" class="tenure">
           {{ data.tenure }}
         </p>
@@ -127,8 +128,12 @@ setTimeout(() => {
 <style scoped>
 .line-wrapper {
   width: 800px;
-  position: absolute;
-  bottom: 110px;
+  /* position: absolute; */
+  position: relative;
+  /* bottom: 110px; */
+  /* border: 1px solid #000; */
+  padding-bottom: 70px;
+  margin-top: 40px;
 }
 .line-block {
   width: 100%;
@@ -138,7 +143,7 @@ setTimeout(() => {
   /* gap: 30px; */
 }
 .work-block {
-  font-size: 18px;
+  height: 40px;
   font-weight: 500;
   padding: 6px 10px;
   transition: 0.7s;
@@ -149,11 +154,15 @@ setTimeout(() => {
   z-index: 2;
   position: relative;
 }
+.firm {
+  font-size: 18px;
+}
 .ic {
-  position: absolute;
-  font-size: 90px;
-  top: -25px;
-  right: -45px;
+  /* position: absolute; */
+  position: relative;
+  font-size: 70px;
+  top: -15px;
+  right: 15px;
   transition: 0.7s;
   z-index: 1;
   cursor: pointer;
@@ -182,5 +191,40 @@ p {
 }
 .show {
   opacity: 1;
+}
+@media (max-width: 1000px) {
+  .line-wrapper {
+    width: 80%;
+    margin-left: 30px;
+  }
+  .firm {
+    font-size: 17px;
+  }
+  .position {
+    font-size: 15px;
+  }
+  .tenure {
+    font-size: 10px;
+  }
+}
+@media (max-width: 850px) {
+  .line-wrapper {
+    width: 85%;
+  }
+  .ic {
+    font-size: 65px;
+    top: -13px;
+    right: 15px;
+  }
+  .firm {
+    white-space: nowrap;
+  }
+  .position {
+    font-size: 13px;
+  }
+  .tenure {
+    font-size: 10px;
+    white-space: nowrap;
+  }
 }
 </style>

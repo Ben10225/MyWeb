@@ -55,11 +55,14 @@ const getEmits = (projId) => {
 
 <style scoped>
 .wehelp-wrapper {
+  width: 100%;
   padding: 0 32px;
-  left: -32px;
+  /* left: -32px; */
   position: relative;
   overflow: hidden;
   pointer-events: auto;
+  /* border: 1px solid red; */
+  top: -20px;
 }
 .wehelp-wrapper-pointer-evt-none {
   pointer-events: none;
@@ -84,7 +87,7 @@ const getEmits = (projId) => {
   margin-bottom: 10px;
 }
 p {
-  display: inline-block;
+  display: inline;
   color: #555;
 }
 h3 {
@@ -93,7 +96,8 @@ h3 {
   font-weight: 700;
   margin-bottom: 20px;
   position: relative;
-  left: -30px;
+  left: -20px;
+  /* top: -10px; */
 }
 h4 {
   color: #999;
@@ -101,7 +105,7 @@ h4 {
   font-size: 15px;
   margin-bottom: 15px;
   position: relative;
-  left: -30px;
+  left: -20px;
 }
 .projects {
   position: relative;
@@ -112,5 +116,19 @@ h4 {
   position: relative;
   top: 2px;
   margin-right: 10px;
+}
+@media (max-width: 1000px) {
+  .wehelp-wrapper {
+    top: -50px;
+  }
+  h3 {
+    font-size: 20px;
+  }
+  .content-info li {
+    font-size: 16px;
+  }
+  .ic-check {
+    font-size: 18px;
+  }
 }
 </style>

@@ -22,39 +22,46 @@ const projHandler = (resBool) => {
       <CareerInfoBlock :job="job" :proj="projLeave" @proj-false="projHandler" />
       <CareerLineBlock @change-job="changeNow" @proj-leave="projHandler" />
     </div>
-    <CareerDecorate class="decorate" />
+    <!-- <CareerDecorate class="decorate" /> -->
   </div>
 </template>
 
 <style scoped>
 .career-wrapper {
   /* width: 100; */
-  min-height: 100%;
-  background-color: #ffffff;
+  /* min-height: 100%; */
+  height: 100%;
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   flex-direction: column;
-  overflow: hidden;
+  /* overflow: hidden; */
   position: relative;
+  /* padding-top: 53px; */
+  background-color: #f5ede0;
 }
 .outter {
   width: 100%;
+  background-color: #ffffff;
   /* width: 800px; */
-  height: 800px;
+  /* height: 800px; */
   position: relative;
   /* position: absolute; */
   /* z-index: 10; */
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  /* justify-content: center; */
 
   /* left: 50%;
   transform: translateX(-50%); */
 
   /* background-color: red; */
+  /* border: 1px solid #000; */
 }
 .decorate {
   /* bottom: -30px; */
-  width: 100%;
-  position: relative;
+  /* width: 100%; */
+  /* position: relative; */
 }
 </style>

@@ -70,6 +70,7 @@ const clickHandler = (web) => {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   position: relative;
 }
 .proj .info-block {
@@ -126,5 +127,13 @@ button:active {
 button:hover {
   background-color: rgba(209, 209, 209, 0.2);
   border: 1px solid rgba(228, 189, 71, 0.2);
+}
+@media (max-width: 850px) {
+  .wehelp-proj-wrapper {
+    flex-direction: column;
+  }
+  .proj {
+    margin: 5px 0;
+  }
 }
 </style>

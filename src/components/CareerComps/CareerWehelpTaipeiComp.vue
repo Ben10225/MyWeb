@@ -111,9 +111,10 @@ watch(props, () => {
   color: black;
   overflow: hidden;
   width: 720px;
-  position: relative;
-  left: -3px;
-  top: -80px;
+  /* position: relative; */
+  position: absolute;
+  left: -375px;
+  top: -93px;
 }
 .taipei-block {
   position: relative;
@@ -172,8 +173,8 @@ a {
 .pict {
   border-radius: 10px;
   position: absolute;
-  width: 250px;
-  right: 30px;
+  width: 270px;
+  right: 20px;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
 }
 .intro {
@@ -191,10 +192,13 @@ h4 {
 li {
   list-style: none;
 }
-.png {
-  bottom: 175px;
-}
 .gif {
-  bottom: 48px;
+  bottom: 5px;
+}
+@media (max-width: 1000px) {
+  .taipei-wrapper {
+    left: -340px;
+    top: -105px;
+  }
 }
 </style>

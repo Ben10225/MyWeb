@@ -60,26 +60,20 @@ watch(props, (nV) => {
 
 <template>
   <div class="info-wrapper">
-    <h1 class="title" :class="{ 'fade-out': wehelpOff }">Career</h1>
-    <font-awesome-icon
-      :icon="['fas', 'left-long']"
-      class="back"
-      :class="{ 'arrow-show': wehelpOff }"
-      @click="backHandler"
-    />
-    <div class="part">
-      <CareerPreviousJob v-show="now === '洛商公關'" :job="0" :reset="reset" />
-    </div>
-    <div class="part">
-      <CareerPreviousJob v-show="now === '台北影業'" :job="1" :reset="reset" />
-    </div>
-
-    <div class="part">
-      <CareerWehelp
-        v-show="now === 'Wehelp'"
-        :wehelp-go-left="wehelpGoLeft"
-        @change-proj="getEmits"
+    <div class="back-arrow-block">
+      <font-awesome-icon
+        :icon="['fas', 'left-long']"
+        class="back"
+        :class="{ 'arrow-show': wehelpOff }"
+        @click="backHandler"
       />
+    </div>
+    <h1 class="title" :class="{ 'fade-out': wehelpOff }">Career</h1>
+    <div class="part" v-show="now === '洛商公關'">
+      <CareerPreviousJob :job="0" :reset="reset" />
+    </div>
+    <div class="part" v-show="now === '台北影業'">
+      <CareerPreviousJob :job="1" :reset="reset" />
     </div>
     <div class="part">
       <CareerWehelpBeeline :beeline-show="projShow" />
@@ -87,34 +81,51 @@ watch(props, (nV) => {
     <div class="part">
       <CareerWehelpTaipei :taipei-show="projShow" />
     </div>
+    <div class="part" v-show="now === 'Wehelp'">
+      <CareerWehelp :wehelp-go-left="wehelpGoLeft" @change-proj="getEmits" />
+    </div>
   </div>
 </template>
 
 <style scoped>
 .info-wrapper {
-  width: 100%;
-  /* margin-left: 85px; */
-  margin-top: 160px;
+  width: 90%;
+  min-height: 610px;
+  /* height: 300px; */
+  /* margin-top: 160px; */
   position: relative;
-
   display: flex;
-  justify-content: center;
-  align-items: start;
-  left: 45px;
+  flex-direction: column;
+  align-items: center;
+
+  justify-content: start;
+  /* padding-left: 70px; */
+  padding-top: 53px;
+  border: 1px solid #000;
+  /* margin-top: -50px; */
 }
 .part {
+  height: 100%;
+  /* position: absolute; */
+  position: relative;
+  /* border: 1px solid blue; */
+  /* background-color: red; */
+}
+.back-arrow-block {
   position: absolute;
 }
 .back {
-  position: absolute;
+  position: relative;
+  /* position: absolute; */
   font-size: 45px;
   color: rgb(175, 175, 175);
-  top: -70px;
-  left: 70px;
+  top: 23px;
+  left: -430px;
   opacity: 0;
   transition: 0.3s;
   cursor: pointer;
   pointer-events: none;
+  z-index: 10;
 }
 .back:hover {
   opacity: 0.8;
@@ -128,8 +139,7 @@ h1 {
   font-size: 60px;
   color: #333;
   font-weight: 600;
-  top: -105px;
-  left: -380px;
+  left: -330px;
   transition: 0.3s;
   opacity: 1;
   user-select: auto;
@@ -138,5 +148,27 @@ h1 {
 .fade-out {
   opacity: 0;
   user-select: none;
+}
+@media (max-width: 1000px) {
+  .info-wrapper {
+    margin-left: 30px;
+  }
+  h1 {
+    font-size: 50px;
+    left: -320px;
+  }
+  .back {
+    font-size: 30px;
+    left: -370px;
+    top: 16px;
+  }
+}
+
+@media (max-width: 850px) {
+  h1 {
+    font-size: 45px;
+    /* position: fixed; */
+    /* left: 73px; */
+  }
 }
 </style>

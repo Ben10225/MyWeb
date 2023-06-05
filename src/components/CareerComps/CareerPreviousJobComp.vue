@@ -102,9 +102,17 @@ watch(props, () => {
 </template>
 
 <style scoped>
+.taipeiPostProduction-wrapper {
+  /* width: 800px; */
+  /* border: 1px solid #000; */
+  /* display: flex;
+  justify-content: center;
+  flex-direction: column; */
+}
 .taipeiPostProduction {
+  padding: 0 30px;
   position: relative;
-  left: -77px;
+  /* left: -77px; */
 }
 .content-info {
   margin-bottom: 30px;
@@ -125,7 +133,7 @@ h3 {
   font-weight: 700;
   margin-bottom: 20px;
   position: relative;
-  left: -30px;
+  left: -40px;
   top: 1px;
 }
 h4 {
@@ -134,7 +142,7 @@ h4 {
   font-size: 15px;
   margin-bottom: 15px;
   position: relative;
-  left: -30px;
+  left: -40px;
 }
 .projects {
   position: relative;
@@ -152,7 +160,7 @@ h4 {
   width: 622px;
   overflow: hidden;
   position: relative;
-  left: 40px;
+  /* left: 40px; */
 }
 .ic-arrow {
   position: absolute;
@@ -164,10 +172,10 @@ h4 {
   transition: 0.4s;
 }
 .arrow-right {
-  right: -90px;
+  right: -30px;
 }
 .arrow-left {
-  left: -10px;
+  left: -30px;
 }
 .arrow-can-click {
   color: #929292;
@@ -202,5 +210,13 @@ h4 {
 }
 .dash {
   margin: 0 5px;
+}
+@media (max-width: 1000px) {
+  .content-info li {
+    font-size: 16px;
+  }
+  .ic-clapperboard {
+    font-size: 16px;
+  }
 }
 </style>
