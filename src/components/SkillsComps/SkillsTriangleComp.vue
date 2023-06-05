@@ -62,4 +62,20 @@ const clickHandler = () => {
   margin-right: 8px;
   transition: 0.4s;
 }
+@media (max-width: 1400px) {
+  .triangle-block {
+    left: 320px;
+  }
+}
+@media (max-width: 1200px) {
+  .triangle-block {
+    left: 110px;
+    transform: scale(0.9);
+  }
+}
+@media (max-width: 850px) {
+  .triangle-block {
+    display: none;
+  }
+}
 </style>

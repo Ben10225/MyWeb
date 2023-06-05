@@ -116,6 +116,7 @@ watch(props, (nV, oV) => {
       }"
     ></div>
   </div>
+  <div class="lower-rwd-block"></div>
 </template>
 
 <style>
@@ -144,5 +145,43 @@ watch(props, (nV, oV) => {
 }
 .second-brown {
   z-index: 2;
+}
+.lower-rwd-block {
+  position: absolute;
+  width: 85%;
+  height: 100%;
+  background-color: #f5ede0;
+  left: 69px;
+  display: none;
+}
+@media (max-width: 1400px) {
+  .grow-to-right {
+    width: 120vw;
+  }
+}
+@media (max-width: 1200px) {
+  .grow-to-right {
+    width: 160vw;
+  }
+}
+@media (max-width: 850px) {
+  .color-block {
+    left: -535px;
+  }
+  .grow-to-right {
+    width: 180vw;
+  }
+  .color-block {
+    display: none;
+  }
+  .lower-rwd-block {
+    width: 125%;
+    display: block;
+  }
+}
+@media (max-width: 600px) {
+  .color-block {
+    display: none;
+  }
 }
 </style>

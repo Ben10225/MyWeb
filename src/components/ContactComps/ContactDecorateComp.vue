@@ -27,4 +27,19 @@
   transform-origin: top right;
   transform: rotate(-11deg);
 }
+@media (max-width: 1200px) {
+  .top-one {
+    top: -20px;
+  }
+}
+@media (max-width: 850px) {
+  .top-one {
+    top: -60px;
+  }
+}
+@media (max-width: 600px) {
+  .under-one {
+    bottom: -220px;
+  }
+}
 </style>

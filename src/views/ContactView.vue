@@ -245,7 +245,6 @@ const errorHandler = (errId) => {
 }
 .outter {
   width: 800px;
-  width: 800px;
   height: 800px;
   position: relative;
 }
@@ -409,5 +408,32 @@ button:hover {
 }
 .btn-icon-move {
   top: -1px;
+}
+@media (max-width: 1200px) {
+  .outter {
+    width: 700px;
+  }
+}
+@media (max-width: 850px) {
+  .outter {
+    width: 80%;
+  }
+}
+@media (max-width: 600px) {
+  .outter,
+  input,
+  textarea {
+    width: 80%;
+  }
+  .content-block {
+    margin-left: 0;
+  }
+  h1 {
+    left: -5px;
+    font-size: 50px;
+  }
+  .content-block {
+    margin-top: 140px;
+  }
 }
 </style>

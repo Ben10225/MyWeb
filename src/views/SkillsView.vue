@@ -113,4 +113,44 @@ h1 {
 .info p {
   margin-bottom: 3px;
 }
+@media (max-width: 1200px) {
+  .outter {
+    width: 760px;
+  }
+  h1 {
+    left: 0px;
+  }
+}
+@media (max-width: 850px) {
+  .outter {
+    width: 500px;
+  }
+  h1 {
+    left: 25px;
+  }
+  .right-block {
+    margin-left: 70px;
+    margin-top: 170px;
+  }
+  .skill-info {
+    margin-bottom: 120px;
+  }
+}
+@media (max-width: 600px) {
+  h1 {
+    font-size: 50px;
+    left: 35px;
+  }
+  .circle {
+    width: 55px;
+    height: 55px;
+  }
+  .white-first-letter {
+    font-size: 40px;
+  }
+  .info-title {
+    font-size: 30px;
+    left: 58px;
+  }
+}
 </style>
