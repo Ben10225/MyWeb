@@ -132,7 +132,7 @@ setTimeout(() => {
   position: relative;
   /* bottom: 110px; */
   /* border: 1px solid #000; */
-  padding-bottom: 70px;
+  margin-bottom: 70px;
   margin-top: 40px;
 }
 .line-block {
@@ -202,6 +202,7 @@ p {
   }
   .position {
     font-size: 15px;
+    white-space: nowrap;
   }
   .tenure {
     font-size: 10px;
@@ -210,6 +211,7 @@ p {
 @media (max-width: 850px) {
   .line-wrapper {
     width: 85%;
+    position: relative;
   }
   .ic {
     font-size: 65px;
@@ -225,6 +227,18 @@ p {
   .tenure {
     font-size: 10px;
     white-space: nowrap;
+  }
+}
+@media (max-width: 600px) {
+  .line-wrapper {
+    margin-left: -15px;
+    /* display: none; */
+  }
+  .ic {
+    display: none;
+  }
+  .work-block {
+    margin-bottom: 50px;
   }
 }
 </style>

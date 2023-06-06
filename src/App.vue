@@ -13,8 +13,8 @@ const store = useData();
         <RouterLink
           v-for="l of store.links"
           :key="l.id"
-          class="link-text"
           :to="l.link"
+          class="link-text"
         >
           <div class="title">{{ l.content }}</div>
           <div class="solo">{{ l.content[0] }}</div></RouterLink
@@ -74,7 +74,7 @@ const store = useData();
   color: #fff;
   opacity: 1;
   transform: scale(1.1);
-  transform-origin: 50px 42px;
+  transform-origin: 40% 42px;
   text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.3);
 }
 .right-wrapper {
@@ -97,10 +97,16 @@ const store = useData();
   display: none;
   transition: all 0s;
 }
+.link-text:nth-child(4) .solo {
+  left: 11px;
+}
+.link-text:nth-child(3) .solo,
+.link-text:nth-child(5) .solo {
+  left: 9px;
+}
 @media (max-height: 800px) {
   .logo {
     margin-top: -50px;
-    /* transform: scale(0.9); */
   }
 }
 @media (max-width: 1400px) {

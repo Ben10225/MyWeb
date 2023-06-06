@@ -46,7 +46,7 @@ const getEmits = (projId) => {
         </li>
       </ul>
       <h4>專案分享 :</h4>
-      <div class="projects">
+      <div class="projects beeline-height">
         <CareerWehelpProjComp @change-proj="getEmits" />
       </div>
     </div>
@@ -55,14 +55,11 @@ const getEmits = (projId) => {
 
 <style scoped>
 .wehelp-wrapper {
-  width: 100%;
   padding: 0 32px;
-  /* left: -32px; */
   position: relative;
   overflow: hidden;
   pointer-events: auto;
   /* border: 1px solid red; */
-  top: -20px;
 }
 .wehelp-wrapper-pointer-evt-none {
   pointer-events: none;
@@ -93,7 +90,7 @@ p {
 h3 {
   font-size: 22px;
   color: #90651e;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 20px;
   position: relative;
   left: -20px;
@@ -119,7 +116,7 @@ h4 {
 }
 @media (max-width: 1000px) {
   .wehelp-wrapper {
-    top: -50px;
+    top: 0px;
   }
   h3 {
     font-size: 20px;
@@ -129,6 +126,27 @@ h4 {
   }
   .ic-check {
     font-size: 18px;
+  }
+}
+@media (max-width: 850px) {
+  .wehelp-wrapper {
+    padding: 0 15px;
+    width: 90%;
+    top: 0px;
+  }
+  h3,
+  h4 {
+    left: -13px;
+  }
+}
+@media (max-width: 600px) {
+  .wehelp-wrapper {
+    padding: 0 15px;
+    width: 95%;
+    top: 0px;
+  }
+  .content-info {
+    margin-left: -12px;
   }
 }
 </style>

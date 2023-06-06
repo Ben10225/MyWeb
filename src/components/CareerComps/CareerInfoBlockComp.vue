@@ -68,7 +68,9 @@ watch(props, (nV) => {
         @click="backHandler"
       />
     </div>
-    <h1 class="title" :class="{ 'fade-out': wehelpOff }">Career</h1>
+    <div class="title-block">
+      <h1 class="title" :class="{ 'fade-out': wehelpOff }">Career</h1>
+    </div>
     <div class="part" v-show="now === '洛商公關'">
       <CareerPreviousJob :job="0" :reset="reset" />
     </div>
@@ -81,7 +83,14 @@ watch(props, (nV) => {
     <div class="part">
       <CareerWehelpTaipei :taipei-show="projShow" />
     </div>
-    <div class="part" v-show="now === 'Wehelp'">
+    <div
+      class="part"
+      v-show="now === 'Wehelp'"
+      :class="{
+        'beeline-height': projShow === 'beelineShow',
+        'taipei-height': projShow === 'taipeiShow',
+      }"
+    >
       <CareerWehelp :wehelp-go-left="wehelpGoLeft" @change-proj="getEmits" />
     </div>
   </div>
@@ -90,7 +99,8 @@ watch(props, (nV) => {
 <style scoped>
 .info-wrapper {
   width: 90%;
-  min-height: 610px;
+  height: 100%;
+  /* min-height: 610px; */
   /* height: 300px; */
   /* margin-top: 160px; */
   position: relative;
@@ -99,17 +109,18 @@ watch(props, (nV) => {
   align-items: center;
 
   justify-content: start;
-  /* padding-left: 70px; */
   padding-top: 53px;
-  border: 1px solid #000;
-  /* margin-top: -50px; */
+  /* border: 1px solid red; */
 }
 .part {
-  height: 100%;
   /* position: absolute; */
+  width: 100%;
+  height: 100%;
   position: relative;
-  /* border: 1px solid blue; */
-  /* background-color: red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
 }
 .back-arrow-block {
   position: absolute;
@@ -122,7 +133,7 @@ watch(props, (nV) => {
   top: 23px;
   left: -430px;
   opacity: 0;
-  transition: 0.3s;
+  transition: opacity 0.3s;
   cursor: pointer;
   pointer-events: none;
   z-index: 10;
@@ -134,20 +145,34 @@ watch(props, (nV) => {
   opacity: 0.5;
   pointer-events: auto;
 }
+.title-block {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  /* align-items: center; */
+  justify-content: center;
+  position: relative;
+}
 h1 {
   position: relative;
   font-size: 60px;
   color: #333;
   font-weight: 600;
-  left: -330px;
   transition: 0.3s;
   opacity: 1;
   user-select: auto;
+  margin-left: -660px;
+  /* left: 8%; */
 }
-
 .fade-out {
   opacity: 0;
   user-select: none;
+}
+.beeline-height {
+  padding-bottom: 0px;
+}
+.taipei-height {
+  padding-bottom: 10px;
 }
 @media (max-width: 1000px) {
   .info-wrapper {
@@ -155,20 +180,57 @@ h1 {
   }
   h1 {
     font-size: 50px;
-    left: -320px;
   }
   .back {
     font-size: 30px;
-    left: -370px;
+    left: -390px;
     top: 16px;
   }
+  .taipei-height {
+    padding-bottom: 30px;
+  }
 }
-
 @media (max-width: 850px) {
+  .title-block {
+    justify-content: start;
+  }
   h1 {
     font-size: 45px;
-    /* position: fixed; */
-    /* left: 73px; */
+    left: 660px;
+  }
+  .back-arrow-block {
+    width: 100%;
+    justify-content: start;
+  }
+  .back {
+    position: relative;
+    top: -30px;
+    left: 35px;
+  }
+  .beeline-height {
+    padding-bottom: 150px;
+  }
+  .taipei-height {
+    padding-bottom: 170px;
+  }
+}
+@media (max-width: 600px) {
+  .info-wrapper {
+    margin: 0;
+  }
+  .part {
+    justify-content: center;
+  }
+  h1 {
+    font-size: 40px;
+    left: 670px;
+  }
+  .back {
+    top: 8px;
+    left: 15px;
+  }
+  .beeline-height {
+    padding-bottom: 310px;
   }
 }
 </style>

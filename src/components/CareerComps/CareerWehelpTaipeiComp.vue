@@ -43,12 +43,6 @@ watch(props, () => {
 <template>
   <div v-show="show" class="taipei-wrapper">
     <div class="taipei-block" :class="{ 'taipei-block-in': blockBool }">
-      <img
-        v-show="showImg"
-        class="gif pict"
-        src="/taipei-day-trip-demo.gif"
-        alt=""
-      />
       <div class="title-line">
         <h3>台北一日遊</h3>
         <img class="logo" src="/taipei.svg" alt="" />
@@ -102,6 +96,12 @@ watch(props, () => {
         </ul>
       </div>
     </div>
+    <img
+      v-show="showImg"
+      class="gif pict"
+      src="/taipei-day-trip-demo.gif"
+      alt=""
+    />
   </div>
 </template>
 
@@ -110,11 +110,13 @@ watch(props, () => {
   /* opacity: 0; */
   color: black;
   overflow: hidden;
+  /* width: 720px; */
   width: 720px;
   /* position: relative; */
   position: absolute;
-  left: -375px;
-  top: -93px;
+  /* left: -375px; */
+  top: -80px;
+  /* left: 120px; */
 }
 .taipei-block {
   position: relative;
@@ -195,10 +197,46 @@ li {
 .gif {
   bottom: 5px;
 }
-@media (max-width: 1000px) {
+@media (max-width: 850px) {
   .taipei-wrapper {
-    left: -340px;
-    top: -105px;
+    width: 90%;
+    overflow: visible;
+    /* height: 580px; */
+    z-index: 5;
+  }
+  .pict {
+    position: relative;
+    left: 0;
+    top: 70px;
+    width: 250px;
+  }
+}
+@media (max-width: 600px) {
+  .taipei-wrapper {
+    top: -30px;
+  }
+  .links {
+    width: 100%;
+  }
+  .title-line h3 {
+    font-size: 27px;
+  }
+  .intro {
+    margin-top: 120px;
+  }
+  .github {
+    margin: 0;
+  }
+  .logo {
+    top: 13px;
+    left: 150px;
+    width: 32px;
+  }
+  .imgs {
+    flex-direction: column;
+  }
+  .pict {
+    top: 210px;
   }
 }
 </style>

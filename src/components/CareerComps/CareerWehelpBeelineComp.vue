@@ -43,10 +43,10 @@ watch(props, () => {
 <template>
   <div v-show="show" class="beeline-wrapper">
     <div class="beeline-block" :class="{ 'beeline-block-in': blockBool }">
-      <div class="imgs" v-show="showImg">
+      <!-- <div class="imgs" v-show="showImg">
         <img class="png pict" src="/beeline-demo.png" alt="" />
         <img class="gif pict" src="/real-time-demo.gif" alt="" />
-      </div>
+      </div> -->
       <div class="title-line">
         <h3>beeline</h3>
         <img class="logo" src="/browser_logo.png" alt="" />
@@ -90,6 +90,10 @@ watch(props, () => {
           Socket.IO / WebRTC
         </li>
       </ul>
+      <div class="imgs" v-show="showImg">
+        <img class="png pict" src="/beeline-demo.png" alt="" />
+        <img class="gif pict" src="/real-time-demo.gif" alt="" />
+      </div>
     </div>
   </div>
 </template>
@@ -99,10 +103,14 @@ watch(props, () => {
   color: black;
   overflow: hidden;
   width: 720px;
+  /* width: 75%; */
   position: absolute;
   /* position: relative; */
-  left: -375px;
+  /* left: -375px; */
   top: -80px;
+  /* border: 1px solid #000; */
+  /* display: flex;
+  flex-direction: column; */
 }
 .beeline-block {
   position: relative;
@@ -192,8 +200,58 @@ li {
   bottom: 15px;
 }
 @media (max-width: 1000px) {
+  .pict {
+    width: 230px;
+  }
+  .gif {
+    bottom: 35px;
+  }
+}
+@media (max-width: 850px) {
   .beeline-wrapper {
-    left: -340px;
+    width: 90%;
+    overflow: visible;
+    /* height: 580px; */
+    z-index: 5;
+  }
+  .github {
+    display: block;
+    margin-left: 0;
+  }
+  .intro {
+    margin-top: -10px;
+  }
+  .imgs {
+    position: relative;
+    display: flex;
+    margin-top: 20px;
+    justify-content: space-around;
+  }
+  .pict {
+    position: relative;
+    right: -10px;
+    width: 210px;
+    left: 0;
+    top: 0;
+  }
+}
+@media (max-width: 600px) {
+  .beeline-wrapper {
+    top: -30px;
+  }
+  .title-line h3 {
+    font-size: 30px;
+  }
+  .logo {
+    left: 120px;
+    top: -13px;
+    width: 32px;
+  }
+  .imgs {
+    flex-direction: column;
+  }
+  .pict {
+    margin: 10px 0;
   }
 }
 </style>

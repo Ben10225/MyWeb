@@ -130,10 +130,36 @@ button:hover {
 }
 @media (max-width: 850px) {
   .wehelp-proj-wrapper {
-    flex-direction: column;
+    justify-content: space-around;
   }
   .proj {
-    margin: 5px 0;
+    /* margin: 5px 0; */
+    width: 260px;
+    margin: 0px;
+    /* flex-direction: column; */
+    align-items: center;
+    /* border: 1px solid #000; */
+  }
+  .logo {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    margin-right: 0;
+  }
+  .proj h6 {
+    text-align: left;
+  }
+  .info-block li {
+    width: 105px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    list-style-position: inside;
+  }
+}
+@media (max-width: 600px) {
+  .wehelp-proj-wrapper {
+    flex-direction: column;
   }
 }
 </style>

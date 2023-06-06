@@ -59,9 +59,4 @@ const projHandler = (resBool) => {
   /* background-color: red; */
   /* border: 1px solid #000; */
 }
-.decorate {
-  /* bottom: -30px; */
-  /* width: 100%; */
-  /* position: relative; */
-}
 </style>
