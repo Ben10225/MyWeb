@@ -136,12 +136,12 @@ p {
 .color-gray {
   color: #aaaaaa;
 }
-@media (max-height: 700px) {
+@media (max-height: 700px), (max-width: 1000px) {
   .info {
     font-size: 25px;
   }
   .key {
-    font-size: 13px;
+    font-size: 15px;
   }
   p {
     font-size: 15px;

@@ -43,10 +43,6 @@ watch(props, () => {
 <template>
   <div v-show="show" class="beeline-wrapper">
     <div class="beeline-block" :class="{ 'beeline-block-in': blockBool }">
-      <!-- <div class="imgs" v-show="showImg">
-        <img class="png pict" src="/beeline-demo.png" alt="" />
-        <img class="gif pict" src="/real-time-demo.gif" alt="" />
-      </div> -->
       <div class="title-line">
         <h3>beeline</h3>
         <img class="logo" src="/browser_logo.png" alt="" />

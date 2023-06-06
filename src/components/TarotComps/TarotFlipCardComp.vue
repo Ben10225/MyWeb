@@ -2,11 +2,11 @@
 import { ref, computed, watchEffect } from "vue";
 import { useWindowSize } from "@vueuse/core";
 
-const { width, height } = useWindowSize();
-const cardSize = ref({
-  width: 300,
-  height: 530,
-});
+// const { width, height } = useWindowSize();
+// const cardSize = ref({
+//   width: 300,
+//   height: 530,
+// });
 
 const props = defineProps({
   modeText: String,
@@ -23,22 +23,26 @@ const getTarotImgWidth = computed(() => {
   return cardSize.value.width === 300 ? 280 : 155;
 });
 
-watchEffect(() => {
-  if (height.value < 700) {
-    cardSize.value.width = 160;
-    cardSize.value.height = 300;
-  } else {
-    cardSize.value.width = 300;
-    cardSize.value.height = 530;
-  }
-});
+// watchEffect(() => {
+//   if (height.value < 700) {
+//     cardSize.value.width = 160;
+//     cardSize.value.height = 300;
+//   } else {
+//     cardSize.value.width = 300;
+//     cardSize.value.height = 530;
+//   }
+// });
 </script>
 
+<!-- 
+:style="{ width: `${cardSize.width}px`, height: `${cardSize.height}px` }"
+width: `${getTarotImgWidth}px`,
+
+ -->
 <template>
   <div class="flip-card-wrapper">
     <div
       class="flip-card make_sure"
-      :style="{ width: `${cardSize.width}px`, height: `${cardSize.height}px` }"
       :class="{
         'card-in': props.cardShow,
         'card-out': !props.cardShow,
@@ -51,10 +55,7 @@ watchEffect(() => {
           class="card-block back-block"
           :style="{ transform: `rotate(${props.degree}deg)` }"
         >
-          <div
-            class="card-back"
-            :style="{ width: `${getTarotImgWidth}px` }"
-          ></div>
+          <div class="card-back"></div>
         </div>
         <div class="card-block front-block">
           <img
@@ -62,7 +63,6 @@ watchEffect(() => {
             alt=""
             :style="{
               transform: `scale(${props.cardIsUpright})`,
-              width: `${getTarotImgWidth}px`,
             }"
           />
         </div>
@@ -71,7 +71,7 @@ watchEffect(() => {
           class="card-block front-block for-reverse"
           :class="{ 'for-reverse-show': props.forReverseImageOpacity }"
         >
-          <img :style="{ width: `${getTarotImgWidth}px` }" :src="url" alt="" />
+          <img :src="url" alt="" />
         </div>
       </div>
     </div>
@@ -86,7 +86,10 @@ watchEffect(() => {
   visibility: hidden;
   z-index: 100;
   transition: 0.8s;
+  width: 300px;
+  height: 530px;
   left: 0;
+  top: 0;
 }
 .make_sure {
   top: -60px;
@@ -157,6 +160,9 @@ watchEffect(() => {
   transition: 1s;
   user-select: none;
 }
+.card-block img {
+  border-radius: 15px;
+}
 .back-block {
   background-color: #fff;
   background-image: url("/back-new.jpg");
@@ -167,8 +173,24 @@ watchEffect(() => {
 .front-block {
   transform: rotateY(180deg);
 }
-/* .card {
-  width: 150px;
-  width: 280px;
-} */
+@media (max-height: 700px), (max-width: 1000px) {
+  .flip-card {
+    width: 180px;
+    height: 330px;
+  }
+  .card-block img {
+    width: 180px;
+    height: 330px;
+    border-radius: 10px;
+  }
+  .card-left {
+    left: -250px;
+  }
+}
+@media (max-width: 850px) {
+  .card-left {
+    left: 0px;
+    transform: translateY(-200px);
+  }
+}
 </style>

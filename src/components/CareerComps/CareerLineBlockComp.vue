@@ -158,7 +158,6 @@ setTimeout(() => {
   font-size: 18px;
 }
 .ic {
-  /* position: absolute; */
   position: relative;
   font-size: 70px;
   top: -15px;
@@ -232,7 +231,6 @@ p {
 @media (max-width: 600px) {
   .line-wrapper {
     margin-left: -15px;
-    /* display: none; */
   }
   .ic {
     display: none;

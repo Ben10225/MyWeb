@@ -176,6 +176,7 @@ const restartResHandler = (res) => {
 }
 .outter {
   width: 800px;
+  /* height: 100%; */
   /* height: 10px; */
   /* border: 1px solid #000; */
   position: relative;
@@ -287,5 +288,34 @@ button:hover {
   left: 51%;
   transform: translate(-50%, -50%) scaleX(1.1);
   opacity: 0.1;
+}
+@media (max-width: 1000px) {
+  .outter {
+    margin-left: 30px;
+    width: 80%;
+  }
+  .cards-wrapper {
+    transform: scale(0.85);
+  }
+}
+@media (max-width: 850px) {
+  .cards-wrapper {
+    transform: scale(0.75);
+  }
+}
+@media (max-width: 750px) {
+  .cards-wrapper {
+    transform: scale(0.7);
+  }
+}
+@media (max-width: 685px) {
+  .cards-wrapper {
+    transform: scale(0.65);
+  }
+}
+@media (max-width: 650px) {
+  .cards-wrapper {
+    transform: scale(0.61);
+  }
 }
 </style>

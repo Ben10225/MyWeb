@@ -161,9 +161,17 @@ watchEffect(() => {
 
 <template>
   <!-- <TarotCardEditMode v-if="false" /> -->
+  <!-- <div
+    class="background"
+    :class="{ 'background-in': props.show }"
+    @click="clickBgHandler"
+  ></div> -->
   <div
     class="show-card-wrapper"
-    :class="{ 'show-card-wrapper-in': wrapperZindex }"
+    :class="{
+      'show-card-wrapper-in': wrapperZindex,
+      'show-card-height': mode === 'secondInfo',
+    }"
   >
     <div
       class="background"
@@ -205,12 +213,17 @@ watchEffect(() => {
         class="text-block"
         :class="{ 'text-block-show': mode === 'secondInfo' }"
       >
+        <!-- <div class="height-block"></div> -->
         <TarotCardContent :content="content" />
-        <div class="buttons end-btn" :class="{ 'end-btn-show': endBtnOpacity }">
-          <button :class="{ 'btn-prevent': stopEndBtn }" @click="endHandler">
-            結束占卜
-          </button>
-        </div>
+      </div>
+      <div
+        v-show="mode === 'secondInfo'"
+        class="buttons end-btn"
+        :class="{ 'end-btn-show': endBtnOpacity }"
+      >
+        <button :class="{ 'btn-prevent': stopEndBtn }" @click="endHandler">
+          結束占卜
+        </button>
       </div>
     </div>
   </div>
@@ -285,8 +298,8 @@ button:hover {
   opacity: 0.7;
 }
 .end-btn {
-  text-align: left;
-  bottom: -110px;
+  text-align: center;
+  bottom: -35px;
   opacity: 0;
   user-select: none;
 }
@@ -295,7 +308,7 @@ button:hover {
 }
 .first-info {
   position: absolute;
-  bottom: -90px;
+  bottom: -115px;
   width: 100%;
   text-align: center;
 }
@@ -311,11 +324,13 @@ button:hover {
 }
 .icon-next {
   font-size: 22px;
-  margin-top: 20px;
+  margin-top: 15px;
   opacity: 0.5;
   cursor: pointer;
   transition: 0.3s;
   color: #a3a3a3;
+  /* border: 1px solid #fff; */
+  padding: 10px;
 }
 .icon-next:hover {
   opacity: 1;
@@ -325,13 +340,36 @@ button:hover {
 .btn-prevent {
   pointer-events: none;
 }
-@media (max-height: 700px) {
+.height-block {
+  width: 30px;
+  height: 400px;
+  background-color: red;
+}
+@media (max-height: 700px), (max-width: 1000px) {
   .text-block {
     top: -105px;
-    left: -40px;
+    left: -25px;
+  }
+  .first-info h4 {
+    font-size: 25px;
   }
   .end-btn {
     bottom: -80px;
+  }
+}
+@media (max-width: 850px) {
+  .show-card-height {
+    min-height: 900px;
+  }
+  .center-block {
+    margin-left: 30px;
+  }
+  .text-block {
+    top: 90px;
+    left: -160px;
+  }
+  .end-btn {
+    bottom: -250px;
   }
 }
 </style>
