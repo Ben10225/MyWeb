@@ -160,12 +160,6 @@ const getLowerTop = (i) => {
 };
 
 const getLowerRotate = (i) => {
-  // if (autoSelectIndex.value === i) {
-  //   if (autoSelectIndex.value > 39) {
-  //     return 360;
-  //   }
-  //   return 0;
-  // }
   return (i - 1) * 4.7 + 3.5;
 };
 
@@ -185,8 +179,6 @@ const startLowerGame = () => {
     cardSoloShow.value = true;
     nowClickIndex.value = autoSelectIndex.value;
     selectCardData.value = store.tarots[autoSelectIndex.value];
-
-    console.log(autoSelectIndex.value);
   }, 5500);
 };
 </script>
@@ -390,17 +382,11 @@ button {
   z-index: 500;
   transform-origin: 50% -2645%;
   cursor: pointer;
-  /* background-color: #222; */
-
-  /* top: 190px;
-  transform-origin: 100% 0%; */
 }
 .bg-block {
   position: absolute;
   width: 100%;
   height: 100%;
-  /* border: 1px solid #000; */
-  /* background-color: red; */
 }
 .bg {
   position: absolute;
@@ -467,9 +453,6 @@ button {
 }
 .lower-start-btn {
   margin: 0;
-  /* position: absolute;
-  left: 50%;
-  top: 50%; */
   transform: scale(1.1);
   cursor: pointer;
   transition: 0.3s;
@@ -479,7 +462,6 @@ button {
   transform: scale(1);
 }
 .lower-center-block {
-  /* border: 1px solid #000; */
   width: 300px;
   position: absolute;
   display: flex;
