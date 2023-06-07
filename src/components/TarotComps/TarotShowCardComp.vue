@@ -9,6 +9,7 @@ import TarotFlipCard from "./TarotFlipCardComp.vue";
 const props = defineProps({
   show: Boolean,
   data: Object,
+  window: String,
 });
 const emit = defineEmits(["back", "restart"]);
 
@@ -155,6 +156,14 @@ watchEffect(() => {
     stopThreeBtns.value = false;
     wrapperZindex.value = true;
     getCardData(props.data);
+
+    if (props.window === "lower") {
+      mode.value = "blank";
+      open.value = true;
+      setTimeout(() => {
+        mode.value = "firstInfo";
+      }, 1700);
+    }
   }
 });
 </script>
@@ -190,7 +199,10 @@ watchEffect(() => {
           :url="url"
           :for-reverse-image-opacity="forReverseImageOpacity"
         />
-        <div v-show="mode === 'selecting'" class="buttons">
+        <div
+          v-show="mode === 'selecting' && props.window === 'upper'"
+          class="buttons"
+        >
           <TarotThreeBtns
             :stop-three-btns="stopThreeBtns"
             @back-btn-click="backCardHandler"
@@ -260,7 +272,7 @@ watchEffect(() => {
   transition: 0.6s;
 }
 .background-in {
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.9);
   backdrop-filter: blur(2px);
 }
 .center-block {
@@ -370,6 +382,25 @@ button:hover {
   }
   .end-btn {
     bottom: -250px;
+  }
+}
+@media (max-width: 600px) {
+  .show-card-height {
+    min-height: 900px;
+    /* overflow-y: scroll; */
+    overflow: hidden;
+  }
+  .center-block {
+    margin-left: 0px;
+  }
+  .text-block {
+    top: 120px;
+    left: -84px;
+    /* width: 330px; */
+  }
+  .end-btn {
+    bottom: -270px;
+    transform: scale(0.8);
   }
 }
 </style>

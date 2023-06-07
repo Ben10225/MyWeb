@@ -12,6 +12,10 @@ const top = ref(0);
 const card = ref(false);
 const timer = ref(null);
 const isclicked = ref(false);
+// const selectRange = ref(false);
+
+const originX = ref(50);
+const originY = ref(-90);
 
 const mouseEnterHandler = () => {
   card.value = true;
@@ -31,6 +35,7 @@ const mouseLeaveHandler = () => {
 const returnCard = computed(() => {
   if (card.value) return true;
   if (props.hoverStay[0] && props.hoverStay[1] === props.card[1]) return true;
+  // if (selectRange.value) return true;
   return false;
 });
 
@@ -50,7 +55,27 @@ watchEffect(() => {
     isclicked.value = false;
   }
 });
+
+// if (props.card[1] < 39) {
+//   let tmp = props.card[1];
+//   if (tmp > 19) {
+//     tmp = -(tmp - 37);
+//   }
+//   console.log(props.card[1], -90 + tmp);
+//   originY.value = -90 + tmp;
+// } else {
+//   let tmp = props.card[1] - 39;
+//   if (tmp > 19) {
+//     tmp = -(tmp - 39);
+//   }
+//   originY.value = -90 + tmp;
+//   console.log(props.card[1], -90 + tmp);
+// }
 </script>
+
+<!-- 
+    :style="{ 'transform-origin': `${originX}% ${originY}%` }"
+ -->
 
 <template>
   <div class="card-block-wrapper">
@@ -74,6 +99,8 @@ watchEffect(() => {
   /* border: 1px solid red; */
   width: 150px;
   height: 320px;
+  /* height: 1000px; */
+  /* transform-origin: 50% -10%; */
   transform-origin: 50% -500%;
 }
 .card-block {
@@ -83,8 +110,6 @@ watchEffect(() => {
   /* border: 1px solid #fff; */
   cursor: pointer;
   z-index: 400;
-  /* background-color: blue; */
-  /* transform-origin: 50% -500%; */
 }
 .card {
   position: absolute;
@@ -108,5 +133,13 @@ watchEffect(() => {
 .card-is-clicked {
   top: 70px !important;
   outline: 2px solid #b61717;
+}
+@media (max-width: 600px) {
+  .card-block {
+    transform: rotate(180deg);
+  }
+  .origibn-70 {
+    transform-origin: 50% -70%;
+  }
 }
 </style>

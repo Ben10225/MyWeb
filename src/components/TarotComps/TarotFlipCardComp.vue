@@ -1,13 +1,4 @@
 <script setup>
-import { ref, computed, watchEffect } from "vue";
-import { useWindowSize } from "@vueuse/core";
-
-// const { width, height } = useWindowSize();
-// const cardSize = ref({
-//   width: 300,
-//   height: 530,
-// });
-
 const props = defineProps({
   modeText: String,
   cardShow: Boolean,
@@ -18,27 +9,8 @@ const props = defineProps({
   url: String,
   forReverseImageOpacity: Boolean,
 });
-
-const getTarotImgWidth = computed(() => {
-  return cardSize.value.width === 300 ? 280 : 155;
-});
-
-// watchEffect(() => {
-//   if (height.value < 700) {
-//     cardSize.value.width = 160;
-//     cardSize.value.height = 300;
-//   } else {
-//     cardSize.value.width = 300;
-//     cardSize.value.height = 530;
-//   }
-// });
 </script>
 
-<!-- 
-:style="{ width: `${cardSize.width}px`, height: `${cardSize.height}px` }"
-width: `${getTarotImgWidth}px`,
-
- -->
 <template>
   <div class="flip-card-wrapper">
     <div
@@ -46,8 +18,10 @@ width: `${getTarotImgWidth}px`,
       :class="{
         'card-in': props.cardShow,
         'card-out': !props.cardShow,
+        'card-top': props.modeText === 'secondInfo' || props.modeText === 'end',
         'card-left':
           props.modeText === 'secondInfo' || props.modeText === 'end',
+        'card-top': props.modeText === 'secondInfo' || props.modeText === 'end',
       }"
     >
       <div class="flip-card-inner" :class="{ open: props.cardOpenAni }">
@@ -191,6 +165,11 @@ width: `${getTarotImgWidth}px`,
   .card-left {
     left: 0px;
     transform: translateY(-200px);
+  }
+}
+@media (max-width: 600px) {
+  .card-top {
+    transform: translateY(-170px);
   }
 }
 </style>

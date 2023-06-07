@@ -152,4 +152,22 @@ p {
     margin-top: 10px;
   }
 }
+@media (max-width: 600px) {
+  .card-content-wrapper {
+    width: 70%;
+  }
+  .info {
+    font-size: 20px;
+    letter-spacing: 0.01em;
+  }
+  .key {
+    font-size: 11px;
+  }
+  p {
+    font-size: 14px;
+  }
+  .bottom-block h3 {
+    font-size: 14px;
+  }
+}
 </style>
