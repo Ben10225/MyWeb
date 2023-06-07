@@ -21,6 +21,7 @@ const getEmits = (res) => {
 };
 
 const backHandler = () => {
+  console.log(projShow.value);
   projId.value = -2;
   store.inProjPage = false;
 };
@@ -137,9 +138,6 @@ watch(props, (nV) => {
   cursor: pointer;
   pointer-events: none;
   z-index: 10;
-}
-.back:hover {
-  opacity: 0.8;
 }
 .arrow-show {
   opacity: 0.5;
