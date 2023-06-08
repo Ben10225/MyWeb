@@ -128,10 +128,7 @@ setTimeout(() => {
 <style scoped>
 .line-wrapper {
   width: 800px;
-  /* position: absolute; */
   position: relative;
-  /* bottom: 110px; */
-  /* border: 1px solid #000; */
   margin-bottom: 70px;
   margin-top: 40px;
 }
@@ -140,7 +137,6 @@ setTimeout(() => {
   display: flex;
   flex-direction: row;
   position: relative;
-  /* gap: 30px; */
 }
 .work-block {
   height: 40px;

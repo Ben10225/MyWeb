@@ -21,7 +21,6 @@ const getEmits = (res) => {
 };
 
 const backHandler = () => {
-  console.log(projShow.value);
   projId.value = -2;
   store.inProjPage = false;
 };
@@ -128,7 +127,6 @@ watch(props, (nV) => {
 }
 .back {
   position: relative;
-  /* position: absolute; */
   font-size: 45px;
   color: rgb(175, 175, 175);
   top: 23px;
@@ -147,7 +145,6 @@ watch(props, (nV) => {
   width: 100%;
   display: flex;
   flex-direction: row;
-  /* align-items: center; */
   justify-content: center;
   position: relative;
 }

@@ -74,9 +74,6 @@ import BioDecorate from "../components/BioComps/BioDecorateComp.vue";
 }
 
 .info-block {
-  /* width: 85vw; */
-  /* border: 1px solid #000; */
-
   margin-left: 25px;
   margin-top: 221px;
   z-index: 10;

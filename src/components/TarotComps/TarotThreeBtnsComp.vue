@@ -62,7 +62,6 @@ const openCardBtnHandler = () => {
   justify-content: center;
 }
 .buttons {
-  /* width: 300px; */
   text-align: center;
   position: absolute;
   bottom: -70px;

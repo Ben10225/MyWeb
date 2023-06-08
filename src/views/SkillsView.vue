@@ -46,13 +46,11 @@ const responseHandler = () => {
   background-color: #ffffff;
   display: flex;
   justify-content: center;
-  /* align-items: center; */
   position: relative;
   overflow-x: hidden;
 }
 .outter {
   width: 800px;
-  /* height: 800px; */
   position: relative;
 }
 h1 {

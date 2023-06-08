@@ -23,7 +23,6 @@ const store = useData();
     </div>
     <div class="right-wrapper">
       <RouterView />
-      <!-- <footer></footer> -->
     </div>
   </div>
 </template>
@@ -32,7 +31,6 @@ const store = useData();
 .wrapper {
   display: flex;
   flex-direction: row;
-  /* background-color: red; */
 }
 .left-wrapper {
   background-color: #ffc800;
@@ -83,7 +81,6 @@ const store = useData();
   height: 100vh;
 }
 .logo {
-  /* position: relative; */
   margin-top: 0;
 }
 .solo {

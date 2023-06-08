@@ -180,7 +180,6 @@ onMounted(() => {
   opacity: 1;
 }
 .pict-block {
-  /* position: absolute; */
   position: relative;
 }
 .decorate {

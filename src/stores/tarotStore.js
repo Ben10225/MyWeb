@@ -71,7 +71,5 @@ export const useTarot = defineStore("tarotCt", () => {
   };
 
   oneCardDeck();
-  // newDeck();
-  // shuffle(tarots.value);
   return { tarots, getNewShuffle, oneCardDeck };
 });

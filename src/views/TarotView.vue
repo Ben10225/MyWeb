@@ -2,6 +2,7 @@
 import TarotDecorate from "../components/TarotComps/TarotDecorateComp.vue";
 import TarotCard from "../components/TarotComps/TarotCardComp.vue";
 import TarotShowCard from "../components/TarotComps/TarotShowCardComp.vue";
+import TarotLowerWindow from "../components/TarotComps/TarotLowerWindowComp.vue";
 import { ref, computed, watchEffect } from "vue";
 import { useTarot } from "../stores/tarotStore";
 import { useWindowSize } from "@vueuse/core";
@@ -9,21 +10,20 @@ import { useWindowSize } from "@vueuse/core";
 const { width } = useWindowSize();
 
 const store = useTarot();
+const window = ref("");
 const mode = ref("waiting");
 const extraClick = ref(0);
+const lowerRestart = ref(0);
 const nowHoverIndex = ref(-1);
 const nowClickIndex = ref(-1);
 const ani = ref(false);
 const extraHover = ref(false);
 const cardSoloShow = ref(false);
+const lowerWindowChild = ref(null);
 const selectCardData = ref({
   id: null,
   upright: null,
 });
-
-const lowerCt = ref(0);
-const autoSelectIndex = ref(-1);
-const window = ref("upper");
 
 const getNewShuffle = () => {
   store.getNewShuffle();
@@ -113,9 +113,8 @@ const restartResHandler = (res) => {
     nowClickIndex.value = -1;
     oneCardDeck();
   } else {
-    autoSelectIndex.value = -1;
-    lowerCt.value = 0;
-    getNewShuffle();
+    lowerRestart.value++;
+    lowerWindowChild.value.restart();
   }
   mode.value = "reset";
   ani.value = false;
@@ -124,106 +123,49 @@ const restartResHandler = (res) => {
   }, 600);
 };
 
+const lowerGameStartHandler = (res) => {
+  mode.value = "autoSelecting";
+};
+
+const lowerShowCardHandler = (res) => {
+  cardSoloShow.value = true;
+  nowClickIndex.value = res;
+  selectCardData.value = store.tarots[res];
+};
+
 watchEffect(() => {
   if (width.value <= 600) {
+    if (window.value === "upper") {
+      location.reload();
+    }
     window.value = "lower";
   } else {
+    if (window.value === "lower") {
+      location.reload();
+    }
     window.value = "upper";
   }
 });
-
-const getLowerTop = (i) => {
-  if (autoSelectIndex.value === i) {
-    return 0;
-  }
-  if (mode.value === "waiting") {
-    return 700;
-  }
-  if (lowerCt.value !== i) return;
-  let top;
-  if (i <= 39) {
-    if (i <= 19) {
-      top = 230 - 4 * i;
-    } else {
-      let tmp = -(i - 39);
-      top = 230 - 4 * tmp;
-    }
-  } else {
-    if (i <= 58) {
-      let tmp = i - 40;
-      top = 230 - 4 * tmp;
-    } else {
-      top = 230 - 4 * (77 - i);
-    }
-  }
-  return top;
-};
-
-const getLowerRotate = (i) => {
-  return (i - 1) * 4.7 + 3.5;
-};
-
-const startLowerGame = () => {
-  getNewShuffle();
-  mode.value = "autoSelecting";
-  const timer = setInterval(() => {
-    lowerCt.value++;
-    if (lowerCt.value === 80) {
-      clearInterval(timer);
-    }
-  }, 25);
-  setTimeout(() => {
-    autoSelectIndex.value = Math.floor(Math.random() * 74);
-  }, 5000);
-  setTimeout(() => {
-    cardSoloShow.value = true;
-    nowClickIndex.value = autoSelectIndex.value;
-    selectCardData.value = store.tarots[autoSelectIndex.value];
-  }, 5500);
-};
 </script>
 
 <template>
-  <div class="tarot-wrapper">
+  <div
+    class="tarot-wrapper"
+    :class="{ 'tarot-wrapper-ovh': mode === 'reset' || mode === 'waiting' }"
+  >
     <div class="bg-block">
       <img class="bg bg-top" src="/tarot-top.svg" alt="" />
       <img class="bg bg-bot" src="/tarot-bot.svg" alt="" />
       <img class="bg bg-center" src="/tarot-center.svg" alt="" />
     </div>
-    <div class="tarot-lower-block" v-if="window === 'lower'">
-      <div class="lower-center-block">
-        <div class="second-instruction" v-show="mode === 'autoSelecting'">
-          <h3 class="lower-instruction">系統將自動選排</h3>
-          <h3 class="lower-instruction">請稍候</h3>
-        </div>
-        <h3 class="lower-instruction" v-show="mode === 'waiting'">
-          {{ getInstruction }}
-        </h3>
-        <button
-          class="lower-start-btn"
-          v-show="mode === 'waiting'"
-          @click="startLowerGame"
-        >
-          開始占卜
-        </button>
-      </div>
-      <div class="tarot-lower-block-inner" v-show="mode !== 'reset'">
-        <div
-          class="tarot-card-outter"
-          v-for="i of 78"
-          :key="i"
-          :style="{
-            transform: `rotate(${getLowerRotate(i - 1)}deg)`,
-            transformOrigin: `0% 0%`,
-          }"
-        >
-          <div
-            class="tarot-card"
-            :style="{ top: `${getLowerTop(i - 1)}px` }"
-          ></div>
-        </div>
-      </div>
-    </div>
+    <TarotLowerWindow
+      :window="window"
+      :mode="mode"
+      :lower-restart="lowerRestart"
+      @game-start="lowerGameStartHandler"
+      @lower-show-card="lowerShowCardHandler"
+      ref="lowerWindowChild"
+    />
     <TarotDecorate />
     <TarotShowCard
       :show="cardSoloShow"
@@ -292,11 +234,11 @@ const startLowerGame = () => {
   justify-content: center;
   position: relative;
 }
+.tarot-wrapper-ovh {
+  overflow: hidden;
+}
 .outter {
   width: 800px;
-  /* height: 100%; */
-  /* height: 10px; */
-  /* border: 1px solid #000; */
   position: relative;
   display: flex;
   justify-content: center;
@@ -332,7 +274,6 @@ h1 {
 }
 button {
   position: absolute;
-  /* top: 500px; */
   padding: 6px 10px 6px 12px;
   cursor: pointer;
   border: none;
@@ -349,7 +290,6 @@ button {
   background-color: rgba(245, 237, 224, 0.8);
 }
 .normal-btn:hover {
-  /* background-color: #ffffff; */
   transform: scale(1);
 }
 .cards-wrapper {
@@ -358,16 +298,13 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* border: 1px solid red; */
   margin-top: 170px;
   position: relative;
 }
 .cards {
   transition: 0.8s !important;
-  /* transform-origin: 50% -20%; */
 }
 .one-card-ani {
-  /* transition: 0.8s; */
   transition: 0s;
 }
 .stop-hover {
@@ -387,6 +324,7 @@ button {
   position: absolute;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 .bg {
   position: absolute;
@@ -407,89 +345,10 @@ button {
   transform: translate(-50%, -50%) scaleX(1.1);
   opacity: 0.1;
 }
-.tarot-lower-block {
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
-  z-index: 100;
-  overflow: hidden;
-  /* background-color: red; */
-}
-.tarot-lower-block-inner {
-  position: absolute;
-  left: 50%;
-  top: 52%;
-  transform: translateX(-50%);
-}
-.tarot-card-outter {
-  position: absolute;
-  width: 130px;
-  height: 350px;
-  /* border: 1px solid #000; */
-  pointer-events: none;
-  transition: 1.2s;
-  transition-delay: 0.3s;
-}
-.tarot-card {
-  position: absolute;
-  left: -50%;
-  /* top: 300px; */
-  width: 140px;
-  height: 250px;
-  background-image: url("/back-new.jpg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  border: 1px solid #999;
-  border-radius: 12px;
-  background-color: #fff;
-  transition: 1.3s;
-}
-.lower-center-block {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-.lower-start-btn {
-  margin: 0;
-  transform: scale(1.1);
-  cursor: pointer;
-  transition: 0.3s;
-  margin-top: 20px;
-}
-.lower-start-btn:hover {
-  transform: scale(1);
-}
-.lower-center-block {
-  width: 300px;
-  position: absolute;
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  flex-direction: column;
-}
-.lower-instruction {
-  font-weight: 400;
-  font-size: 18px;
-  letter-spacing: 0.01em;
-  color: #555;
-  text-shadow: 1px 1px 0px #ffffff;
-  margin-top: 45px;
-  margin-left: 8px;
-  position: relative;
-  top: 30px;
-}
-.second-instruction {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  position: absolute;
-  top: -40px;
-}
-.second-instruction .lower-instruction {
-  margin-top: 6px;
-  margin-left: 0;
+@media (max-height: 550px) {
+  .tarot-wrapper {
+    height: 550px;
+  }
 }
 @media (max-width: 1000px) {
   .outter {

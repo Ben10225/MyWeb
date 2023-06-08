@@ -13,4 +13,9 @@
   top: 0px;
   position: fixed;
 }
+@media (max-height: 550px) {
+  .under-one {
+    position: absolute;
+  }
+}
 </style>

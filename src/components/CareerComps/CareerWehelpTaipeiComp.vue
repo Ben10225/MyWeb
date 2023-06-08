@@ -107,16 +107,11 @@ watch(props, () => {
 
 <style scoped>
 .taipei-wrapper {
-  /* opacity: 0; */
   color: black;
   overflow: hidden;
-  /* width: 720px; */
   width: 720px;
-  /* position: relative; */
   position: absolute;
-  /* left: -375px; */
   top: -80px;
-  /* left: 120px; */
 }
 .taipei-block {
   position: relative;

@@ -99,14 +99,8 @@ watch(props, () => {
   color: black;
   overflow: hidden;
   width: 720px;
-  /* width: 75%; */
   position: absolute;
-  /* position: relative; */
-  /* left: -375px; */
   top: -80px;
-  /* border: 1px solid #000; */
-  /* display: flex;
-  flex-direction: column; */
 }
 .beeline-block {
   position: relative;
@@ -207,7 +201,6 @@ li {
   .beeline-wrapper {
     width: 90%;
     overflow: visible;
-    /* height: 580px; */
     z-index: 5;
   }
   .github {

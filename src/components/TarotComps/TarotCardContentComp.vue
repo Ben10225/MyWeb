@@ -138,17 +138,17 @@ p {
 }
 @media (max-height: 700px), (max-width: 1000px) {
   .info {
-    font-size: 25px;
+    font-size: 22px;
   }
   .key {
-    font-size: 15px;
+    font-size: 13px;
   }
   p {
-    font-size: 15px;
+    font-size: 14px;
     margin: 7px 0;
   }
   .bottom-block h3 {
-    font-size: 16px;
+    font-size: 15px;
     margin-top: 10px;
   }
 }

@@ -71,18 +71,14 @@ watchEffect(() => {
 <style scoped>
 .card-block-wrapper {
   position: absolute;
-  /* border: 1px solid red; */
   width: 150px;
   height: 320px;
-  /* height: 1000px; */
-  /* transform-origin: 50% -10%; */
   transform-origin: 50% -500%;
 }
 .card-block {
   position: absolute;
   width: 150px;
   height: 320px;
-  /* border: 1px solid #fff; */
   cursor: pointer;
   z-index: 400;
 }

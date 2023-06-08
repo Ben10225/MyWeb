@@ -23,7 +23,6 @@ const decos = ref([
     left: 870,
     top: 640,
     border: "none",
-    // transform: "rotate(0deg)",
   },
 ]);
 
@@ -195,21 +194,6 @@ setInterval(() => {
         }"
       ></div>
     </div>
-    <!-- <div class="pict-block" v-for="deco of pictBlockDeco" :key="deco.id">
-      <div
-        class="decorate"
-        :style="{
-          backgroundColor: `${deco.backgroundColor}`,
-          width: `${deco.width}px`,
-          height: `${deco.height}px`,
-          left: `${deco.left}px`,
-          top: `${deco.top}px`,
-          border: `${deco.border}`,
-          borderRadius: `${deco.borderRadius}`,
-          transform: `${deco.transform}`,
-        }"
-      ></div>
-    </div> -->
     <div class="cross-block" v-for="deco of crossDeco" :key="deco.id">
       <div
         class="decorate"
@@ -297,7 +281,6 @@ setInterval(() => {
   .big-one {
     left: -30px;
   }
-
   .cross-block {
     top: 300px;
     left: -130px;

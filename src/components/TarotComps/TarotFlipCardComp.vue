@@ -29,7 +29,7 @@ const props = defineProps({
           class="card-block back-block"
           :style="{ transform: `rotate(${props.degree}deg)` }"
         >
-          <div class="card-back"></div>
+          <!-- <div class="card-back"></div> -->
         </div>
         <div class="card-block front-block">
           <img
@@ -60,8 +60,8 @@ const props = defineProps({
   visibility: hidden;
   z-index: 100;
   transition: 0.8s;
-  width: 300px;
-  height: 530px;
+  width: 265px;
+  height: 470px;
   left: 0;
   top: 0;
 }
@@ -111,7 +111,6 @@ const props = defineProps({
   position: relative;
   width: 100%;
   height: 100%;
-  /* text-align: center; */
   transition: transform 2s ease;
   transform-style: preserve-3d;
 }
@@ -136,6 +135,8 @@ const props = defineProps({
 }
 .card-block img {
   border-radius: 15px;
+  width: inherit;
+  height: inherit;
 }
 .back-block {
   background-color: #fff;

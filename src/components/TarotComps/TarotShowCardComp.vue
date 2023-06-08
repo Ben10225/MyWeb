@@ -169,12 +169,6 @@ watchEffect(() => {
 </script>
 
 <template>
-  <!-- <TarotCardEditMode v-if="false" /> -->
-  <!-- <div
-    class="background"
-    :class="{ 'background-in': props.show }"
-    @click="clickBgHandler"
-  ></div> -->
   <div
     class="show-card-wrapper"
     :class="{
@@ -225,7 +219,6 @@ watchEffect(() => {
         class="text-block"
         :class="{ 'text-block-show': mode === 'secondInfo' }"
       >
-        <!-- <div class="height-block"></div> -->
         <TarotCardContent :content="content" />
       </div>
       <div
@@ -281,8 +274,8 @@ watchEffect(() => {
 .text-block {
   width: 500px;
   position: absolute;
-  top: -45px;
-  left: 100px;
+  top: -81px;
+  left: 70px;
 }
 .buttons {
   width: 100%;
@@ -311,7 +304,7 @@ button:hover {
 }
 .end-btn {
   text-align: center;
-  bottom: -35px;
+  bottom: -45px;
   opacity: 0;
   user-select: none;
 }
@@ -320,13 +313,13 @@ button:hover {
 }
 .first-info {
   position: absolute;
-  bottom: -115px;
+  bottom: -95px;
   width: 100%;
   text-align: center;
 }
 .first-info h4 {
   color: #ffffff;
-  font-size: 30px;
+  font-size: 27px;
   letter-spacing: 0.1em;
 }
 .first-info h5 {
@@ -336,12 +329,11 @@ button:hover {
 }
 .icon-next {
   font-size: 22px;
-  margin-top: 15px;
+  margin-top: 11px;
   opacity: 0.5;
   cursor: pointer;
   transition: 0.3s;
   color: #a3a3a3;
-  /* border: 1px solid #fff; */
   padding: 10px;
 }
 .icon-next:hover {
@@ -352,21 +344,16 @@ button:hover {
 .btn-prevent {
   pointer-events: none;
 }
-.height-block {
-  width: 30px;
-  height: 400px;
-  background-color: red;
-}
 @media (max-height: 700px), (max-width: 1000px) {
   .text-block {
-    top: -105px;
+    top: -90px;
     left: -25px;
   }
   .first-info h4 {
     font-size: 25px;
   }
   .end-btn {
-    bottom: -80px;
+    bottom: -60px;
   }
 }
 @media (max-width: 850px) {
@@ -387,7 +374,6 @@ button:hover {
 @media (max-width: 600px) {
   .show-card-height {
     min-height: 900px;
-    /* overflow-y: scroll; */
     overflow: hidden;
   }
   .center-block {
@@ -396,7 +382,6 @@ button:hover {
   .text-block {
     top: 120px;
     left: -84px;
-    /* width: 330px; */
   }
   .end-btn {
     bottom: -270px;
