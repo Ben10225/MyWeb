@@ -81,7 +81,7 @@ defineExpose({
   <div class="tarot-lower-block" v-if="props.window === 'lower'">
     <div class="lower-center-block">
       <div class="second-instruction" v-show="props.mode === 'autoSelecting'">
-        <h3 class="lower-instruction">系統將自動選排</h3>
+        <h3 class="lower-instruction">系統將自動選牌</h3>
         <h3 class="lower-instruction">請稍候</h3>
       </div>
       <h3 class="lower-instruction" v-show="props.mode === 'waiting'">
