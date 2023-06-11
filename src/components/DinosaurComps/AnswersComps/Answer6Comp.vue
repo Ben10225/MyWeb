@@ -3,8 +3,6 @@
 <template>
   <div class="content">
     <p>這份網頁我使用了以下相關技術：</p>
-    <br />
-
     <div>
       <div class="short">Vue 3</div>
       → 前端網頁框架使用。
@@ -25,7 +23,10 @@
       <div class="short">Firebase</div>
       → 部署網頁，以及資料庫操作。
     </div>
-    <div>GitHub Actions → 搭配 Firebase 實作 ci / cd。</div>
+    <div>
+      <div class="long">GitHub Actions</div>
+      → 搭配 Firebase 實作 ci / cd。
+    </div>
     <br />
     <div>以及一顆享受開發的心。</div>
   </div>
@@ -33,11 +34,15 @@
 
 <style scoped>
 p {
-  font-size: 13px;
-  color: #c0c0c0;
+  margin-bottom: 15px;
 }
 .short {
-  width: 60px;
+  width: 70px;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+.long {
+  width: 120px;
   display: inline-block;
 }
 </style>

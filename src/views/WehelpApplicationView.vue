@@ -12,7 +12,7 @@ const cactus = ref(null);
 const bricks = ref(null);
 const answer = ref(null);
 const jumpStatus = ref(false);
-const distance = ref(30);
+const distance = ref(50); // 30
 const walking = ref(false);
 const stillPressRight = ref(false);
 const stopForward = ref(false);
@@ -48,14 +48,16 @@ const pressUp = (e) => {
   walking.value = false;
   if (e.keyCode === 38 && !jumpStatus.value) {
     const brickLeftPx = bricks.value.brickNowLeft();
-    if (brickLeftPx <= 350) {
+    // if (brickLeftPx <= 350) {
+    if (brickLeftPx <= 445) {
       bricks.value.brickTouch();
       bricks.value.pngBlockShow();
       bricks.value.QMarkHide();
       answer.value.ansShow();
+      answerShow.value = true;
       setTimeout(() => {
-        answerShow.value = true;
-      }, 1500);
+        clouds.value.stopClouds();
+      }, 1100);
     }
     dinoUrl.value = "/dino-jump.png";
     jumpStatus.value = true;
@@ -69,7 +71,8 @@ const pressUp = (e) => {
       {
         duration: 0.4,
         x: distance.value,
-        y: -90,
+        // y: -90,
+        y: -108,
         ease: "power1.out",
       }
     ).to(dino.value, {
@@ -138,7 +141,8 @@ onUnmounted(() => window.addEventListener("keyup", keyUpHandler));
 setInterval(() => {
   clouds.value.cloudLefting();
   if (walking.value) {
-    if (distance.value <= 300) {
+    // if (distance.value <= 300) {
+    if (distance.value <= 390) {
       distance.value += speed.value;
     } else {
       if (!stopForward.value) {
@@ -152,9 +156,6 @@ setInterval(() => {
 watchEffect(() => {
   if (walking.value) {
     dinoRun();
-  }
-  if (answerShow.value) {
-    clouds.value.stopClouds();
   }
 });
 </script>
@@ -208,15 +209,18 @@ watchEffect(() => {
 }
 .game-block {
   position: relative;
-  width: 650px;
+  /* width: 650px; */
+  width: 850px;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
 }
 .application {
   position: relative;
-  height: 400px;
+  /* height: 400px; */
+  height: 500px;
   overflow: hidden;
+  /* border: 1px solid #000; */
 }
 .application .bg {
   width: 100%;
@@ -226,9 +230,12 @@ watchEffect(() => {
 }
 .dino {
   position: absolute;
-  width: 50px;
-  height: 50px;
-  bottom: 25px;
+  /* width: 50px;
+  height: 50px; */
+  width: 65px;
+  height: 65px;
+  /* bottom: 25px; */
+  bottom: 32px;
 }
 .dino img {
   width: inherit;
@@ -240,7 +247,8 @@ watchEffect(() => {
 hr {
   width: 100%;
   position: absolute;
-  bottom: 23px;
+  /* bottom: 23px; */
+  bottom: 30px;
   opacity: 0.5;
 }
 </style>

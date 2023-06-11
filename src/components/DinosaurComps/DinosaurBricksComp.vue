@@ -14,7 +14,8 @@ const nextQMark = ref(null);
 const bricksList = ref([
   {
     id: 0,
-    left: 450,
+    // left: 450,
+    left: 510,
     ref: "nowBrick",
     pngRef: "nowPngBlock",
     QMarkRef: "nowQMark",
@@ -22,7 +23,8 @@ const bricksList = ref([
   },
   {
     id: 1,
-    left: 750,
+    // left: 750,
+    left: 884,
     ref: "nextBrick",
     pngRef: "nextPngBlock",
     QMarkRef: "nextQMark",
@@ -30,7 +32,7 @@ const bricksList = ref([
   },
   {
     id: 2,
-    left: 1050,
+    left: 1258,
     ref: "standbyBrick",
     pngRef: "standbyPngBlock",
     QMarkRef: "standbyQMark",
@@ -124,10 +126,10 @@ const brickLefting = (speed) => {
   bricksList.value.forEach((b) => {
     b.left -= speed;
     if (b.left < -60) {
-      b.left = 838;
+      b.left = 1060;
       b.break = false;
       emit("pngReset", true);
-    } else if (b.left === 302) {
+    } else if (b.left === 398) {
       nowBrick.value = b.ref;
       if (b.ref === "nowBrick") emit("stopForward", true);
     }
@@ -206,8 +208,11 @@ defineExpose({
 .brick-block {
   position: absolute;
   top: 51%;
-  width: 45px;
-  height: 45px;
+  /* width: 45px;
+  height: 45px; */
+  width: 52px;
+  height: 52px;
+  /* border: 1px solid #000; */
 }
 .brick-png {
   width: 100%;
