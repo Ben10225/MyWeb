@@ -1,7 +1,8 @@
 <script setup>
-import Clouds from "@/components/DinosaurComp/DinosaurCloudsComp.vue";
-import Cactus from "@/components/DinosaurComp/DinosaurCactusComp.vue";
-import Bricks from "@/components/DinosaurComp/DinosaurBricksComp.vue";
+import Clouds from "@/components/DinosaurComps/DinosaurCloudsComp.vue";
+import Cactus from "@/components/DinosaurComps/DinosaurCactusComp.vue";
+import Bricks from "@/components/DinosaurComps/DinosaurBricksComp.vue";
+import Answer from "@/components/DinosaurComps/DinosaurAnswerComp.vue";
 import { ref, watchEffect, onMounted, onUnmounted } from "vue";
 import gsap from "gsap";
 
@@ -9,11 +10,13 @@ const dino = ref(null);
 const clouds = ref(null);
 const cactus = ref(null);
 const bricks = ref(null);
+const answer = ref(null);
 const jumpStatus = ref(false);
 const distance = ref(30);
 const walking = ref(false);
 const stillPressRight = ref(false);
 const stopForward = ref(false);
+const answerShow = ref(false);
 const dinoUrl = ref("/dino-stay.png");
 const walkingStatus = ref("beforeWalking");
 const speed = ref(2);
@@ -41,6 +44,7 @@ const dinoRun = () => {
 };
 
 const pressUp = (e) => {
+  if (answerShow.value) return;
   walking.value = false;
   if (e.keyCode === 38 && !jumpStatus.value) {
     const brickLeftPx = bricks.value.brickNowLeft();
@@ -48,6 +52,10 @@ const pressUp = (e) => {
       bricks.value.brickTouch();
       bricks.value.pngBlockShow();
       bricks.value.QMarkHide();
+      answer.value.ansShow();
+      setTimeout(() => {
+        answerShow.value = true;
+      }, 1500);
     }
     dinoUrl.value = "/dino-jump.png";
     jumpStatus.value = true;
@@ -79,6 +87,11 @@ const pressUp = (e) => {
 };
 
 const pressRight = (e) => {
+  if (answerShow.value) {
+    walking.value = false;
+    stillPressRight.value = false;
+    return;
+  }
   if (e.keyCode === 39 && !jumpStatus.value) {
     walking.value = true;
     stillPressRight.value = true;
@@ -110,6 +123,12 @@ const pngResetHandler = (res) => {
   bricks.value.QMarkShow();
 };
 
+const answerRemoveHandler = (res) => {
+  answerShow.value = false;
+  clouds.value.startClouds();
+  bricks.value.exchangeToBreakBrick();
+};
+
 onMounted(() => pngResetHandler);
 onMounted(() => window.addEventListener("keydown", keyDownHandler));
 onMounted(() => window.addEventListener("keyup", keyUpHandler));
@@ -134,6 +153,9 @@ watchEffect(() => {
   if (walking.value) {
     dinoRun();
   }
+  if (answerShow.value) {
+    clouds.value.stopClouds();
+  }
 });
 </script>
 
@@ -146,6 +168,7 @@ watchEffect(() => {
         <div class="bg"></div>
         <Clouds ref="clouds" />
         <Cactus ref="cactus" />
+        <Answer ref="answer" @answer-remove="answerRemoveHandler" />
         <Bricks
           ref="bricks"
           @stop-forward="stopForwardHandler"

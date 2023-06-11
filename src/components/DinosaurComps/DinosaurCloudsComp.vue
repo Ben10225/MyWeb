@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { random } from "lodash-es";
 
+const stop = ref(false);
 const tmpTop = ref(15);
 
 const clouds = ref([
@@ -12,6 +13,7 @@ const clouds = ref([
 ]);
 
 const cloudLefting = () => {
+  if (stop.value) return;
   clouds.value.forEach((c) => {
     c.left -= c.speed;
     let newTop = random(3, 130);
@@ -29,8 +31,18 @@ const cloudLefting = () => {
   });
 };
 
+const stopClouds = () => {
+  stop.value = true;
+};
+
+const startClouds = () => {
+  stop.value = false;
+};
+
 defineExpose({
   cloudLefting,
+  stopClouds,
+  startClouds,
 });
 </script>
 

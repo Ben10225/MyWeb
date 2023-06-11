@@ -71,16 +71,17 @@ const brickTouch = () => {
       onComplete() {
         emit("stopForward", false);
         exchangeRef();
-        setTimeout(() => {
-          bricksList.value.forEach((b) => {
-            if (b.ref === "standbyBrick") {
-              b.break = true;
-              if (questionIndex.value < 8) questionIndex.value++;
-            }
-          });
-        }, 1000);
       },
     });
+};
+
+const exchangeToBreakBrick = () => {
+  bricksList.value.forEach((b) => {
+    if (b.ref === "standbyBrick") {
+      b.break = true;
+      if (questionIndex.value < 8) questionIndex.value++;
+    }
+  });
 };
 
 const pngBlockShow = () => {
@@ -164,6 +165,7 @@ defineExpose({
   pngBlockHide,
   QMarkShow,
   brickNowLeft,
+  exchangeToBreakBrick,
 });
 </script>
 
