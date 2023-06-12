@@ -31,7 +31,7 @@ const cloudLefting = () => {
       c.left = 880;
       c.top = newTop;
       c.opacity = 0.3 + Math.random() * 0.7;
-      c.speed = 1.15 + Math.random() * 0.1;
+      c.speed = Math.random() * (1.2 - 1.15) + 1.15;
       tmpTop.value = newTop;
       // c.width = Math.floor(Math.random() * (110 - 90 + 1)) + 90;
       Math.floor(Math.random() * (121 - 100 + 1)) + 100;

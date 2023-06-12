@@ -3,7 +3,7 @@ import Clouds from "@/components/DinosaurComps/DinosaurCloudsComp.vue";
 import Cactus from "@/components/DinosaurComps/DinosaurCactusComp.vue";
 import Bricks from "@/components/DinosaurComps/DinosaurBricksComp.vue";
 import Answer from "@/components/DinosaurComps/DinosaurAnswerComp.vue";
-import { ref, watchEffect, onMounted, onUnmounted } from "vue";
+import { ref, watchEffect, onMounted, onUnmounted, h } from "vue";
 import gsap from "gsap";
 
 const dino = ref(null);
@@ -48,6 +48,7 @@ const pressUp = (e) => {
   walking.value = false;
   if (e.keyCode === 38 && !jumpStatus.value) {
     const brickLeftPx = bricks.value.brickNowLeft();
+    // if (brickLeftPx === 800) return;
     // if (brickLeftPx <= 350) {
     if (brickLeftPx <= 445) {
       bricks.value.brickTouch();
@@ -122,8 +123,9 @@ const stopForwardHandler = (res) => {
 };
 
 const pngResetHandler = (res) => {
-  bricks.value.pngBlockHide();
-  bricks.value.QMarkShow();
+  console.log("reset");
+  // bricks.value.pngBlockHide();
+  // bricks.value.QMarkShow();
 };
 
 const answerRemoveHandler = (res) => {
