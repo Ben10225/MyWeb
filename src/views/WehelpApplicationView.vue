@@ -144,6 +144,10 @@ const answerRemoveHandler = (res) => {
 
 const touchFinalHandler = (res) => {
   mode.value = "final";
+  // walking.value = false;
+  // stillPressRight.value = false;
+  // allAnswerPage.value.touchFinal();
+
   setTimeout(() => {
     allAnswerPage.value.touchFinal();
   }, 600);
@@ -217,7 +221,7 @@ watchEffect(() => {
   // }
 });
 
-const testHandler = () => {
+const startGameHandler = () => {
   mode.value = "appStart";
 };
 
@@ -228,19 +232,32 @@ onUnmounted(() => window.addEventListener("keyup", keyUpHandler));
 </script>
 
 <template>
-  <button class="test" @click="testHandler">test</button>
-
   <div class="dinosaur-wrapper">
     <div class="title-block"></div>
     <div class="game-block">
       <div class="normal-game"></div>
       <div class="application">
         <div class="bg"></div>
+        <h4
+          v-show="mode === 'beforeStart'"
+          @click.right.prevent="startGameHandler"
+        >
+          點擊開始遊戲
+        </h4>
         <Clouds ref="clouds" />
-        <Cactus ref="cactus" />
-        <Answer ref="answer" @answer-remove="answerRemoveHandler" />
-        <AllAnswerPage ref="allAnswerPage" @restart-game="restartGameHandler" />
+        <Cactus v-if="mode !== 'beforeStart'" ref="cactus" />
+        <Answer
+          v-if="mode !== 'beforeStart'"
+          ref="answer"
+          @answer-remove="answerRemoveHandler"
+        />
+        <AllAnswerPage
+          v-if="mode !== 'beforeStart'"
+          ref="allAnswerPage"
+          @restart-game="restartGameHandler"
+        />
         <Bricks
+          v-if="mode !== 'beforeStart'"
           ref="bricks"
           @stop-forward="stopForwardHandler"
           @png-reset="pngResetHandler"
@@ -248,6 +265,7 @@ onUnmounted(() => window.addEventListener("keyup", keyUpHandler));
           @now-question-plus="nowQuestionPlusHandler"
         />
         <div
+          v-show="mode !== 'beforeStart'"
           class="dino"
           ref="dino"
           :style="{ transform: `translateX(${distance}px)` }"
@@ -265,12 +283,6 @@ onUnmounted(() => window.addEventListener("keyup", keyUpHandler));
 </template>
 
 <style scoped>
-.test {
-  padding: 20px;
-  position: absolute;
-  left: 50px;
-  z-index: 300;
-}
 .dinosaur-wrapper {
   width: 100%;
   height: 100%;
@@ -328,5 +340,27 @@ hr {
   /* bottom: 23px; */
   bottom: 30px;
   opacity: 0.5;
+}
+h4 {
+  position: absolute;
+  font-size: 32px;
+  color: #555;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "DotGothic16", sans-serif;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  animation: blink 2s infinite steps(3);
+  user-select: none;
+}
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
 }
 </style>

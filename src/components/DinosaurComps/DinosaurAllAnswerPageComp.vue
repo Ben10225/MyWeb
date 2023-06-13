@@ -171,7 +171,6 @@ defineExpose({
   height: 100%;
   background-color: #333;
   z-index: 10;
-  /* font-family: "DotGothic16", sans-serif; */
 }
 .outter {
   position: absolute;
