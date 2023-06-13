@@ -3,7 +3,9 @@ import Clouds from "@/components/DinosaurComps/DinosaurCloudsComp.vue";
 import Cactus from "@/components/DinosaurComps/DinosaurCactusComp.vue";
 import Bricks from "@/components/DinosaurComps/DinosaurBricksComp.vue";
 import Answer from "@/components/DinosaurComps/DinosaurAnswerComp.vue";
-import { ref, watchEffect, onMounted, onUnmounted, h } from "vue";
+import AllAnswerPage from "@/components/DinosaurComps/DinosaurAllAnswerPageComp.vue";
+import ansData from "@/components/DinosaurComps/answer";
+import { ref, watch, watchEffect, onMounted, onUnmounted, h } from "vue";
 import gsap from "gsap";
 
 const dino = ref(null);
@@ -11,15 +13,21 @@ const clouds = ref(null);
 const cactus = ref(null);
 const bricks = ref(null);
 const answer = ref(null);
+const allAnswerPage = ref(null);
+const timer = ref(null);
 const jumpStatus = ref(false);
 const distance = ref(50); // 30
 const walking = ref(false);
 const stillPressRight = ref(false);
 const stopForward = ref(false);
 const answerShow = ref(false);
+const intervalRunning = ref(false);
+const mode = ref("beforeStart");
 const dinoUrl = ref("/dino-stay.png");
 const walkingStatus = ref("beforeWalking");
 const speed = ref(2);
+const nowQuestion = ref(0);
+const qsLength = ref(ansData.answer.length);
 
 const dinoRun = () => {
   if (walkingStatus.value === "nowWalking") return;
@@ -52,10 +60,14 @@ const pressUp = (e) => {
     // if (brickLeftPx <= 350) {
     if (brickLeftPx <= 445) {
       bricks.value.brickTouch();
-      bricks.value.pngBlockShow();
-      bricks.value.QMarkHide();
-      answer.value.ansShow();
-      answerShow.value = true;
+      if (mode.value !== "final") {
+        bricks.value.pngBlockShow();
+        bricks.value.QMarkHide();
+        answer.value.ansShow();
+        answerShow.value = true;
+      } else {
+        mode.value = "settlement";
+      }
       setTimeout(() => {
         clouds.value.stopClouds();
       }, 1100);
@@ -110,22 +122,18 @@ const stopRight = (e) => {
 };
 
 const keyDownHandler = (e) => {
+  if (mode.value === "beforeStart" || mode.value === "settlement") return;
   pressUp(e);
   pressRight(e);
 };
 
 const keyUpHandler = (e) => {
+  if (mode.value === "beforeStart" || mode.value === "settlement") return;
   stopRight(e);
 };
 
 const stopForwardHandler = (res) => {
   stopForward.value = res;
-};
-
-const pngResetHandler = (res) => {
-  console.log("reset");
-  // bricks.value.pngBlockHide();
-  // bricks.value.QMarkShow();
 };
 
 const answerRemoveHandler = (res) => {
@@ -134,13 +142,35 @@ const answerRemoveHandler = (res) => {
   bricks.value.exchangeToBreakBrick();
 };
 
-onMounted(() => pngResetHandler);
-onMounted(() => window.addEventListener("keydown", keyDownHandler));
-onMounted(() => window.addEventListener("keyup", keyUpHandler));
-onUnmounted(() => window.removeEventListener("keydown", keyDownHandler));
-onUnmounted(() => window.addEventListener("keyup", keyUpHandler));
+const touchFinalHandler = (res) => {
+  mode.value = "final";
+  setTimeout(() => {
+    allAnswerPage.value.touchFinal();
+  }, 600);
+};
 
-setInterval(() => {
+const nowQuestionPlusHandler = (res) => {
+  nowQuestion.value = res;
+  if (nowQuestion.value === qsLength.value) mode.value = "final";
+};
+
+const restartGameHandler = (res) => {
+  mode.value = "beforeStart";
+  distance.value = 50;
+  stopForward.value = false;
+  answerShow.value = false;
+  walking.value = false;
+  stillPressRight.value = false;
+  intervalRunning.value = false;
+  nowQuestion.value = 0;
+  bricks.value.reset();
+  answer.value.reset();
+  cactus.value.reset();
+  clouds.value.reset();
+};
+
+const intervalFn = () => {
+  intervalRunning.value = true;
   clouds.value.cloudLefting();
   if (walking.value) {
     // if (distance.value <= 300) {
@@ -153,16 +183,53 @@ setInterval(() => {
       }
     }
   }
-}, 10);
+};
+timer.value = setInterval(intervalFn, 10);
+
+watch(
+  () => mode.value,
+  (nV) => {
+    if (nV === "beforeStart") {
+      clearInterval(timer.value);
+      intervalRunning.value = false;
+    } else {
+      if (intervalRunning.value) return;
+      timer.value = setInterval(intervalFn, 10);
+    }
+  },
+  { immediate: true }
+);
 
 watchEffect(() => {
   if (walking.value) {
     dinoRun();
   }
+  // if (mode.value === "beforeStart") {
+  //   clearInterval(timer.value);
+  // } else {
+  //   timer.value = setInterval(intervalFn, 10);
+
+  //   // onMounted(() => pngResetHandler);
+  //   // onMounted(() => window.addEventListener("keydown", keyDownHandler));
+  //   // onMounted(() => window.addEventListener("keyup", keyUpHandler));
+  //   // onUnmounted(() => window.removeEventListener("keydown", keyDownHandler));
+  //   // onUnmounted(() => window.addEventListener("keyup", keyUpHandler));
+  // }
 });
+
+const testHandler = () => {
+  mode.value = "appStart";
+};
+
+onMounted(() => window.addEventListener("keydown", keyDownHandler));
+onMounted(() => window.addEventListener("keyup", keyUpHandler));
+onUnmounted(() => window.removeEventListener("keydown", keyDownHandler));
+onUnmounted(() => window.addEventListener("keyup", keyUpHandler));
 </script>
 
 <template>
+  <button class="test" @click="testHandler">test</button>
+
   <div class="dinosaur-wrapper">
     <div class="title-block"></div>
     <div class="game-block">
@@ -172,10 +239,13 @@ watchEffect(() => {
         <Clouds ref="clouds" />
         <Cactus ref="cactus" />
         <Answer ref="answer" @answer-remove="answerRemoveHandler" />
+        <AllAnswerPage ref="allAnswerPage" @restart-game="restartGameHandler" />
         <Bricks
           ref="bricks"
           @stop-forward="stopForwardHandler"
           @png-reset="pngResetHandler"
+          @touch-final="touchFinalHandler"
+          @now-question-plus="nowQuestionPlusHandler"
         />
         <div
           class="dino"
@@ -195,6 +265,12 @@ watchEffect(() => {
 </template>
 
 <style scoped>
+.test {
+  padding: 20px;
+  position: absolute;
+  left: 50px;
+  z-index: 300;
+}
 .dinosaur-wrapper {
   width: 100%;
   height: 100%;

@@ -21,7 +21,7 @@ const ansShow = () => {
   gsap.to(ans.value, {
     x: 0,
     y: "-100%",
-    duration: 1.6,
+    duration: 1.3,
     delay: 0.9,
     ease: "back",
   });
@@ -33,7 +33,7 @@ const ansShow = () => {
     {
       y: 0,
       duration: 1.2,
-      delay: 1.6,
+      delay: 1.1,
       ease: "ease",
     }
   );
@@ -56,8 +56,13 @@ const answerRemoveHandler = () => {
   });
 };
 
+const reset = () => {
+  now.value = 0;
+};
+
 defineExpose({
   ansShow,
+  reset,
 });
 </script>
 

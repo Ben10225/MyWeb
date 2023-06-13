@@ -19,8 +19,16 @@ const cactusLefting = (speed) => {
   });
 };
 
+const reset = () => {
+  cactuses.value = [
+    { id: 1, src: "/cactus-2.png", width: 50, left: 150 },
+    { id: 2, src: "/cactus-3.png", width: 75, left: 560 },
+  ];
+};
+
 defineExpose({
   cactusLefting,
+  reset,
 });
 </script>
 

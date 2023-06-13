@@ -47,10 +47,15 @@ const startClouds = () => {
   stop.value = false;
 };
 
+const reset = () => {
+  stop.value = false;
+};
+
 defineExpose({
   cloudLefting,
   stopClouds,
   startClouds,
+  reset,
 });
 </script>
 
