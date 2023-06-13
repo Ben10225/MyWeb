@@ -1,51 +1,58 @@
 <script setup>
 import Clouds from "@/components/DinosaurComps/DinosaurCloudsComp.vue";
-import Cactus from "@/components/DinosaurComps/DinosaurCactusComp.vue";
+import CactusApp from "@/components/DinosaurComps/DinosaurCactusAppComp.vue";
+import CactusNormal from "@/components/DinosaurComps/DinosaurCactusNormalComp.vue";
 import Bricks from "@/components/DinosaurComps/DinosaurBricksComp.vue";
 import Answer from "@/components/DinosaurComps/DinosaurAnswerComp.vue";
 import AllAnswerPage from "@/components/DinosaurComps/DinosaurAllAnswerPageComp.vue";
 import ansData from "@/components/DinosaurComps/answer";
-import { ref, watch, watchEffect, onMounted, onUnmounted, h } from "vue";
+import { ref, watchEffect, onMounted, onUnmounted } from "vue";
 import gsap from "gsap";
 
 const dino = ref(null);
 const clouds = ref(null);
-const cactus = ref(null);
+const cactusApp = ref(null);
+const cactusNormal = ref(null);
 const bricks = ref(null);
 const answer = ref(null);
 const allAnswerPage = ref(null);
 const timer = ref(null);
 const jumpStatus = ref(false);
 const distance = ref(50); // 30
+const jumpHeight = ref(-108);
 const walking = ref(false);
 const stillPressRight = ref(false);
 const stopForward = ref(false);
 const answerShow = ref(false);
-const intervalRunning = ref(false);
 const mode = ref("beforeStart");
+const gameMode = ref("");
 const dinoUrl = ref("/dino-stay.png");
 const walkingStatus = ref("beforeWalking");
 const speed = ref(2);
 const nowQuestion = ref(0);
 const qsLength = ref(ansData.answer.length);
+const pauseJump = ref(false);
 
 const dinoRun = () => {
   if (walkingStatus.value === "nowWalking") return;
+  /* application */
   dinoUrl.value = "/dino-run-1.png";
   let ct = 0;
   let timer = setInterval(() => {
     ct++;
     if (ct % 40 === 1) {
+      if (!walking.value) {
+        clearInterval(timer);
+        dinoUrl.value = "/dino-stay.png";
+        walkingStatus.value = "beforeWalking";
+        return;
+      }
+      if (gameMode.value === "normal" && jumpStatus.value) return;
       walkingStatus.value = "nowWalking";
       if (dinoUrl.value === "/dino-run-1.png") {
         dinoUrl.value = "/dino-run-2.png";
       } else {
         dinoUrl.value = "/dino-run-1.png";
-      }
-      if (!walking.value) {
-        clearInterval(timer);
-        dinoUrl.value = "/dino-stay.png";
-        walkingStatus.value = "beforeWalking";
       }
     }
   }, 1);
@@ -53,26 +60,30 @@ const dinoRun = () => {
 
 const pressUp = (e) => {
   if (answerShow.value) return;
-  walking.value = false;
+  if (gameMode.value === "application") walking.value = false;
   if (e.keyCode === 38 && !jumpStatus.value) {
-    const brickLeftPx = bricks.value.brickNowLeft();
-    // if (brickLeftPx === 800) return;
-    // if (brickLeftPx <= 350) {
-    if (brickLeftPx <= 445) {
-      bricks.value.brickTouch();
-      if (mode.value !== "final") {
-        bricks.value.pngBlockShow();
-        bricks.value.QMarkHide();
-        answer.value.ansShow();
-        answerShow.value = true;
-      } else {
-        mode.value = "settlement";
+    if (gameMode.value === "application") {
+      /* application */
+      const brickLeftPx = bricks.value.brickNowLeft();
+      // if (brickLeftPx <= 350) {
+      if (brickLeftPx <= 445) {
+        bricks.value.brickTouch();
+        if (mode.value !== "final") {
+          bricks.value.pngBlockShow();
+          bricks.value.QMarkHide();
+          answer.value.ansShow();
+          answerShow.value = true;
+        } else {
+          mode.value = "settlement";
+        }
+        setTimeout(() => {
+          clouds.value.stopClouds();
+        }, 1100);
       }
-      setTimeout(() => {
-        clouds.value.stopClouds();
-      }, 1100);
     }
-    dinoUrl.value = "/dino-jump.png";
+    dinoUrl.value = "/dino-stay.png";
+    /* normal */
+    if (gameMode.value === "normal") jumpHeight.value = -160;
     jumpStatus.value = true;
     let tl = gsap.timeline();
     tl.fromTo(
@@ -85,24 +96,39 @@ const pressUp = (e) => {
         duration: 0.4,
         x: distance.value,
         // y: -90,
-        y: -108,
+        y: jumpHeight.value,
         ease: "power1.out",
+        onUpdate() {
+          if (pauseJump.value) {
+            tl.pause();
+          }
+        },
       }
     ).to(dino.value, {
       x: distance.value,
       y: 0,
       duration: 0.4,
       ease: "power1.in",
+      onUpdate() {
+        if (pauseJump.value) {
+          tl.pause();
+        }
+      },
       onComplete() {
         jumpStatus.value = false;
-        dinoUrl.value = "/dino-stay.png";
-        if (stillPressRight.value) walking.value = true;
+        // dinoUrl.value = "/dino-stay.png";
+        if (stillPressRight.value) {
+          walking.value = true;
+        } else {
+          dinoUrl.value = "/dino-stay.png";
+        }
       },
     });
   }
 };
 
 const pressRight = (e) => {
+  if (gameMode.value === "normal") return;
   if (answerShow.value) {
     walking.value = false;
     stillPressRight.value = false;
@@ -144,10 +170,10 @@ const answerRemoveHandler = (res) => {
 
 const touchFinalHandler = (res) => {
   mode.value = "final";
-  // walking.value = false;
-  // stillPressRight.value = false;
-  // allAnswerPage.value.touchFinal();
-
+  walking.value = false;
+  stillPressRight.value = false;
+  clouds.value.stopClouds();
+  clearInterval(timer.value);
   setTimeout(() => {
     allAnswerPage.value.touchFinal();
   }, 600);
@@ -165,65 +191,73 @@ const restartGameHandler = (res) => {
   answerShow.value = false;
   walking.value = false;
   stillPressRight.value = false;
-  intervalRunning.value = false;
   nowQuestion.value = 0;
-  bricks.value.reset();
-  answer.value.reset();
-  cactus.value.reset();
-  clouds.value.reset();
+  bricks.value.clearBricks();
+  cactusApp.value.clearCactus();
+  document.querySelector(".h4-block").classList.remove("hide");
+};
+
+const checkDinoHeightHandler = (res) => {
+  let dino = document.querySelector(".dino");
+  let style = window.getComputedStyle(dino);
+  let matrix = new WebKitCSSMatrix(style.transform);
+  let dinoHeight = matrix.m42;
+  if (dinoHeight > -80) {
+    pauseJump.value = true;
+    walking.value = false;
+    clouds.value.stopClouds();
+    clearInterval(timer.value);
+  }
 };
 
 const intervalFn = () => {
-  intervalRunning.value = true;
   clouds.value.cloudLefting();
+  /* normal */
+  if (gameMode.value === "normal") {
+    cactusNormal.value.cactusNormalLefting();
+    return;
+  }
+
+  /* application */
   if (walking.value) {
     // if (distance.value <= 300) {
     if (distance.value <= 390) {
       distance.value += speed.value;
     } else {
       if (!stopForward.value) {
-        cactus.value.cactusLefting(speed.value);
+        cactusApp.value.cactusLefting(speed.value);
         bricks.value.brickLefting(speed.value);
       }
     }
   }
 };
-timer.value = setInterval(intervalFn, 10);
 
-watch(
-  () => mode.value,
-  (nV) => {
-    if (nV === "beforeStart") {
-      clearInterval(timer.value);
-      intervalRunning.value = false;
-    } else {
-      if (intervalRunning.value) return;
-      timer.value = setInterval(intervalFn, 10);
-    }
-  },
-  { immediate: true }
-);
+const startAppGameHandler = () => {
+  timer.value = setInterval(intervalFn, 10);
+  gameMode.value = "application";
+  mode.value = "appStart";
+  bricks.value.reset();
+  cactusApp.value.reset();
+  answer.value.reset();
+  clouds.value.reset();
+  document.querySelector(".h4-block").classList.add("hide");
+};
+
+const startNormalGameHandler = () => {
+  timer.value = setInterval(intervalFn, 10);
+  clouds.value.reset();
+  gameMode.value = "normal";
+  mode.value = "normalStart";
+  walking.value = true;
+  // dinoRun();
+  document.querySelector(".h4-block").classList.add("hide");
+};
 
 watchEffect(() => {
   if (walking.value) {
     dinoRun();
   }
-  // if (mode.value === "beforeStart") {
-  //   clearInterval(timer.value);
-  // } else {
-  //   timer.value = setInterval(intervalFn, 10);
-
-  //   // onMounted(() => pngResetHandler);
-  //   // onMounted(() => window.addEventListener("keydown", keyDownHandler));
-  //   // onMounted(() => window.addEventListener("keyup", keyUpHandler));
-  //   // onUnmounted(() => window.removeEventListener("keydown", keyDownHandler));
-  //   // onUnmounted(() => window.addEventListener("keyup", keyUpHandler));
-  // }
 });
-
-const startGameHandler = () => {
-  mode.value = "appStart";
-};
 
 onMounted(() => window.addEventListener("keydown", keyDownHandler));
 onMounted(() => window.addEventListener("keyup", keyUpHandler));
@@ -235,29 +269,18 @@ onUnmounted(() => window.addEventListener("keyup", keyUpHandler));
   <div class="dinosaur-wrapper">
     <div class="title-block"></div>
     <div class="game-block">
-      <div class="normal-game"></div>
+      <!-- <div class="normal-game"></div> -->
       <div class="application">
         <div class="bg"></div>
-        <h4
-          v-show="mode === 'beforeStart'"
-          @click.right.prevent="startGameHandler"
-        >
-          點擊開始遊戲
-        </h4>
         <Clouds ref="clouds" />
-        <Cactus v-if="mode !== 'beforeStart'" ref="cactus" />
-        <Answer
-          v-if="mode !== 'beforeStart'"
-          ref="answer"
-          @answer-remove="answerRemoveHandler"
+        <CactusApp ref="cactusApp" />
+        <CactusNormal
+          ref="cactusNormal"
+          @check-dino-height="checkDinoHeightHandler"
         />
-        <AllAnswerPage
-          v-if="mode !== 'beforeStart'"
-          ref="allAnswerPage"
-          @restart-game="restartGameHandler"
-        />
+        <Answer ref="answer" @answer-remove="answerRemoveHandler" />
+        <AllAnswerPage ref="allAnswerPage" @restart-game="restartGameHandler" />
         <Bricks
-          v-if="mode !== 'beforeStart'"
           ref="bricks"
           @stop-forward="stopForwardHandler"
           @png-reset="pngResetHandler"
@@ -265,7 +288,6 @@ onUnmounted(() => window.addEventListener("keyup", keyUpHandler));
           @now-question-plus="nowQuestionPlusHandler"
         />
         <div
-          v-show="mode !== 'beforeStart'"
           class="dino"
           ref="dino"
           :style="{ transform: `translateX(${distance}px)` }"
@@ -278,11 +300,25 @@ onUnmounted(() => window.addEventListener("keyup", keyUpHandler));
         </div>
         <hr />
       </div>
+      <div class="h4-block" ref="startBtn">
+        <h4
+          @click.right.prevent="startAppGameHandler"
+          @click="startNormalGameHandler"
+        >
+          點擊開始遊戲
+        </h4>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.test {
+  padding: 20px;
+  position: absolute;
+  left: 50px;
+  z-index: 300;
+}
 .dinosaur-wrapper {
   width: 100%;
   height: 100%;
@@ -340,19 +376,25 @@ hr {
   /* bottom: 23px; */
   bottom: 30px;
   opacity: 0.5;
+  z-index: 45;
 }
-h4 {
-  position: absolute;
-  font-size: 32px;
-  color: #555;
+.h4-block {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  position: absolute;
+}
+h4 {
+  font-size: 32px;
+  color: #555;
   font-family: "DotGothic16", sans-serif;
   letter-spacing: 0.02em;
   cursor: pointer;
   animation: blink 2s infinite steps(3);
   user-select: none;
+}
+.hide {
+  display: none;
 }
 @keyframes blink {
   0%,

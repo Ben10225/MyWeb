@@ -3,7 +3,7 @@ import ansData from "./answer";
 import { ref } from "vue";
 import gsap from "gsap";
 
-const emit = defineEmits(["stopForward,pngReset,touchFinal,nowQuestionPlus"]);
+const emit = defineEmits(["stopForward,touchFinal,nowQuestionPlus"]);
 
 const questionIndex = ref(1);
 const brickId = ref(0);
@@ -44,20 +44,20 @@ const setPngRefs = (el, id) => {
 };
 
 const bricksList = ref([
-  {
-    id: brickId.value++,
-    left: 510,
-    break: false,
-    crown: false,
-    crownShow: false,
-  },
-  {
-    id: brickId.value++,
-    left: 884,
-    break: false,
-    crown: false,
-    crownShow: false,
-  },
+  // {
+  //   id: brickId.value++,
+  //   left: 510,
+  //   break: false,
+  //   crown: false,
+  //   crownShow: false,
+  // },
+  // {
+  //   id: brickId.value++,
+  //   left: 884,
+  //   break: false,
+  //   crown: false,
+  //   crownShow: false,
+  // },
 ]);
 
 const addBrick = () => {
@@ -194,11 +194,6 @@ const reset = () => {
   touchedDistance.value = 200;
   brickId.value = 0;
   nowIndex.value = 0;
-  brickRefs.value = [];
-  qMarkRefs.value = [];
-  pngRefs.value = [];
-  tmpRefIndex.value = [];
-  bricksList.value = [];
   bricksList.value.push({
     id: brickId.value++,
     left: 510,
@@ -217,6 +212,14 @@ const reset = () => {
   }, 1);
 };
 
+const clearBricks = () => {
+  bricksList.value = [];
+  brickRefs.value = [];
+  qMarkRefs.value = [];
+  pngRefs.value = [];
+  tmpRefIndex.value = [];
+};
+
 defineExpose({
   brickTouch,
   brickLefting,
@@ -225,6 +228,7 @@ defineExpose({
   pngBlockHide,
   brickNowLeft,
   exchangeToBreakBrick,
+  clearBricks,
   reset,
 });
 </script>

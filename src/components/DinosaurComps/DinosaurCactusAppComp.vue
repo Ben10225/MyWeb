@@ -2,9 +2,8 @@
 import { ref } from "vue";
 
 const cactuses = ref([
-  { id: 1, src: "/cactus-2.png", width: 50, left: 150 },
-  { id: 2, src: "/cactus-3.png", width: 75, left: 560 },
-
+  // { id: 1, src: "/cactus-2.png", width: 50, left: 150 },
+  // { id: 2, src: "/cactus-3.png", width: 75, left: 560 },
   // { id: 1, src: "/cactus-2.png", width: 38, left: 70 },
   // { id: 2, src: "/cactus-3.png", width: 56, left: 410 },
 ]);
@@ -26,8 +25,13 @@ const reset = () => {
   ];
 };
 
+const clearCactus = () => {
+  cactuses.value = [];
+};
+
 defineExpose({
   cactusLefting,
+  clearCactus,
   reset,
 });
 </script>
