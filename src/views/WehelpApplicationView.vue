@@ -101,6 +101,13 @@ const pressUp = (e) => {
         onUpdate() {
           if (pauseJump.value) {
             tl.pause();
+            let timer = setInterval(() => {
+              if (!pauseJump.value) {
+                tl.progress(1);
+                tl.resume();
+                clearInterval(timer);
+              }
+            }, 100);
           }
         },
       }
@@ -112,6 +119,13 @@ const pressUp = (e) => {
       onUpdate() {
         if (pauseJump.value) {
           tl.pause();
+          let timer = setInterval(() => {
+            if (!pauseJump.value) {
+              tl.progress(1);
+              tl.resume();
+              clearInterval(timer);
+            }
+          }, 100);
         }
       },
       onComplete() {
@@ -202,7 +216,13 @@ const checkDinoHeightHandler = (res) => {
   let style = window.getComputedStyle(dino);
   let matrix = new WebKitCSSMatrix(style.transform);
   let dinoHeight = matrix.m42;
-  if (dinoHeight > -80) {
+  let target;
+  if (res === "center") {
+    target = -95;
+  } else if (res === "side") {
+    target = -40;
+  }
+  if (dinoHeight > target) {
     pauseJump.value = true;
     walking.value = false;
     clouds.value.stopClouds();
@@ -263,9 +283,22 @@ onMounted(() => window.addEventListener("keydown", keyDownHandler));
 onMounted(() => window.addEventListener("keyup", keyUpHandler));
 onUnmounted(() => window.removeEventListener("keydown", keyDownHandler));
 onUnmounted(() => window.addEventListener("keyup", keyUpHandler));
+
+const testNormalHandler = () => {
+  timer.value = setInterval(intervalFn, 10);
+  cactusNormal.value.reset();
+  clouds.value.reset();
+  gameMode.value = "normal";
+  mode.value = "normalStart";
+  walking.value = true;
+  document.querySelector(".h4-block").classList.add("hide");
+
+  pauseJump.value = false;
+};
 </script>
 
 <template>
+  <button class="test" @click="testNormalHandler">test</button>
   <div class="dinosaur-wrapper">
     <div class="title-block"></div>
     <div class="game-block">
@@ -316,7 +349,8 @@ onUnmounted(() => window.addEventListener("keyup", keyUpHandler));
 .test {
   padding: 20px;
   position: absolute;
-  left: 50px;
+  left: 50%;
+  top: 10%;
   z-index: 300;
 }
 .dinosaur-wrapper {

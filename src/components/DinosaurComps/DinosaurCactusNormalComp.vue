@@ -7,16 +7,26 @@ const speed = ref(0.5);
 
 const cactusNormalLefting = () => {
   cactusOneLeft.value += speed.value;
-  if (cactusOneLeft.value >= 82 && cactusOneLeft.value <= 94) {
-    emit("checkDinoHeight", true);
+  if (cactusOneLeft.value >= 82 && cactusOneLeft.value <= 92) {
+    if (cactusOneLeft.value <= 86 || cactusOneLeft.value >= 88) {
+      emit("checkDinoHeight", "side");
+    } else {
+      emit("checkDinoHeight", "center");
+    }
   } else if (cactusOneLeft.value > 120) {
     cactusOneLeft.value = -10;
     speed.value *= 1.05;
   }
 };
 
+const reset = () => {
+  cactusOneLeft.value = -10;
+  speed.value = 0.5;
+};
+
 defineExpose({
   cactusNormalLefting,
+  reset,
 });
 </script>
 
@@ -35,12 +45,10 @@ defineExpose({
   width: 100%;
   bottom: 0;
   z-index: 30;
-  border: 1px solid #000;
 }
 img {
   position: absolute;
-  width: 43px;
-  top: -103px;
-  border: 1px solid #000;
+  width: 44px;
+  top: -118px;
 }
 </style>

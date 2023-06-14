@@ -170,7 +170,7 @@ defineExpose({
   width: 100%;
   height: 100%;
   background-color: #333;
-  z-index: 10;
+  z-index: 50;
 }
 .outter {
   position: absolute;
