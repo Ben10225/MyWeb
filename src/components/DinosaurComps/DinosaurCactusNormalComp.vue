@@ -2,7 +2,7 @@
 import { ref } from "vue";
 
 const emit = defineEmits(["checkDinoHeight"]);
-const cactusOneLeft = ref(-10);
+const cactusOneLeft = ref(-20);
 const speed = ref(0.5);
 
 const cactusNormalLefting = () => {
@@ -15,7 +15,8 @@ const cactusNormalLefting = () => {
     }
   } else if (cactusOneLeft.value > 120) {
     cactusOneLeft.value = -10;
-    speed.value *= 1.05;
+
+    // speed.value *= 1.05;
   }
 };
 
@@ -33,7 +34,12 @@ defineExpose({
 <template>
   <div class="cactus-normal-wrapper">
     <div class="cactus-outter">
-      <img :style="{ right: `${cactusOneLeft}%` }" src="/cactus-1.png" alt="" />
+      <img
+        class="cactus-1"
+        :style="{ right: `${cactusOneLeft}%` }"
+        src="/cactus-1.png"
+        alt=""
+      />
       <!-- <img src="/cactus-1.png" alt="" /> -->
     </div>
   </div>
@@ -46,9 +52,10 @@ defineExpose({
   bottom: 0;
   z-index: 30;
 }
-img {
+.cactus-1 {
   position: absolute;
   width: 44px;
   top: -118px;
+  opacity: 0.7;
 }
 </style>
