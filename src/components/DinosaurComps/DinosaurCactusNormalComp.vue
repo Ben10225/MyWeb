@@ -3,7 +3,7 @@ import { ref } from "vue";
 
 const emit = defineEmits(["checkDinoHeight"]);
 const cactusOneLeft = ref(-20);
-const speed = ref(0.5);
+const speed = ref(0); // 0.5
 
 const cactusNormalLefting = () => {
   cactusOneLeft.value += speed.value;

@@ -32,7 +32,7 @@ const router = createRouter({
     {
       path: "/dinosaur",
       name: "contact",
-      component: () => import("../views/WehelpApplicationView.vue"),
+      component: () => import("../views/DinosaurView.vue"),
     },
     {
       path: "/:pathMatch(.*)*",

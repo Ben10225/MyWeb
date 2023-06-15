@@ -31,11 +31,11 @@ const qsLength = ref(ansData.answer.length);
 
 const pressUp = (e) => {
   if (answerShow.value) return;
-  if (gameMode.value === "application") store.walking = false;
   if (e.keyCode === 38 && !jumpStatus.value) {
     jumpStatus.value = true;
+    /* application */
     if (gameMode.value === "application") {
-      /* application */
+      store.walking = false;
       const brickLeftPx = bricks.value.brickNowLeft();
       // if (brickLeftPx <= 350) {
       if (brickLeftPx <= 445) {
@@ -80,10 +80,17 @@ const stopRight = (e) => {
   }
 };
 
+const pressDown = (e) => {
+  if (e.keyCode === 40) {
+    dino.value.normalDinoSquat();
+  }
+};
+
 const keyDownHandler = (e) => {
   if (mode.value === "beforeStart" || mode.value === "settlement") return;
   pressUp(e);
   pressRight(e);
+  pressDown(e);
 };
 
 const keyUpHandler = (e) => {
@@ -127,7 +134,7 @@ const restartGameHandler = (res) => {
   nowQuestion.value = 0;
   bricks.value.clearBricks();
   cactusApp.value.clearCactus();
-  document.querySelector(".h4-block").classList.remove("hide");
+  // document.querySelector(".h4-block").classList.remove("hide");
 };
 
 const checkDinoHeightHandler = (res) => {
@@ -180,7 +187,7 @@ const startAppGameHandler = () => {
   cactusApp.value.reset();
   answer.value.reset();
   clouds.value.reset();
-  document.querySelector(".h4-block").classList.add("hide");
+  // document.querySelector(".h4-block").classList.add("hide");
 };
 
 const startNormalGameHandler = () => {
@@ -189,7 +196,7 @@ const startNormalGameHandler = () => {
   gameMode.value = "normal";
   mode.value = "normalStart";
   store.walking = true;
-  document.querySelector(".h4-block").classList.add("hide");
+  // document.querySelector(".h4-block").classList.add("hide");
 };
 
 watchEffect(() => {
@@ -214,7 +221,7 @@ const testNormalHandler = () => {
   gameMode.value = "normal";
   mode.value = "normalStart";
   store.walking = true;
-  document.querySelector(".h4-block").classList.add("hide");
+  // document.querySelector(".h4-block").classList.add("hide");
 
   store.pauseJump = false;
 };
@@ -243,11 +250,16 @@ const testNormalHandler = () => {
           @touch-final="touchFinalHandler"
           @now-question-plus="nowQuestionPlusHandler"
         />
-        <Dino ref="dino" @jump-status-false="jumpStatusFalseHandler" />
+        <Dino
+          ref="dino"
+          :game-mode="gameMode"
+          @jump-status-false="jumpStatusFalseHandler"
+        />
         <hr />
       </div>
       <div class="h4-block" ref="startBtn">
         <h4
+          v-if="mode === 'beforeStart'"
           @click.right.prevent="startAppGameHandler"
           @click="startNormalGameHandler"
         >

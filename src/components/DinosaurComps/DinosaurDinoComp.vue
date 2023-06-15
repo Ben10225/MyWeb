@@ -1,15 +1,20 @@
 <script setup>
-import { ref, watchEffect, onMounted, onUnmounted } from "vue";
+import { ref } from "vue";
 import { useDinosaurStore } from "@/stores/distanceStore.js";
 import gsap from "gsap";
 
 const store = useDinosaurStore();
-const emit = defineEmits(["walkingTrue", "jumpStatusFalse"]);
+const emit = defineEmits(["jumpStatusFalse"]);
+const props = defineProps({
+  gameMode: String,
+});
 
 const dino = ref(null);
+const normalNowJumping = ref(false);
+const normalNowSquating = ref(false);
 const dinoUrl = ref("/dino-stay.png");
+const dinoSquatUrl = ref("/dino-squat-1.png");
 const walkingStatus = ref("beforeWalking");
-const nowNormalJumping = ref(false);
 
 /* application */
 const appDinoRun = () => {
@@ -79,7 +84,15 @@ const normalDinoRun = () => {
         clearInterval(timer);
         return;
       }
-      if (nowNormalJumping.value) return;
+      /* squating div */
+      if (dinoSquatUrl.value === "/dino-squat-1.png") {
+        dinoSquatUrl.value = "/dino-squat-2.png";
+      } else {
+        dinoSquatUrl.value = "/dino-squat-1.png";
+      }
+
+      if (normalNowSquating.value) return;
+      if (normalNowJumping.value) return;
       if (dinoUrl.value === "/dino-run-1.png") {
         dinoUrl.value = "/dino-run-2.png";
       } else {
@@ -90,7 +103,11 @@ const normalDinoRun = () => {
 };
 
 const normalDinoJump = () => {
-  nowNormalJumping.value = true;
+  if (normalNowSquating.value) {
+    emit("jumpStatusFalse", false);
+    return;
+  }
+  normalNowJumping.value = true;
   dinoUrl.value = "/dino-jump.png";
   let tl = gsap.timeline();
   tl.fromTo(
@@ -136,9 +153,17 @@ const normalDinoJump = () => {
     },
     onComplete() {
       emit("jumpStatusFalse", false);
-      nowNormalJumping.value = false;
+      normalNowJumping.value = false;
     },
   });
+};
+
+const normalDinoSquat = () => {
+  if (normalNowSquating.value || normalNowJumping.value) return;
+  normalNowSquating.value = true;
+  setTimeout(() => {
+    normalNowSquating.value = false;
+  }, 1500);
 };
 
 const getDinoHeight = () => {
@@ -153,15 +178,19 @@ defineExpose({
   appDinoJump,
   normalDinoRun,
   normalDinoJump,
+  normalDinoSquat,
   getDinoHeight,
 });
 </script>
 
 <template>
   <div
-    class="dino"
     ref="dino"
-    :style="{ transform: `translateX(${store.distance}px)` }"
+    class="dino"
+    :class="{ hide: normalNowSquating }"
+    :style="{
+      transform: `translateX(${store.distance}px)`,
+    }"
   >
     <img
       :src="dinoUrl"
@@ -169,6 +198,17 @@ defineExpose({
       :class="{ walk: dinoUrl === '/dino-run-1.png' }"
     />
   </div>
+  <div
+    v-if="props.gameMode === 'normal'"
+    class="dino dino-squating"
+    :class="{
+      hide: !normalNowSquating,
+    }"
+    :style="{
+      backgroundImage: `url('${dinoSquatUrl}')`,
+      transform: `translateX(${store.distance}px)`,
+    }"
+  ></div>
 </template>
 
 <style>
@@ -178,6 +218,18 @@ defineExpose({
   height: 65px;
   bottom: 32px;
   z-index: 70;
+}
+.hide {
+  opacity: 0;
+}
+.dino-squating {
+  width: 80px;
+  height: 80px;
+  background-image: url("/dino-squat-1.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 0 0px;
+  bottom: -14px;
 }
 .dino img {
   width: inherit;
