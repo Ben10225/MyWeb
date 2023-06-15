@@ -1,14 +1,14 @@
 <script setup>
 import Dino from "@/components/DinosaurComps/DinosaurDinoComp.vue";
 import Clouds from "@/components/DinosaurComps/DinosaurCloudsComp.vue";
-import CactusApp from "@/components/DinosaurComps/DinosaurCactusAppComp.vue";
-import CactusNormal from "@/components/DinosaurComps/DinosaurCactusNormalComp.vue";
+import Cactus from "@/components/DinosaurComps/DinosaurCactusComp.vue";
+import Barrier from "@/components/DinosaurComps/DinosaurBarrierComp.vue";
 import Bricks from "@/components/DinosaurComps/DinosaurBricksComp.vue";
 import Answer from "@/components/DinosaurComps/DinosaurAnswerComp.vue";
 import AllAnswerPage from "@/components/DinosaurComps/DinosaurAllAnswerPageComp.vue";
 import ansData from "@/components/DinosaurComps/answer";
 import { useDinosaurStore } from "@/stores/distanceStore.js";
-import { ref, watchEffect, onMounted, onUnmounted } from "vue";
+import { ref, watchEffect, onMounted, onUnmounted, computed } from "vue";
 
 const store = useDinosaurStore();
 
@@ -27,6 +27,7 @@ const mode = ref("beforeStart");
 const gameMode = ref("");
 const speed = ref(2);
 const nowQuestion = ref(0);
+const score = ref(0);
 const qsLength = ref(ansData.answer.length);
 
 const pressUp = (e) => {
@@ -81,6 +82,7 @@ const stopRight = (e) => {
 };
 
 const pressDown = (e) => {
+  if (gameMode.value === "application") return;
   if (e.keyCode === 40) {
     dino.value.normalDinoSquat();
   }
@@ -137,24 +139,36 @@ const restartGameHandler = (res) => {
   // document.querySelector(".h4-block").classList.remove("hide");
 };
 
-const checkDinoHeightHandler = (res) => {
+const checkDinoHandler = (res) => {
+  if (res === "squat") {
+    let isSquat = dino.value.checkSquat();
+    if (!isSquat) {
+      GameOver();
+      return;
+    }
+  }
   let dinoHeight = dino.value.getDinoHeight();
   let target;
   if (res === "center") {
-    target = -95;
+    target = -85;
   } else if (res === "side") {
     target = -40;
+  } else if (res === "threeCactus") {
+    target = -60;
   }
-  if (dinoHeight > target) {
-    store.pauseJump = true;
-    store.walking = false;
-    clouds.value.stopClouds();
-    clearInterval(timer.value);
-  }
+  if (dinoHeight > target) GameOver();
 };
 
 const jumpStatusFalseHandler = (res) => {
   jumpStatus.value = res;
+};
+
+const GameOver = () => {
+  store.pauseJump = true;
+  store.walking = false;
+  clouds.value.stopClouds();
+  clearInterval(timer.value);
+  mode.value = "settlement";
 };
 
 const intervalFn = () => {
@@ -162,6 +176,7 @@ const intervalFn = () => {
   /* normal */
   if (gameMode.value === "normal") {
     cactusNormal.value.cactusNormalLefting();
+    score.value += 5;
     return;
   }
 
@@ -196,8 +211,22 @@ const startNormalGameHandler = () => {
   gameMode.value = "normal";
   mode.value = "normalStart";
   store.walking = true;
+
+  score.value = 0;
   // document.querySelector(".h4-block").classList.add("hide");
 };
+
+const getScore = computed(() => {
+  let str = score.value.toString().length;
+  if (str === 1) return "000000";
+  let result = "";
+  let gap = 6 - str;
+  for (let i = 0; i < gap; i++) {
+    result += "0";
+  }
+  result = result + score.value.toString();
+  return result;
+});
 
 watchEffect(() => {
   if (store.walking) {
@@ -224,6 +253,7 @@ const testNormalHandler = () => {
   // document.querySelector(".h4-block").classList.add("hide");
 
   store.pauseJump = false;
+  score.value = 0;
 };
 </script>
 
@@ -232,15 +262,14 @@ const testNormalHandler = () => {
   <div class="dinosaur-wrapper">
     <div class="title-block"></div>
     <div class="game-block">
-      <!-- <div class="normal-game"></div> -->
-      <div class="application">
+      <div class="game-block-outter">
         <div class="bg"></div>
+        <div v-if="gameMode !== 'application'" class="score">
+          {{ getScore }}
+        </div>
         <Clouds ref="clouds" />
-        <CactusApp ref="cactusApp" />
-        <CactusNormal
-          ref="cactusNormal"
-          @check-dino-height="checkDinoHeightHandler"
-        />
+        <Cactus ref="cactusApp" />
+        <Barrier ref="cactusNormal" @check-dino="checkDinoHandler" />
         <Answer ref="answer" @answer-remove="answerRemoveHandler" />
         <AllAnswerPage ref="allAnswerPage" @restart-game="restartGameHandler" />
         <Bricks
@@ -300,18 +329,29 @@ const testNormalHandler = () => {
   top: 50%;
   transform: translate(-50%, -50%);
 }
-.application {
+.game-block-outter {
   position: relative;
   /* height: 400px; */
   height: 500px;
   overflow: hidden;
   /* border: 1px solid #000; */
 }
-.application .bg {
+.game-block-outter .bg {
   width: 100%;
   background-color: #ffffff;
   height: inherit;
   position: absolute;
+}
+.score {
+  position: absolute;
+  color: #999;
+  font-size: 28px;
+  z-index: 60;
+  right: 15px;
+  top: 8px;
+  font-weight: 500;
+  font-family: "DotGothic16", sans-serif;
+  letter-spacing: 0.1em;
 }
 hr {
   width: 100%;

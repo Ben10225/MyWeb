@@ -78,12 +78,16 @@ const normalDinoRun = () => {
   let ct = 0;
   let timer = setInterval(() => {
     ct++;
-    if (ct % 40 === 1) {
+    if (ct % 20 === 1) {
       if (!store.walking) {
         document.querySelector(".dino img").src = "/dino-stay.png";
+        normalNowSquating.value = false;
         clearInterval(timer);
         return;
       }
+
+      if (normalNowJumping.value) return;
+
       /* squating div */
       if (dinoSquatUrl.value === "/dino-squat-1.png") {
         dinoSquatUrl.value = "/dino-squat-2.png";
@@ -92,7 +96,6 @@ const normalDinoRun = () => {
       }
 
       if (normalNowSquating.value) return;
-      if (normalNowJumping.value) return;
       if (dinoUrl.value === "/dino-run-1.png") {
         dinoUrl.value = "/dino-run-2.png";
       } else {
@@ -163,7 +166,7 @@ const normalDinoSquat = () => {
   normalNowSquating.value = true;
   setTimeout(() => {
     normalNowSquating.value = false;
-  }, 1500);
+  }, 500);
 };
 
 const getDinoHeight = () => {
@@ -173,6 +176,10 @@ const getDinoHeight = () => {
   return dinoHeight;
 };
 
+const checkSquat = () => {
+  return normalNowSquating.value;
+};
+
 defineExpose({
   appDinoRun,
   appDinoJump,
@@ -180,6 +187,7 @@ defineExpose({
   normalDinoJump,
   normalDinoSquat,
   getDinoHeight,
+  checkSquat,
 });
 </script>
 
@@ -195,7 +203,9 @@ defineExpose({
     <img
       :src="dinoUrl"
       alt=""
-      :class="{ walk: dinoUrl === '/dino-run-1.png' }"
+      :class="{
+        walk: dinoUrl === '/dino-run-1.png' && gameMode === 'application',
+      }"
     />
   </div>
   <div
