@@ -5,6 +5,7 @@ import Cactus from "@/components/DinosaurComps/DinosaurCactusComp.vue";
 import Barrier from "@/components/DinosaurComps/DinosaurBarrierComp.vue";
 import Bricks from "@/components/DinosaurComps/DinosaurBricksComp.vue";
 import Answer from "@/components/DinosaurComps/DinosaurAnswerComp.vue";
+import Checkout from "@/components/DinosaurComps/DinosaurCheckoutComp.vue";
 import AllAnswerPage from "@/components/DinosaurComps/DinosaurAllAnswerPageComp.vue";
 import ansData from "@/components/DinosaurComps/answer";
 import { useDinosaurStore } from "@/stores/distanceStore.js";
@@ -14,8 +15,9 @@ const store = useDinosaurStore();
 
 const dino = ref(null);
 const clouds = ref(null);
-const cactusApp = ref(null);
-const cactusNormal = ref(null);
+const cactus = ref(null);
+const barrier = ref(null);
+const checkout = ref(null);
 const bricks = ref(null);
 const answer = ref(null);
 const allAnswerPage = ref(null);
@@ -47,7 +49,7 @@ const pressUp = (e) => {
           answer.value.ansShow();
           answerShow.value = true;
         } else {
-          mode.value = "settlement";
+          mode.value = "checkout";
         }
         setTimeout(() => {
           clouds.value.stopClouds();
@@ -89,14 +91,14 @@ const pressDown = (e) => {
 };
 
 const keyDownHandler = (e) => {
-  if (mode.value === "beforeStart" || mode.value === "settlement") return;
+  if (mode.value === "beforeStart" || mode.value === "checkout") return;
   pressUp(e);
   pressRight(e);
   pressDown(e);
 };
 
 const keyUpHandler = (e) => {
-  if (mode.value === "beforeStart" || mode.value === "settlement") return;
+  if (mode.value === "beforeStart" || mode.value === "checkout") return;
   stopRight(e);
 };
 
@@ -135,8 +137,7 @@ const restartGameHandler = (res) => {
   store.stillPressRight = false;
   nowQuestion.value = 0;
   bricks.value.clearBricks();
-  cactusApp.value.clearCactus();
-  // document.querySelector(".h4-block").classList.remove("hide");
+  cactus.value.clearCactus();
 };
 
 const checkDinoHandler = (res) => {
@@ -168,14 +169,27 @@ const GameOver = () => {
   store.walking = false;
   clouds.value.stopClouds();
   clearInterval(timer.value);
-  mode.value = "settlement";
+  mode.value = "checkout";
+  setTimeout(() => {
+    checkout.value.recordHandler(score.value);
+  }, 1);
+};
+
+const endCheckoutHandler = () => {
+  mode.value = "beforeStart";
+  barrier.value.reset();
+  clouds.value.reset();
+  gameMode.value = "normal";
+  store.walking = false;
+  store.pauseJump = false;
+  score.value = 0;
 };
 
 const intervalFn = () => {
   clouds.value.cloudLefting();
   /* normal */
   if (gameMode.value === "normal") {
-    cactusNormal.value.cactusNormalLefting();
+    barrier.value.cactusNormalLefting();
     score.value += 5;
     return;
   }
@@ -187,7 +201,7 @@ const intervalFn = () => {
       store.distance += speed.value;
     } else {
       if (!stopForward.value) {
-        cactusApp.value.cactusLefting(speed.value);
+        cactus.value.cactusLefting(speed.value);
         bricks.value.brickLefting(speed.value);
       }
     }
@@ -198,11 +212,12 @@ const startAppGameHandler = () => {
   timer.value = setInterval(intervalFn, 10);
   gameMode.value = "application";
   mode.value = "appStart";
-  bricks.value.reset();
-  cactusApp.value.reset();
-  answer.value.reset();
+  cactus.value.reset();
   clouds.value.reset();
-  // document.querySelector(".h4-block").classList.add("hide");
+  setTimeout(() => {
+    bricks.value.reset();
+    answer.value.reset();
+  }, 1);
 };
 
 const startNormalGameHandler = () => {
@@ -211,14 +226,15 @@ const startNormalGameHandler = () => {
   gameMode.value = "normal";
   mode.value = "normalStart";
   store.walking = true;
-
   score.value = 0;
-  // document.querySelector(".h4-block").classList.add("hide");
+  setTimeout(() => {
+    checkout.value.getRecords();
+  }, 1);
 };
 
 const getScore = computed(() => {
+  if (score.value === 0) return "000000";
   let str = score.value.toString().length;
-  if (str === 1) return "000000";
   let result = "";
   let gap = 6 - str;
   for (let i = 0; i < gap; i++) {
@@ -245,7 +261,7 @@ onUnmounted(() => window.addEventListener("keyup", keyUpHandler));
 
 const testNormalHandler = () => {
   timer.value = setInterval(intervalFn, 10);
-  cactusNormal.value.reset();
+  barrier.value.reset();
   clouds.value.reset();
   gameMode.value = "normal";
   mode.value = "normalStart";
@@ -258,7 +274,7 @@ const testNormalHandler = () => {
 </script>
 
 <template>
-  <button class="test" @click="testNormalHandler">test</button>
+  <!-- <button class="test" @click="testNormalHandler">test</button> -->
   <div class="dinosaur-wrapper">
     <div class="title-block"></div>
     <div class="game-block">
@@ -268,11 +284,24 @@ const testNormalHandler = () => {
           {{ getScore }}
         </div>
         <Clouds ref="clouds" />
-        <Cactus ref="cactusApp" />
-        <Barrier ref="cactusNormal" @check-dino="checkDinoHandler" />
-        <Answer ref="answer" @answer-remove="answerRemoveHandler" />
-        <AllAnswerPage ref="allAnswerPage" @restart-game="restartGameHandler" />
+        <Cactus ref="cactus" />
+        <Barrier
+          v-if="gameMode === 'normal'"
+          ref="barrier"
+          @check-dino="checkDinoHandler"
+        />
+        <Answer
+          v-if="gameMode === 'application'"
+          ref="answer"
+          @answer-remove="answerRemoveHandler"
+        />
+        <AllAnswerPage
+          v-if="gameMode === 'application'"
+          ref="allAnswerPage"
+          @restart-game="restartGameHandler"
+        />
         <Bricks
+          v-if="gameMode === 'application'"
           ref="bricks"
           @stop-forward="stopForwardHandler"
           @png-reset="pngResetHandler"
@@ -286,7 +315,7 @@ const testNormalHandler = () => {
         />
         <hr />
       </div>
-      <div class="h4-block" ref="startBtn">
+      <div class="start-btn-block" ref="startBtn">
         <h4
           v-if="mode === 'beforeStart'"
           @click.right.prevent="startAppGameHandler"
@@ -295,6 +324,13 @@ const testNormalHandler = () => {
           點擊開始遊戲
         </h4>
       </div>
+      <Checkout
+        v-if="gameMode === 'normal'"
+        v-show="mode === 'checkout'"
+        ref="checkout"
+        :score="score"
+        @end-checkout="endCheckoutHandler"
+      />
     </div>
   </div>
 </template>
@@ -361,7 +397,7 @@ hr {
   opacity: 0.5;
   z-index: 45;
 }
-.h4-block {
+.start-btn-block {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
