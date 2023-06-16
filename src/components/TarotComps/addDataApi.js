@@ -1,6 +1,5 @@
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase";
-import { onMounted } from "vue";
 
 // Add a new document with a generated id.
 

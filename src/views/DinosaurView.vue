@@ -7,12 +7,12 @@ import Bricks from "@/components/DinosaurComps/DinosaurBricksComp.vue";
 import Answer from "@/components/DinosaurComps/DinosaurAnswerComp.vue";
 import Checkout from "@/components/DinosaurComps/DinosaurCheckoutComp.vue";
 import AllAnswerPage from "@/components/DinosaurComps/DinosaurAllAnswerPageComp.vue";
+import Operation from "@/components/DinosaurComps/DinosaurOperationComp.vue";
 import ansData from "@/components/DinosaurComps/answer";
 import { useDinosaurStore } from "@/stores/distanceStore.js";
 import { ref, watchEffect, onMounted, onUnmounted, computed } from "vue";
 
 const store = useDinosaurStore();
-
 const dino = ref(null);
 const clouds = ref(null);
 const cactus = ref(null);
@@ -22,6 +22,7 @@ const bricks = ref(null);
 const answer = ref(null);
 const allAnswerPage = ref(null);
 const timer = ref(null);
+const operation = ref(null);
 const jumpStatus = ref(false);
 const stopForward = ref(false);
 const answerShow = ref(false);
@@ -40,7 +41,6 @@ const pressUp = (e) => {
     if (gameMode.value === "application") {
       store.walking = false;
       const brickLeftPx = bricks.value.brickNowLeft();
-      // if (brickLeftPx <= 350) {
       if (brickLeftPx <= 445) {
         bricks.value.brickTouch();
         if (mode.value !== "final") {
@@ -84,8 +84,10 @@ const stopRight = (e) => {
 };
 
 const pressDown = (e) => {
-  if (gameMode.value === "application") return;
-  if (e.keyCode === 40) {
+  if (gameMode.value === "application" && e.keyCode === 40) {
+    answer.value.pressDown();
+  }
+  if (gameMode.value === "normal" && e.keyCode === 40) {
     dino.value.normalDinoSquat();
   }
 };
@@ -128,7 +130,7 @@ const nowQuestionPlusHandler = (res) => {
   if (nowQuestion.value === qsLength.value) mode.value = "final";
 };
 
-const restartGameHandler = (res) => {
+const restartAppGameHandler = (res) => {
   mode.value = "beforeStart";
   store.distance = 50;
   stopForward.value = false;
@@ -138,6 +140,7 @@ const restartGameHandler = (res) => {
   nowQuestion.value = 0;
   bricks.value.clearBricks();
   cactus.value.clearCactus();
+  operation.value.reset();
 };
 
 const checkDinoHandler = (res) => {
@@ -196,7 +199,6 @@ const intervalFn = () => {
 
   /* application */
   if (store.walking) {
-    // if (distance.value <= 300) {
     if (store.distance <= 390) {
       store.distance += speed.value;
     } else {
@@ -214,6 +216,7 @@ const startAppGameHandler = () => {
   mode.value = "appStart";
   cactus.value.reset();
   clouds.value.reset();
+  operation.value.changeAppMode();
   setTimeout(() => {
     bricks.value.reset();
     answer.value.reset();
@@ -258,26 +261,14 @@ onMounted(() => window.addEventListener("keydown", keyDownHandler));
 onMounted(() => window.addEventListener("keyup", keyUpHandler));
 onUnmounted(() => window.removeEventListener("keydown", keyDownHandler));
 onUnmounted(() => window.addEventListener("keyup", keyUpHandler));
-
-const testNormalHandler = () => {
-  timer.value = setInterval(intervalFn, 10);
-  barrier.value.reset();
-  clouds.value.reset();
-  gameMode.value = "normal";
-  mode.value = "normalStart";
-  store.walking = true;
-  // document.querySelector(".h4-block").classList.add("hide");
-
-  store.pauseJump = false;
-  score.value = 0;
-};
 </script>
 
 <template>
-  <!-- <button class="test" @click="testNormalHandler">test</button> -->
   <div class="dinosaur-wrapper">
     <div class="title-block"></div>
     <div class="game-block">
+      <h1 class="big-title">Dino</h1>
+      <Operation ref="operation" />
       <div class="game-block-outter">
         <div class="bg"></div>
         <div v-if="gameMode !== 'application'" class="score">
@@ -298,7 +289,7 @@ const testNormalHandler = () => {
         <AllAnswerPage
           v-if="gameMode === 'application'"
           ref="allAnswerPage"
-          @restart-game="restartGameHandler"
+          @restart-game="restartAppGameHandler"
         />
         <Bricks
           v-if="gameMode === 'application'"
@@ -328,7 +319,6 @@ const testNormalHandler = () => {
         v-if="gameMode === 'normal'"
         v-show="mode === 'checkout'"
         ref="checkout"
-        :score="score"
         @end-checkout="endCheckoutHandler"
       />
     </div>
@@ -346,6 +336,7 @@ const testNormalHandler = () => {
 .dinosaur-wrapper {
   width: 100%;
   height: 100%;
+  min-height: 700px;
   background-color: #f5ede0;
   position: relative;
 }
@@ -357,9 +348,19 @@ const testNormalHandler = () => {
   font-size: 40px;
   font-weight: 700;
 }
+.big-title {
+  z-index: 10;
+  position: absolute;
+  font-size: 60px;
+  color: #333;
+  font-family: "DotGothic16", sans-serif;
+  top: -90px;
+  left: -20px;
+  letter-spacing: 0.05em;
+  text-shadow: 3px 3px 1px rgba(255, 255, 255, 1);
+}
 .game-block {
   position: relative;
-  /* width: 650px; */
   width: 850px;
   left: 50%;
   top: 50%;
@@ -367,10 +368,8 @@ const testNormalHandler = () => {
 }
 .game-block-outter {
   position: relative;
-  /* height: 400px; */
   height: 500px;
   overflow: hidden;
-  /* border: 1px solid #000; */
 }
 .game-block-outter .bg {
   width: 100%;
@@ -392,7 +391,6 @@ const testNormalHandler = () => {
 hr {
   width: 100%;
   position: absolute;
-  /* bottom: 23px; */
   bottom: 30px;
   opacity: 0.5;
   z-index: 45;

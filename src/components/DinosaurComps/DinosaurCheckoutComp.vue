@@ -3,9 +3,6 @@ import { onMounted, ref, watch } from "vue";
 import { db } from "@/firebase";
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 
-const props = defineProps({
-  score: Number,
-});
 const emit = defineEmits(["endCheckout"]);
 const nick = ref(null);
 const nickName = ref("");
@@ -15,19 +12,35 @@ const score = ref(0);
 const insertIndex = ref(-1);
 const recordId = ref("");
 const records = ref([]);
+const alert = ref("");
 
 const submitHandler = () => {
   if (nickName.value.length > 0 && nickName.value.length <= 7) {
+    const repeat = records.value.find((rec) => rec.name === nickName.value);
+    // if (repeat !== undefined) {
+    //   showAlert("暱稱已重複，請換一個");
+    //   return;
+    // }
+
     /* upload to firebase */
     updateRecord();
 
     nickName.value = "";
     now.value = "board";
+  } else {
+    showAlert("字數上限為 7 個字元");
   }
 };
 
+const showAlert = (txt) => {
+  alert.value = txt;
+  setTimeout(() => {
+    alert.value = "";
+  }, 3000);
+};
+
 const endHandler = () => {
-  now.value = "signature";
+  now.value = "";
   emit("endCheckout", true);
 };
 
@@ -89,8 +102,12 @@ const updateRecord = async () => {
 };
 
 onMounted(() => {
-  watch(now.value, (nV) => {
-    if (nV === "signature") nick.value.focus();
+  watch(now, (nV) => {
+    if (nV === "signature") {
+      setTimeout(() => {
+        nick.value.focus();
+      }, 1);
+    }
   });
 });
 
@@ -102,16 +119,21 @@ defineExpose({
 
 <template>
   <div class="checkout-wrapper">
-    <div class="decorate d1"></div>
-    <div class="decorate d2"></div>
+    <div class="decos">
+      <div class="decorate d1"></div>
+      <div class="decorate d2"></div>
+    </div>
     <div class="outter">
+      <div class="game-text t1">Game</div>
+      <div class="game-text t2">Over</div>
       <div v-if="now === 'signature'" class="signature">
         <form @submit.prevent="submitHandler">
-          <h3>恭喜您！您的分數進入前三名！</h3>
+          <h3>恭喜！您的分數將進入排行榜！</h3>
           <div class="line">
             <h6>請輸入暱稱：</h6>
             <input v-model.trim="nickName" ref="nick" type="text" />
           </div>
+          <p class="alert">{{ alert }}</p>
           <button>確認</button>
         </form>
       </div>
@@ -138,7 +160,8 @@ defineExpose({
 .checkout-wrapper {
   width: 100%;
   height: 100%;
-  /* background-color: #444; */
+  background-color: rgba(207, 207, 207, 0.3);
+  backdrop-filter: blur(1px);
   position: absolute;
   left: 50%;
   top: 50%;
@@ -158,6 +181,7 @@ defineExpose({
   align-items: center;
   position: relative;
   color: #ffffff;
+  top: 35px;
 }
 .signature {
   text-align: center;
@@ -169,6 +193,7 @@ defineExpose({
   margin-bottom: 20px;
   position: relative;
   left: 5px;
+  letter-spacing: 0.02em;
 }
 .signature .line h6 {
   display: inline-block;
@@ -176,7 +201,7 @@ defineExpose({
   margin-right: 10px;
 }
 .signature input {
-  width: 100px;
+  width: 120px;
   outline: none;
   border: none;
   border-bottom: 1px solid #ffffff;
@@ -186,10 +211,17 @@ defineExpose({
   color: #ffffff;
   text-align: center;
 }
+.alert {
+  position: relative;
+  top: 20px;
+  font-size: 15px;
+  color: #efefef;
+  height: 20px;
+}
 button {
   background-color: transparent;
   border: none;
-  margin-top: 40px;
+  margin-top: 30px;
   font-size: 13px;
   color: #cdcdcd;
   font-family: "DotGothic16", sans-serif;
@@ -205,12 +237,12 @@ button:hover {
 }
 .title {
   margin-bottom: 15px;
-  margin-top: 8px;
+  margin-top: 6px;
 }
 .title h4,
 .title p {
   display: inline-block;
-  font-size: 20px;
+  font-size: 23px;
   letter-spacing: 0.1em;
 }
 .title p {
@@ -236,12 +268,11 @@ button:hover {
   letter-spacing: 0.1em;
 }
 .record-place {
-  margin-right: 10px;
+  margin-right: 15px;
 }
 .record-name {
   margin-right: 10px;
   width: 120px;
-  /* border: 1px solid #000; */
 }
 .record-score {
   width: 60px;
@@ -250,16 +281,41 @@ button:hover {
 .end {
   margin-top: 10px;
 }
-.decorate {
+.game-text {
+  position: absolute;
+  color: #4a4a4a;
+  font-size: 70px;
+  z-index: 10;
+  top: -140px;
+  letter-spacing: 0.1em;
+}
+.t1 {
+  left: -30px;
+}
+.t2 {
+  right: -45px;
+}
+.decos {
   position: absolute;
   width: 280px;
   height: 190px;
+}
+.decorate {
+  width: 100%;
+  height: 100%;
   background-color: #4a4a4a;
+}
+.d1 {
+  position: absolute;
+  top: 35px;
+  width: 280px;
+  height: 190px;
 }
 .d2 {
   position: absolute;
   width: 260px;
   height: 210px;
-  background-color: #4a4a4a;
+  top: 25px;
+  left: 10px;
 }
 </style>

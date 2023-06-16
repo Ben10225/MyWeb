@@ -15,6 +15,7 @@ const now = ref(0);
 const answer = ansData.answer;
 const ans = ref(null);
 const content = ref(null);
+const canPressDown = ref(false);
 const emit = defineEmits(["answerRemove"]);
 
 const ansShow = () => {
@@ -35,6 +36,9 @@ const ansShow = () => {
       duration: 1.2,
       delay: 1.1,
       ease: "ease",
+      onComplete() {
+        canPressDown.value = true;
+      },
     }
   );
 };
@@ -56,13 +60,21 @@ const answerRemoveHandler = () => {
   });
 };
 
+const pressDown = () => {
+  if (!canPressDown.value) return;
+  canPressDown.value = false;
+  answerRemoveHandler();
+};
+
 const reset = () => {
   now.value = 0;
+  canPressDown.value = false;
 };
 
 defineExpose({
   ansShow,
   reset,
+  pressDown,
 });
 </script>
 

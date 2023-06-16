@@ -43,22 +43,7 @@ const setPngRefs = (el, id) => {
   }
 };
 
-const bricksList = ref([
-  // {
-  //   id: brickId.value++,
-  //   left: 510,
-  //   break: false,
-  //   crown: false,
-  //   crownShow: false,
-  // },
-  // {
-  //   id: brickId.value++,
-  //   left: 884,
-  //   break: false,
-  //   crown: false,
-  //   crownShow: false,
-  // },
-]);
+const bricksList = ref([]);
 
 const addBrick = () => {
   let tmp = nowIndex.value >= 1 ? 1 : 0;
@@ -283,8 +268,6 @@ defineExpose({
 .brick-block {
   position: absolute;
   top: 51%;
-  /* width: 45px;
-  height: 45px; */
   width: 52px;
   height: 52px;
 }
@@ -339,7 +322,6 @@ defineExpose({
   height: 19px;
   top: -26px;
   left: 2px;
-  /* border: 1px solid #000; */
   overflow: hidden;
 }
 .png-block {
