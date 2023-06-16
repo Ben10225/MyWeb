@@ -2,10 +2,10 @@
 
 <template>
   <div class="content">
-    <p>這份網頁我使用了以下相關技術：</p>
+    <p>這份網頁使用了以下技術：</p>
     <div>
       <div class="short">Vue 3</div>
-      → 前端網頁框架使用。
+      → 前端框架。
     </div>
     <div>
       <div class="short">Vite</div>
@@ -17,11 +17,11 @@
     </div>
     <div>
       <div class="short">GSAP</div>
-      → 物件動畫的相關操作。
+      → 動畫套件，網頁元件動畫相關操作。
     </div>
     <div>
       <div class="short">Firebase</div>
-      → 部署網頁，以及資料庫操作。
+      → 部署網頁、資料庫使用。
     </div>
     <div>
       <div class="long">GitHub Actions</div>

@@ -21,8 +21,8 @@ export const useData = defineStore("ct", () => {
     },
     {
       id: btnCount.value++,
-      content: "TAROT",
-      link: "/tarot",
+      content: "GAMING",
+      link: "/gaming",
     },
     {
       id: btnCount.value++,

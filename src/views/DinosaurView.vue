@@ -11,6 +11,9 @@ import Operation from "@/components/DinosaurComps/DinosaurOperationComp.vue";
 import ansData from "@/components/DinosaurComps/answer";
 import { useDinosaurStore } from "@/stores/distanceStore.js";
 import { ref, watchEffect, onMounted, onUnmounted, computed } from "vue";
+import { useWindowSize } from "@vueuse/core";
+
+const { width } = useWindowSize();
 
 const store = useDinosaurStore();
 const dino = ref(null);
@@ -32,6 +35,10 @@ const speed = ref(2);
 const nowQuestion = ref(0);
 const score = ref(0);
 const qsLength = ref(ansData.answer.length);
+
+const checkWidth = () => {
+  if (width.value < 1000) window.location = "/gaming";
+};
 
 const pressUp = (e) => {
   if (answerShow.value) return;
@@ -255,8 +262,10 @@ watchEffect(() => {
       dino.value.normalDinoRun();
     }
   }
+  if (width) checkWidth();
 });
 
+checkWidth();
 onMounted(() => window.addEventListener("keydown", keyDownHandler));
 onMounted(() => window.addEventListener("keyup", keyUpHandler));
 onUnmounted(() => window.removeEventListener("keydown", keyDownHandler));
@@ -354,7 +363,7 @@ onUnmounted(() => window.addEventListener("keyup", keyUpHandler));
   font-size: 60px;
   color: #333;
   font-family: "DotGothic16", sans-serif;
-  top: -90px;
+  top: -110px;
   left: -20px;
   letter-spacing: 0.05em;
   text-shadow: 3px 3px 1px rgba(255, 255, 255, 1);

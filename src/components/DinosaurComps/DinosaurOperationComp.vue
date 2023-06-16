@@ -2,7 +2,7 @@
 import { ref, h } from "vue";
 
 const normalMode = ref(true);
-const downTxt = ref("下伏");
+const downTxt = ref("蹲走");
 
 const top = () => {
   return h("div", { class: "top" }, [
@@ -30,7 +30,7 @@ const changeAppMode = () => {
 
 const reset = () => {
   normalMode.value = true;
-  downTxt.value = "下伏";
+  downTxt.value = "蹲走";
 };
 
 defineExpose({

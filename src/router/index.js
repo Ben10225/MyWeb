@@ -31,8 +31,13 @@ const router = createRouter({
     },
     {
       path: "/dinosaur",
-      name: "contact",
+      name: "dinosaur",
       component: () => import("../views/DinosaurView.vue"),
+    },
+    {
+      path: "/gaming",
+      name: "gaming",
+      component: () => import("../views/GamingView.vue"),
     },
     {
       path: "/:pathMatch(.*)*",
