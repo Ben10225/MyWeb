@@ -150,9 +150,15 @@ h1 {
 .alert .ic {
   margin-right: 5px;
 }
+@media (max-width: 1200px) {
+  h1 {
+    font-size: 50px;
+  }
+}
 @media (max-width: 850px) {
   h1 {
     left: -150px;
+    font-size: 40px;
   }
   .game {
     transform: scale(0.8);
@@ -172,6 +178,16 @@ h1 {
     font-size: 45px;
     left: -80px;
     top: 260px;
+  }
+}
+@media (max-height: 750px) {
+  h1 {
+    position: absolute;
+    left: 80px;
+    top: 0px;
+  }
+  .game {
+    transform: scale(0.8);
   }
 }
 </style>
