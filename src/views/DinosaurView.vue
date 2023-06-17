@@ -84,7 +84,7 @@ const pressRight = (e) => {
 };
 
 const stopRight = (e) => {
-  if (e.keyCode === 39) {
+  if (e.keyCode === 39 && gameMode.value === "application") {
     store.walking = false;
     store.stillPressRight = false;
   }
