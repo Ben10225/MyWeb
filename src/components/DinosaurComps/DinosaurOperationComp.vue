@@ -90,4 +90,9 @@ defineExpose({
   top: -1px;
   letter-spacing: 0.1em;
 }
+@media (max-height: 700px) {
+  .operation-wrapper .line {
+    bottom: -20px;
+  }
+}
 </style>

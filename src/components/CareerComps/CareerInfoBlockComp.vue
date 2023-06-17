@@ -157,7 +157,6 @@ h1 {
   opacity: 1;
   user-select: auto;
   margin-left: -660px;
-  /* left: 8%; */
 }
 .fade-out {
   opacity: 0;

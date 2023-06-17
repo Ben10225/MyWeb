@@ -345,7 +345,7 @@ onUnmounted(() => window.addEventListener("keyup", keyUpHandler));
 .dinosaur-wrapper {
   width: 100%;
   height: 100%;
-  min-height: 700px;
+  /* min-height: 700px; */
   background-color: #f5ede0;
   position: relative;
 }
@@ -429,6 +429,15 @@ h4 {
   }
   50% {
     opacity: 0.3;
+  }
+}
+@media (max-height: 700px) {
+  .big-title {
+    font-size: 30px;
+    top: -95px;
+  }
+  .game-block-outter {
+    top: -40px;
   }
 }
 </style>
