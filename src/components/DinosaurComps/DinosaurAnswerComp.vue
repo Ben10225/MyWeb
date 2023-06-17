@@ -120,7 +120,7 @@ defineExpose({
   top: 100%;
 }
 .outter {
-  margin-top: 40px;
+  margin-top: 45px;
   width: 100%;
   position: relative;
   height: inherit;
