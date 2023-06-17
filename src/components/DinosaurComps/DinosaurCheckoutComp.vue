@@ -318,4 +318,9 @@ button:hover {
   top: 25px;
   left: 10px;
 }
+@media (max-height: 700px) {
+  .checkout-wrapper {
+    margin-top: -40px;
+  }
+}
 </style>

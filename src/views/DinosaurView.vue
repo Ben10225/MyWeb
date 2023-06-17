@@ -328,6 +328,7 @@ onUnmounted(() => window.addEventListener("keyup", keyUpHandler));
         v-if="gameMode === 'normal'"
         v-show="mode === 'checkout'"
         ref="checkout"
+        class="checkout-class"
         @end-checkout="endCheckoutHandler"
       />
     </div>
@@ -433,10 +434,15 @@ h4 {
 }
 @media (max-height: 700px) {
   .big-title {
-    font-size: 30px;
-    top: -95px;
+    font-size: 35px;
+    top: -50px;
+    left: -85px;
   }
   .game-block-outter {
+    top: -40px;
+  }
+  h4 {
+    position: relative;
     top: -40px;
   }
 }
