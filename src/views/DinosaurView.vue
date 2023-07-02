@@ -9,7 +9,7 @@ import Checkout from "@/components/DinosaurComps/DinosaurCheckoutComp.vue";
 import AllAnswerPage from "@/components/DinosaurComps/DinosaurAllAnswerPageComp.vue";
 import Operation from "@/components/DinosaurComps/DinosaurOperationComp.vue";
 import ansData from "@/components/DinosaurComps/answer";
-import { useDinosaurStore } from "@/stores/distanceStore.js";
+import { useDinosaurStore } from "@/stores/dinosaurStore.js";
 import { ref, watchEffect, onMounted, onUnmounted, computed } from "vue";
 import { useWindowSize } from "@vueuse/core";
 
@@ -24,7 +24,6 @@ const checkout = ref(null);
 const bricks = ref(null);
 const answer = ref(null);
 const allAnswerPage = ref(null);
-const timer = ref(null);
 const operation = ref(null);
 const jumpStatus = ref(false);
 const stopForward = ref(false);
@@ -126,7 +125,7 @@ const touchFinalHandler = (res) => {
   store.walking = false;
   store.stillPressRight = false;
   clouds.value.stopClouds();
-  clearInterval(timer.value);
+  clearInterval(store.dinoTimer);
   setTimeout(() => {
     allAnswerPage.value.touchFinal();
   }, 600);
@@ -178,7 +177,7 @@ const GameOver = () => {
   store.pauseJump = true;
   store.walking = false;
   clouds.value.stopClouds();
-  clearInterval(timer.value);
+  clearInterval(store.dinoTimer);
   mode.value = "checkout";
   setTimeout(() => {
     checkout.value.recordHandler(score.value);
@@ -218,7 +217,7 @@ const intervalFn = () => {
 };
 
 const startAppGameHandler = () => {
-  timer.value = setInterval(intervalFn, 10);
+  store.dinoTimer = setInterval(intervalFn, 10);
   gameMode.value = "application";
   mode.value = "appStart";
   cactus.value.reset();
@@ -231,7 +230,7 @@ const startAppGameHandler = () => {
 };
 
 const startNormalGameHandler = () => {
-  timer.value = setInterval(intervalFn, 10);
+  store.dinoTimer = setInterval(intervalFn, 10);
   clouds.value.reset();
   gameMode.value = "normal";
   mode.value = "normalStart";
@@ -318,8 +317,8 @@ onUnmounted(() => window.addEventListener("keyup", keyUpHandler));
       <div class="start-btn-block" ref="startBtn">
         <h4
           v-if="mode === 'beforeStart'"
-          @click.right.prevent="startAppGameHandler"
-          @click="startNormalGameHandler"
+          @click.right.shift.exact.prevent="startAppGameHandler"
+          @click.exact="startNormalGameHandler"
         >
           點擊開始遊戲
         </h4>

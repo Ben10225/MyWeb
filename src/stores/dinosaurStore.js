@@ -6,6 +6,7 @@ export const useDinosaurStore = defineStore("dinoId", () => {
   const walking = ref(false);
   const stillPressRight = ref(false);
   const pauseJump = ref(false);
+  const dinoTimer = ref(null);
 
-  return { distance, walking, stillPressRight, pauseJump };
+  return { distance, walking, stillPressRight, pauseJump, dinoTimer };
 });

@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { useDinosaurStore } from "@/stores/distanceStore.js";
+import { useDinosaurStore } from "@/stores/dinosaurStore.js";
 import gsap from "gsap";
 
 const store = useDinosaurStore();

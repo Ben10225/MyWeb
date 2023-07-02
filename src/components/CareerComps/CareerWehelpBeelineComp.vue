@@ -137,10 +137,8 @@ watch(props, () => {
 }
 .icon-row {
   position: relative;
-  display: inline-block;
-}
-.github {
-  margin-left: 35px;
+  display: block;
+  margin: 3px 0;
 }
 .ic {
   position: absolute;
@@ -167,7 +165,7 @@ h4 {
   top: -11px;
 }
 .intro {
-  margin-top: -30px;
+  margin-top: -12px;
 }
 .intro,
 .difficulty {
@@ -184,10 +182,10 @@ li {
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
 }
 .png {
-  bottom: 175px;
+  bottom: 170px;
 }
 .gif {
-  bottom: 15px;
+  bottom: 10px;
 }
 @media (max-width: 1000px) {
   .pict {

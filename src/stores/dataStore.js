@@ -42,7 +42,7 @@ export const useData = defineStore("ct", () => {
     },
     {
       id: counter.value++,
-      color: "#F3C67B",
+      color: "#e28a53",
       titleFirst: "B",
       titleBehind: "ackend",
       skills: [
@@ -55,17 +55,24 @@ export const useData = defineStore("ct", () => {
     },
     {
       id: counter.value++,
-      color: "#389356",
+      color: "#F3C67B",
       titleFirst: "D",
       titleBehind: "ataBase",
       skills: ["MySQL", "MongoDB", "Gorm (go)", "Firebase"],
     },
     {
       id: counter.value++,
-      color: "#4379AB",
+      color: "#389356",
       titleFirst: "T",
       titleBehind: "ools",
-      skills: ["Git / GitHub", "Docker", "AWS", "Linux", "Nginx"],
+      skills: ["Git / GitHub", "Docker", "Linux", "Nginx"],
+    },
+    {
+      id: counter.value++,
+      color: "#4379AB",
+      titleFirst: "D",
+      titleBehind: "evOps",
+      skills: ["Amazon Web Services", "GitHub Actions", "Kubernetes"],
     },
     {
       id: counter.value++,

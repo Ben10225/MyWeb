@@ -47,12 +47,12 @@ watch(props, () => {
         <h3>台北一日遊</h3>
         <img class="logo" src="/taipei.svg" alt="" />
         <div class="links">
-          <div class="icon-row link">
+          <!-- <div class="icon-row link">
             <font-awesome-icon :icon="['fas', 'link']" class="ic ic-link" />
             <a href="https://taipei-day-trip.beelinetw.com" target="_blank"
               >https://taipei-day-trip.beelinetw.com</a
             >
-          </div>
+          </div> -->
           <div class="icon-row github">
             <font-awesome-icon :icon="['fab', 'github']" class="ic" />
             <a
@@ -142,12 +142,13 @@ watch(props, () => {
 }
 .links {
   position: absolute;
-  top: 52px;
+  top: 62px;
   color: #888;
 }
 .icon-row {
   position: relative;
   display: inline-block;
+  margin: 3px 0;
 }
 .link {
   display: block;

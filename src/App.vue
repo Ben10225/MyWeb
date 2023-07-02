@@ -1,15 +1,30 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
 import LogoName from "./components/LogoNameComp.vue";
+import Dinosaur from "./views/DinosaurView.vue";
 import { useData } from "./stores/dataStore";
-import { ref } from "vue";
+import { useDinosaurStore } from "./stores/dinosaurStore";
+import { ref, onMounted } from "vue";
+import { db } from "@/firebase";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const store = useData();
-
+const dinostore = useDinosaurStore();
 const page = ref("");
+const auth = getAuth();
+const email = ref("kochoshinobu@gmail.com");
+const password = ref("kochoshinobu");
 
 const clickHandler = (content) => {
   let c = content.toLowerCase();
+
+  let url = window.location.href;
+  url = url.split("/");
+  let from = url[url.length - 1];
+  if (from === "dinosaur") {
+    clearInterval(dinostore.dinoTimer);
+  }
+
   if (c === "biography") {
     page.value = "";
   } else {
@@ -22,7 +37,21 @@ const firstLoad = () => {
   url = url.split("/");
   page.value = url[url.length - 1];
 };
+
+const authLogIn = () => {
+  signInWithEmailAndPassword(auth, email.value, password.value)
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+    });
+};
+
 firstLoad();
+authLogIn();
 </script>
 
 <template>
@@ -76,6 +105,7 @@ firstLoad();
     <div class="right-wrapper">
       <RouterView />
     </div>
+    <Dinosaur v-if="false" ref="dino" />
   </div>
 </template>
 
