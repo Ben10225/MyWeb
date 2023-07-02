@@ -78,10 +78,10 @@ watch(props, (nV) => {
       <CareerPreviousJob :job="1" :reset="reset" />
     </div>
     <div class="part">
-      <CareerWehelpBeeline :beeline-show="projShow" />
+      <CareerWehelpBeeline class="zIndex10" :beeline-show="projShow" />
     </div>
     <div class="part">
-      <CareerWehelpTaipei :taipei-show="projShow" />
+      <CareerWehelpTaipei class="zIndex10" :taipei-show="projShow" />
     </div>
     <div
       class="part"
@@ -91,7 +91,14 @@ watch(props, (nV) => {
         'taipei-height': projShow === 'taipeiShow',
       }"
     >
-      <CareerWehelp :wehelp-go-left="wehelpGoLeft" @change-proj="getEmits" />
+      <CareerWehelp
+        :class="{
+          'prevent-wehelp':
+            projShow === 'beelineShow' || projShow === 'taipeiShow',
+        }"
+        :wehelp-go-left="wehelpGoLeft"
+        @change-proj="getEmits"
+      />
     </div>
   </div>
 </template>
@@ -167,6 +174,13 @@ h1 {
 }
 .taipei-height {
   padding-bottom: 10px;
+}
+.zIndex10 {
+  z-index: 10;
+}
+.prevent-wehelp {
+  user-select: none;
+  pointer-events: none;
 }
 @media (max-width: 1000px) {
   .info-wrapper {
