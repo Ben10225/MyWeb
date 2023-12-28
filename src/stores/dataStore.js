@@ -38,7 +38,7 @@ export const useData = defineStore("ct", () => {
       color: "#d36141",
       titleFirst: "F",
       titleBehind: "rontend",
-      skills: ["Vue 3", "JavaScript", "HTML / SCSS", "WebRTC", "RWD"],
+      skills: ["Vue 3", "React", "TypeScript", "WebRTC", "RWD"],
     },
     {
       id: counter.value++,
@@ -58,7 +58,7 @@ export const useData = defineStore("ct", () => {
       color: "#F3C67B",
       titleFirst: "D",
       titleBehind: "ataBase",
-      skills: ["MySQL", "MongoDB", "Gorm (go)", "Firebase"],
+      skills: ["MySQL", "Redis", "MongoDB", "Gorm (go)", "Firebase"],
     },
     {
       id: counter.value++,

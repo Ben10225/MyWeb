@@ -4,7 +4,7 @@ import LogoName from "./components/LogoNameComp.vue";
 import Dinosaur from "./views/DinosaurView.vue";
 import { useData } from "./stores/dataStore";
 import { useDinosaurStore } from "./stores/dinosaurStore";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { db } from "@/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 

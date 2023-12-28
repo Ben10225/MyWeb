@@ -47,12 +47,12 @@ watch(props, () => {
         <h3>beeline</h3>
         <img class="logo" src="/browser_logo.png" alt="" />
         <div class="links">
-          <div class="icon-row link">
+          <!-- <div class="icon-row link">
             <font-awesome-icon :icon="['fas', 'link']" class="ic ic-link" />
             <a href="https://beelinetw.com" target="_blank"
               >https://beelinetw.com</a
             >
-          </div>
+          </div> -->
           <div class="icon-row github">
             <font-awesome-icon :icon="['fab', 'github']" class="ic" />
             <a href="https://github.com/Ben10225/beeline" target="_blank"
@@ -131,7 +131,7 @@ watch(props, () => {
 }
 .links {
   position: absolute;
-  top: 27px;
+  top: 37px;
   left: 2px;
   color: #888;
 }
