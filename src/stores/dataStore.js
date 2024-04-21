@@ -1,7 +1,10 @@
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import { defineStore } from "pinia";
+import { useWindowSize } from "@vueuse/core";
+const { width } = useWindowSize();
 
 export const useData = defineStore("ct", () => {
+  const less400px = ref(false);
   const btnCount = ref(0);
   const links = ref([
     {
@@ -23,6 +26,11 @@ export const useData = defineStore("ct", () => {
       id: btnCount.value++,
       content: "GAMING",
       link: "/gaming",
+    },
+    {
+      id: btnCount.value++,
+      content: "BLOGS",
+      link: "/blogs",
     },
     {
       id: btnCount.value++,
@@ -87,6 +95,22 @@ export const useData = defineStore("ct", () => {
       ],
     },
   ]);
+
+  watchEffect(() => {
+    if (width.value > 400 && less400px.value) {
+      less400px.value = false;
+    } else if (width.value <= 400 && !less400px.value) {
+      less400px.value = true;
+    }
+  });
+
+  watchEffect(() => {
+    if (less400px.value) {
+      links.value[0].content = "BIO";
+    } else {
+      links.value[0].content = "BIOGRAPHY";
+    }
+  });
 
   return { skillsData, links };
 });

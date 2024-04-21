@@ -1,11 +1,9 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
 import LogoName from "./components/LogoNameComp.vue";
 import Dinosaur from "./views/DinosaurView.vue";
 import { useData } from "./stores/dataStore";
 import { useDinosaurStore } from "./stores/dinosaurStore";
 import { ref } from "vue";
-import { db } from "@/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const store = useData();
@@ -70,7 +68,8 @@ authLogIn();
             now2: page === 'skills',
             now3: page === 'career',
             now4: page === 'gaming' || page === 'tarot' || page === 'dinosaur',
-            now5: page === 'contact',
+            now5: page === 'blogs',
+            now6: page === 'contact',
           }"
         >
           <div
@@ -81,7 +80,8 @@ authLogIn();
               now3: page === 'career',
               now4:
                 page === 'gaming' || page === 'tarot' || page === 'dinosaur',
-              now5: page === 'contact',
+              now5: page === 'blogs',
+              now6: page === 'contact',
             }"
           >
             {{ l.content }}
@@ -94,7 +94,8 @@ authLogIn();
               now3: page === 'career',
               now4:
                 page === 'gaming' || page === 'tarot' || page === 'dinosaur',
-              now5: page === 'contact',
+              now5: page === 'blogs',
+              now6: page === 'contact',
             }"
           >
             {{ l.content[0] }}
@@ -161,7 +162,8 @@ authLogIn();
 .link-text.now2:nth-child(2),
 .link-text.now3:nth-child(3),
 .link-text.now4:nth-child(4),
-.link-text.now5:nth-child(5) {
+.link-text.now5:nth-child(5),
+.link-text.now6:nth-child(6) {
   background-color: #f1bf0a;
 }
 
@@ -169,7 +171,8 @@ authLogIn();
 .link-text:nth-child(2) .title.now2,
 .link-text:nth-child(3) .title.now3,
 .link-text:nth-child(4) .title.now4,
-.link-text:nth-child(5) .title.now5 {
+.link-text:nth-child(5) .title.now5,
+.link-text:nth-child(6) .title.now6 {
   color: #fff;
   opacity: 1;
   transform: scale(1.1);
@@ -199,14 +202,15 @@ authLogIn();
 .solo:nth-child(2).now2,
 .solo:nth-child(3).now3,
 .solo:nth-child(4).now4,
-.solo:nth-child(5).now5 {
+.solo:nth-child(5).now5,
+.solo:nth-child(5).now6 {
   color: #ffffff;
 }
 .link-text:nth-child(4) .solo {
   left: 9px;
 }
 .link-text:nth-child(3) .solo,
-.link-text:nth-child(5) .solo {
+.link-text:nth-child(6) .solo {
   left: 9px;
 }
 @media (max-height: 800px) {
@@ -269,14 +273,16 @@ authLogIn();
   .link-text.now2:nth-child(2),
   .link-text.now3:nth-child(3),
   .link-text.now4:nth-child(4),
-  .link-text.now5:nth-child(5) {
+  .link-text.now5:nth-child(5),
+  .link-text.now4:nth-child(6) {
     background-color: #c5a83d;
   }
   .link-text:nth-child(1) .title.now1,
   .link-text:nth-child(2) .title.now2,
   .link-text:nth-child(3) .title.now3,
   .link-text:nth-child(4) .title.now4,
-  .link-text:nth-child(5) .title.now5 {
+  .link-text:nth-child(5) .title.now5,
+  .link-text:nth-child(6) .title.now6 {
     opacity: 1;
     transform: scale(1.1);
     transition: opacity 0s !important;
@@ -285,7 +291,8 @@ authLogIn();
   .link-text:nth-child(2) .solo.now2,
   .link-text:nth-child(3) .solo.now3,
   .link-text:nth-child(4) .solo.now4,
-  .link-text:nth-child(5) .solo.now5 {
+  .link-text:nth-child(5) .solo.now5,
+  .link-text:nth-child(6) .solo.now6 {
     color: #ffffff;
   }
 }
@@ -333,14 +340,16 @@ authLogIn();
   .link-text.now2:nth-child(2),
   .link-text.now3:nth-child(3),
   .link-text.now4:nth-child(4),
-  .link-text.now5:nth-child(5) {
+  .link-text.now5:nth-child(5),
+  .link-text.now5:nth-child(6) {
     background-color: #ffc800;
   }
   .link-text:nth-child(1) .title.now1,
   .link-text:nth-child(2) .title.now2,
   .link-text:nth-child(3) .title.now3,
   .link-text:nth-child(4) .title.now4,
-  .link-text:nth-child(5) .title.now5 {
+  .link-text:nth-child(5) .title.now5,
+  .link-text:nth-child(6) .title.now6 {
     color: #222;
     transform: scale(1);
     font-weight: 800;

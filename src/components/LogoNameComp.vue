@@ -44,7 +44,11 @@ const showAni = () => {
 .white-square {
   width: 200px;
   height: 130px;
+  height: 130px;
   border: rgba(255, 255, 255, 0.7) solid 2px;
+  /* border-top: rgba(255, 255, 255, 0.7) solid 2px;
+  border-left: rgba(255, 255, 255, 0.7) solid 2px;
+  border-bottom: rgba(255, 255, 255, 0.7) solid 2px; */
   position: absolute;
   right: 65px;
   top: 70px;
@@ -82,9 +86,9 @@ h1:hover {
 }
 .last-name {
   right: -4px;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   bottom: 4px;
-  display: inline;
+  /* display: inline; */
 }
 h5 {
   color: #fff;
