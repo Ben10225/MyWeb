@@ -34,7 +34,7 @@ const pagination = ref({
 const blogs = computed(() => {
   return mode.value === "LIFE"
     ? lifeBlogs.value.slice(0, pagination.value.lifeNowPageIndex)
-    : programBlogs.value.slice(0, pagination.value.lifeNowPageIndex);
+    : programBlogs.value.slice(0, pagination.value.programNowPageIndex);
 });
 
 const handleChangeMode = (m) => {
@@ -125,8 +125,10 @@ const addToBlogs = (dbData, localStorage, mode, status) => {
         pagination.value.lifeNextPage = true;
         pagination.value.lifeNowPageIndex =
           pagination.value.lifeNowPageIndex + loadBlogsAmount;
+        pagination.value.lifeLastDocument = dbData.docs[dbData.docs.length - 1];
       } else {
-        pagination.value.lifeNowPageIndex = loadBlogsAmount + 1 + dbData.size;
+        pagination.value.lifeNowPageIndex =
+          pagination.value.lifeNowPageIndex + 1 + dbData.size;
         pagination.value.lifeNextPage = false;
       }
     }
@@ -147,9 +149,11 @@ const addToBlogs = (dbData, localStorage, mode, status) => {
         pagination.value.programNextPage = true;
         pagination.value.programNowPageIndex =
           pagination.value.programNowPageIndex + loadBlogsAmount;
+        pagination.value.programLastDocument =
+          dbData.docs[dbData.docs.length - 1];
       } else {
         pagination.value.programNowPageIndex =
-          loadBlogsAmount + 1 + dbData.size;
+          pagination.value.programNowPageIndex + 1 + dbData.size;
         pagination.value.programNextPage = false;
       }
     }
