@@ -1,6 +1,7 @@
 <script setup>
 import BlogComp from "../components/BlogsComps/BlogComp.vue";
 import ButtonsComp from "../components/BlogsComps/ButtonsComp.vue";
+import EditorComp from "../components/BlogsComps/EditorComp.vue";
 import { computed, ref, onMounted } from "vue";
 import { db } from "@/firebase";
 import {
@@ -19,6 +20,8 @@ const loadBlogsAmount = 4;
 const mode = ref("LIFE");
 const lifeBlogs = ref([]);
 const programBlogs = ref([]);
+const showEditor = ref(false);
+
 const pagination = ref({
   lifeNextPage: false,
   programNextPage: false,
@@ -40,6 +43,16 @@ const handleChangeMode = (m) => {
 
 const handleLoad = () => {
   getBlogs(loadBlogsAmount, "clickMoreLoad");
+};
+
+const handleCloseEditor = () => {
+  showEditor.value = false;
+};
+
+const handleShowEditor = () => {
+  if (mode.value === "PROGRAM") {
+    showEditor.value = true;
+  }
 };
 
 const updateDbViews = async (dbName, id, newViews) => {
@@ -209,7 +222,12 @@ onMounted(() => {
 <template>
   <div class="blog-wrapper">
     <div class="center">
-      <ButtonsComp :mode="mode" @changeMode="handleChangeMode" />
+      <EditorComp v-if="showEditor" @closeEditor="handleCloseEditor" />
+      <ButtonsComp
+        :mode="mode"
+        @changeMode="handleChangeMode"
+        @triggerShowEditor="handleShowEditor"
+      />
       <div class="blogs-wrapper">
         <div v-for="blog in blogs" :key="blog.id" class="blogs">
           <BlogComp :blog="blog" @AddViews="handleAddViews" />
@@ -248,8 +266,10 @@ onMounted(() => {
 }
 .load {
   color: #999;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
   cursor: pointer;
+  font-size: 18px;
+  margin-top: -20px;
 }
 .blogs-wrapper {
   width: 100%;

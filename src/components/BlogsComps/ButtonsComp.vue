@@ -3,7 +3,7 @@ const props = defineProps({
   mode: String,
 });
 
-const emit = defineEmits(["changeMode"]);
+const emit = defineEmits(["changeMode", "triggerShowEditor"]);
 
 const handleToggle = (m) => {
   if (props.mode !== m) {
@@ -22,7 +22,8 @@ const handleToggle = (m) => {
     </button>
     <button
       :class="['program', , props.mode !== 'LIFE' ? '' : 'fade']"
-      @click="handleToggle('PROGRAM')"
+      @click.exact="handleToggle('PROGRAM')"
+      @click.right.shift.alt.exact.prevent="emit('triggerShowEditor')"
     >
       程式筆記
     </button>

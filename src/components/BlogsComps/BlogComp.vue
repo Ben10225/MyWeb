@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watchEffect } from "vue";
 
 const emit = defineEmits(["AddViews"]);
 const props = defineProps({
@@ -25,7 +25,7 @@ const getShorterText = (content) => {
   let edit = false;
   let lessTwoRows = false;
 
-  let arr = content.split("<br />");
+  let arr = content.split("\n");
   if (arr.length === 1) {
     if (content.length > 45) {
       edit = true;
@@ -37,13 +37,13 @@ const getShorterText = (content) => {
     if (arr[0].length > 24 && arr[0].length <= 44) {
       if (arr[0].indexOf("<span") !== -1) {
         const strippedStr = arr[0].replace(
-          /<\/?span(?:\s+class="code")?>/g,
-          ""
+          /<span class='code'>(.*?)<\/span>/g,
+          "$1"
         );
         if (strippedStr.length > 24 && arr[0].length <= 44) {
           shortcut = arr[0];
         } else if (strippedStr.length <= 24) {
-          shortcut = arr[0] + "<br />" + arr[1];
+          shortcut = arr[0] + "\n" + arr[1];
         }
       } else {
         shortcut = arr[0];
@@ -54,10 +54,10 @@ const getShorterText = (content) => {
       shortcut = content.slice(0, 44);
     } else if (arr[1].length > 24) {
       edit = true;
-      shortcut = arr[0] + "<br />" + arr[1].slice(0, 20);
+      shortcut = arr[0] + "\n" + arr[1].slice(0, 20);
     } else {
       edit = true;
-      shortcut = arr[0] + "<br />" + arr[1];
+      shortcut = arr[0] + "\n" + arr[1];
     }
   } else if (arr.length === 2) {
     if (arr[0].length <= 24 && arr[1].length <= 24) {
@@ -239,6 +239,8 @@ onMounted(() => {
 .content {
   display: inline;
   color: #94743d;
+  white-space: pre-line;
+  letter-spacing: 0.02em;
 }
 .more {
   margin-left: 5px;
