@@ -3,6 +3,7 @@ import CareerWehelp from "./CareerWehelpComp.vue";
 import CareerWehelpBeeline from "./CareerWehelpBeelineComp.vue";
 import CareerWehelpTaipei from "./CareerWehelpTaipeiComp.vue";
 import CareerPreviousJob from "./CareerPreviousJobComp.vue";
+import CareerSaintDong from "./CareerSaintDong.vue";
 import { useCheckInProjPage } from "../../stores/projStore";
 import { ref, computed, watch } from "vue";
 
@@ -12,7 +13,7 @@ const props = defineProps({
 });
 const store = useCheckInProjPage();
 const projId = ref(-1);
-const now = ref("Wehelp");
+const now = ref("SaintDong");
 const reset = ref(0);
 const emit = defineEmits(["projFalse"]);
 
@@ -99,6 +100,9 @@ watch(props, (nV) => {
         :wehelp-go-left="wehelpGoLeft"
         @change-proj="getEmits"
       />
+    </div>
+    <div class="part" v-show="now === 'SaintDong'">
+      <CareerSaintDong :job="3" class="zIndex10" :reset="reset" />
     </div>
   </div>
 </template>

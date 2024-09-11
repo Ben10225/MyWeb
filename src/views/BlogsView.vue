@@ -2,7 +2,7 @@
 import BlogComp from "../components/BlogsComps/BlogComp.vue";
 import ButtonsComp from "../components/BlogsComps/ButtonsComp.vue";
 import EditorComp from "../components/BlogsComps/EditorComp.vue";
-import { computed, ref, onMounted, watchEffect } from "vue";
+import { computed, ref, onMounted } from "vue";
 import { db } from "@/firebase";
 import {
   getDocs,

@@ -3,7 +3,7 @@ import CareerLineBlock from "../components/CareerComps/CareerLineBlockComp.vue";
 import CareerInfoBlock from "../components/CareerComps/CareerInfoBlockComp.vue";
 
 import { ref } from "vue";
-const job = ref("Wehelp");
+const job = ref("SaintDong");
 const projLeave = ref(false);
 
 const changeNow = (nowJob) => {

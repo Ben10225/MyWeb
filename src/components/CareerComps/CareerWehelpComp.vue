@@ -47,7 +47,7 @@ const getEmits = (projId) => {
       </ul>
       <h4>專案分享 :</h4>
       <div class="projects beeline-height">
-        <CareerWehelpProjComp @change-proj="getEmits" />
+        <CareerWehelpProjComp style="height: 137px" @change-proj="getEmits" />
       </div>
     </div>
   </div>

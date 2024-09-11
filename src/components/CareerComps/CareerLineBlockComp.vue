@@ -5,21 +5,26 @@ import { useCheckInProjPage } from "../../stores/projStore";
 const store = useCheckInProjPage();
 const emit = defineEmits(["changeJob", "projLeave"]);
 const ct = ref(0);
-const now = ref(2);
+const now = ref(3);
 const arrowColor = ref(true);
 const flex = ref([
   {
-    value: 2,
+    value: 1,
     bgColor: "#dbdbdb",
     txtColor: "#fff",
   },
   {
-    value: 2,
+    value: 1,
     bgColor: "#dbdbdb",
     txtColor: "#fff",
   },
   {
-    value: 2,
+    value: 1,
+    bgColor: "#dbdbdb",
+    txtColor: "#fff",
+  },
+  {
+    value: 3,
     bgColor: "#FEC801",
     txtColor: "#333",
   },
@@ -43,6 +48,12 @@ const workDatas = ref([
     firm: "WeHelp",
     tenure: "2022/09 - 2023/03",
     position: "程式培訓 學員",
+  },
+  {
+    id: ct.value++,
+    firm: "聖東營造",
+    tenure: "2024/05 - 在職中",
+    position: "全端工程師",
   },
 ]);
 
@@ -71,8 +82,14 @@ const clickHandler = (id) => {
     case 2:
       flex.value[previous] = flex.value[id];
       flex.value[2] = clickedValue;
-      arrowColor.value = true;
+      arrowColor.value = false;
       emit("changeJob", "Wehelp");
+      break;
+    case 3:
+      flex.value[previous] = flex.value[id];
+      flex.value[3] = clickedValue;
+      arrowColor.value = true;
+      emit("changeJob", "SaintDong");
       break;
   }
 };
@@ -81,15 +98,15 @@ const arrowColorHandler = computed(() => {
   return arrowColor.value ? "#FEC801" : "#dbdbdb";
 });
 
-setTimeout(() => {
-  flex.value.forEach((item, i) => {
-    if (i !== 2) {
-      item.value = 1;
-    } else {
-      item.value = 5;
-    }
-  });
-}, 50);
+// setTimeout(() => {
+//   flex.value.forEach((item, i) => {
+//     if (i !== flex.value.length) {
+//       item.value = 1;
+//     } else {
+//       item.value = 5;
+//     }
+//   });
+// }, 50);
 </script>
 
 <template>
@@ -119,7 +136,7 @@ setTimeout(() => {
         :icon="['fas', 'play']"
         class="ic"
         :style="{ color: arrowColorHandler }"
-        @click="clickHandler(2)"
+        @click="clickHandler(3)"
       />
     </div>
   </div>
@@ -233,6 +250,10 @@ p {
   }
   .work-block {
     margin-bottom: 50px;
+  }
+
+  .firm {
+    font-size: 15px;
   }
 }
 </style>
